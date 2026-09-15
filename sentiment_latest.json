@@ -1,27 +1,27 @@
 {
   "market_sentiment": "bearish",
   "macro_score": -0.26,
-  "timestamp_utc": "2026-09-15T16:52:33Z",
+  "timestamp_utc": "2026-09-15T22:52:45Z",
   "hermes_risk_feed": {
-    "summary": "US equities traded lower (S&P 500 -0.44% on the session) with 1 of 7 tracked global indices advancing. Volatility (VIX 17.5) implies a contained risk regime, with no systemic stress visible in market data.",
+    "summary": "US equities traded lower (S&P 500 -0.45% on the session) with 1 of 7 tracked global indices advancing. Volatility (VIX 17.2) implies a contained risk regime, with no systemic stress visible in market data.",
     "black_swan_warnings": [
       "US 10Y yield at 5.00% — tightening headwind",
-      "Headline risk: Counting the votes: Warsh faces a tough battle as the Fed girds for expected interest rate hike - cnbc.com",
-      "Headline risk: Fed rate hike expected Wednesday under Kevin Warsh - qz.com",
+      "Headline risk: Counting the votes: Warsh faces a tough battle as the Fed girds for expected interest rate hike - CNBC",
+      "Headline risk: Fed Interest Rate Hike May Put Chair Kevin Warsh on Collision Course With Trump - Realtor.com",
       "Headline risk: Fed's table is set for a rate hike, a first under Warsh - Reuters",
-      "Headline risk: Don’t Knock Kevin Warsh if the Fed Doesn’t Raise Interest Rates - The New Republic"
+      "Headline risk: Fed rate hike expected Wednesday under Kevin Warsh - qz.com"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
-      "VIX 17.5",
-      "Global equities -0.39% avg",
+      "VIX 17.2",
+      "Global equities -0.38% avg",
       "US 10Y 5.00%",
-      "WTI Crude Oil +4.5% oil spike",
-      "Markets are bracing for a rate hike this week. Here's what investors need to kno",
-      "Counting the votes: Warsh faces a tough battle as the Fed girds for expected int",
-      "Fed rate hike expected Wednesday under Kevin Warsh",
-      "Fed's table is set for a rate hike, a first under Warsh"
+      "WTI Crude Oil +3.9% oil spike",
+      "Stubborn inflation sets stage for Federal Reserve to hike interest rates",
+      "If the Fed hikes rates, here's how the stock market might respond",
+      "Fed expected to hike interest rates for first time since 2023. See what it means",
+      "Markets are bracing for a rate hike this week. Here's what investors need to kno"
     ]
   }
 }
