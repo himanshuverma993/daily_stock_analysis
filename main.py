@@ -364,6 +364,22 @@ def parse_arguments() -> argparse.Namespace:
     )
 
     parser.add_argument(
+        '--macro-sentiment',
+        action='store_true',
+        help='Run the Macro-Sentiment & Risk Engine and exit: generates sentiment_latest.json '
+             '(strict-English macro/risk feed for Genie Trader Pro) with no markdown report '
+             'and no notifications'
+    )
+
+    parser.add_argument(
+        '--macro-sentiment-output',
+        type=str,
+        default=None,
+        help='Override output path for --macro-sentiment (default: sentiment_latest.json at '
+             'repo root, or env MACRO_SENTIMENT_OUTPUT)'
+    )
+
+    parser.add_argument(
         '--no-market-review',
         action='store_true',
         help='跳过大盘复盘分析'
@@ -1420,6 +1436,7 @@ def _skips_stock_entry(args: argparse.Namespace, config: Config) -> bool:
     return bool(
         getattr(args, "backtest", False)
         or getattr(args, "market_review", False)
+        or getattr(args, "macro_sentiment", False)
         or getattr(args, "serve_only", False)
         or getattr(args, "webui_only", False)
         or bool(getattr(args, "portfolio", None))
@@ -1545,6 +1562,17 @@ def main() -> int:
     logger.info("A股自选股智能分析系统 启动")
     logger.info(f"运行时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     logger.info("=" * 60)
+
+    # === 模式: Macro-Sentiment & Risk Engine (Genie Trader Pro feed) ===
+    # Hands-off JSON producer: bypasses the markdown report pipeline and
+    # notifications entirely and only writes sentiment_latest.json.
+    if getattr(args, "macro_sentiment", False):
+        from src.macro_sentiment.engine import run as run_macro_sentiment_engine
+
+        logger.info("模式: Macro-Sentiment & Risk Engine (sentiment_latest.json only)")
+        return run_macro_sentiment_engine(
+            output_path=getattr(args, "macro_sentiment_output", None)
+        )
 
     # 验证配置
     warnings = config.validate()

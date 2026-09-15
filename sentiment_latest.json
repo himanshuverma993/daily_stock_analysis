@@ -1,0 +1,12 @@
+{
+  "market_sentiment": "neutral",
+  "macro_score": 0.0,
+  "timestamp_utc": "2026-09-14T16:14:38Z",
+  "hermes_risk_feed": {
+    "summary": "Market data was partially unavailable; this assessment is rule-based and should be treated with reduced confidence.",
+    "black_swan_warnings": []
+  },
+  "teacher_brain_catalysts": {
+    "key_drivers": []
+  }
+}

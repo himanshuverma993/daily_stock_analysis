@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+- [修复] 宏情绪引擎审计加固：`_fallback_summary` 修复 `change_pct_1d=None`（单收盘点/数据缺口）格式化崩溃；`_rule_based_payload` 全部弱输入改经 `_to_float`/`.get()`；`macro_score` 布尔值判无效；`run()` 增加兜底盾（fallback/校验失败时写入静态最小契约）与运行时 `_validate_contract` 严格契约门禁（键/类型/分数域/列表类型/无 CJK）。
+- [改进] 清除残余中文 LLM 指令：选股排序重试提示（`ranker.py`）与会话摘要请求标签（`chat_context.py`）改为英文；`DecisionAgent` 两个基础 shell 顶部补齐 GLOBAL DIRECTIVE。
+- [新功能] Macro-Sentiment & Risk Engine（Genie Trader Pro 馈送）：`python main.py --macro-sentiment` 生成严格的 `sentiment_latest.json`（`market_sentiment`/`macro_score`/`timestamp_utc`/`hermes_risk_feed`/`teacher_brain_catalysts`），LLM 失败时回退到确定性规则打分（任何情况下都产出合法 JSON，原子写入，永不经过 Markdown 报告管线）；新增 `.github/workflows/macro-sentiment-engine.yml`（每 4 小时 cron + 手动触发），自动将该单文件 commit push 回 `main`（`[skip ci]`，变更才有提交，rebase-safe push）；旧版每日股票分析工作流改为仅手动触发。
+- [改进] 仓库级 Strict-English 提示词策略：所有 LLM system prompt（`src/analyzer.py`、`src/agent/executor.py`、`src/agent/chat_context.py`、`src/agent/agents/decision_agent.py`、`src/market_analyzer.py`、`src/services/screening/ranker.py`）显式要求 "Analyze the data, translate all context, and generate the final output STRICTLY in English."；中文引导语/中文输出指令全部改为英文，旧 `zh` 分支同样强制英文输出；`REPORT_LANGUAGE` 默认值由 `zh` 改为 `en`。
+- [测试] 新增 `tests/test_macro_sentiment_engine.py`（27 例：契约/钳制/CJK 清洗/JSON 提取/候选优先级/端到端无 LLM 回退/审计回归——部分行情 `None`、非数字字符串、布尔分数、非串标题、fallback 被注入破坏、契约校验全枚举拒绝）；受影响既有断言同步更新为英文 shell（`test_market_strategy`、`test_report_language_prompt_directives`、`test_agent_executor`、`test_analyzer_news_prompt`）。
+- [文档] 新增 `docs/macro-sentiment-engine.md`（架构、JSON 契约、Genie Trader Pro 消费示例、精确 Secrets 清单与排障）；`.env.example` 新增 Macro-Sentiment & Risk Engine 配置段。
 - [新功能] Web/API runtime scheduler 硬超时后扫描已落库分析历史，**默认发送**部分完成通知（`DSA_TIMEOUT_PARTIAL_NOTIFY` 未设置或为 true；此前超时不推送已落库个股），并在 `last_error` 中记录 `completed/pending` 摘要；可用 `DSA_TIMEOUT_PARTIAL_NOTIFY=false` 关闭推送（Refs #2328）。
 - [测试] 修复股票名称解析冷启动超时并发测试的同步竞态：在放行后台抓取前确认两个等待者均已结束并返回空结果，避免 Docker 发布门禁偶发失败。
 - [文档] 将仓库内所有 SerpApi 链接统一更新为新的赞助转化追踪地址。

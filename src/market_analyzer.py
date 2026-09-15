@@ -1612,41 +1612,42 @@ Focus on index trend, liquidity, and sector rotation to shape the next-session t
             ])
             return "\n\n".join(sections)
 
+        # Legacy non-`en` path: sections are English-first so the report shell
+        # (and therefore the LLM-facing prompt) never contains Chinese headings.
         if self.profile.has_market_stats and self.profile.has_sector_rankings:
-            return """### 三、板块主线
-（区分行业板块与概念题材，分析领涨/领跌背后的逻辑、持续性和是否形成主线）
+            return """### 3. Sector Leadership
+(Distinguish industry-sector moves from concept/theme moves; analyze the logic, persistence, and whether a main line is forming.)
 
-### 四、资金与情绪
-（解读成交额、涨跌停结构、市场宽度和风险偏好）
+### 4. Fund Flows & Sentiment
+(Interpret turnover, limit-up/down structure, market breadth, and risk appetite.)
 
-### 五、消息催化
-（结合近三日新闻，提炼真正影响明日交易的催化或扰动）
+### 5. News Catalysts
+(Use the last three days of news to distill the catalysts or noise that genuinely matter for the next session.)
 
-### 六、明日交易计划
-（给出进攻/均衡/防守结论、仓位区间、关注方向、回避方向和一个触发失效条件）
+### 6. Next-Day Trading Plan
+(Give an offensive/balanced/defensive conclusion, a position range, focus areas, avoid list, and one invalidation trigger.)
 
-### 七、风险提示
-（列出需要关注的风险点；最后补充“建议仅供参考，不构成投资建议”。）"""
+### 7. Risk Alerts
+(List the risks to monitor; end with "For reference only, not investment advice.")"""
 
-        numerals = ["一", "二", "三", "四", "五", "六", "七", "八"]
         section_number = 3
         sections: List[str] = []
 
         def add_section(title: str, hint: str) -> None:
             nonlocal section_number
-            sections.append(f"### {numerals[section_number - 1]}、{title}\n{hint}")
+            sections.append(f"### {section_number}. {title}\n{hint}")
             section_number += 1
 
         if self.profile.has_sector_rankings:
-            add_section("板块主线", "（仅分析已提供的行业板块与概念题材榜单，不扩展未提供的数据）")
+            add_section("Sector Leadership", "(Analyze only the provided industry-sector and concept/theme rankings; do not extend beyond the provided data.)")
         if self.profile.has_market_stats:
-            add_section("资金与情绪", "（仅解读已提供的成交额、涨跌停结构、市场宽度和风险偏好数据）")
+            add_section("Fund Flows & Sentiment", "(Interpret only the provided turnover, limit-up/down structure, market breadth, and risk-appetite data.)")
         add_section(
-            "消息催化",
-            "（结合近三日新闻和指数表现，提炼真正影响明日交易的催化或扰动；不要推断未提供的资金流、市场宽度或板块榜）",
+            "News Catalysts",
+            "(Use the last three days of news and index performance to distill the catalysts or noise that genuinely matter for the next session; do not infer fund-flow, breadth, or ranking data that was not provided.)",
         )
-        add_section("明日交易计划", "（给出进攻/均衡/防守结论、仓位区间、关注方向、回避方向和一个触发失效条件）")
-        add_section("风险提示", "（列出需要关注的风险点；最后补充“建议仅供参考，不构成投资建议”。）")
+        add_section("Next-Day Trading Plan", "(Give an offensive/balanced/defensive conclusion, a position range, focus areas, avoid list, and one invalidation trigger.)")
+        add_section("Risk Alerts", "(List the risks to monitor; end with \"For reference only, not investment advice.\")")
         return "\n\n".join(sections)
 
     def _build_review_prompt(self, overview: MarketOverview, news: List) -> str:
@@ -1710,78 +1711,60 @@ Concept lagging: {bottom_concepts_text if bottom_concepts_text else "N/A"}"""
             if data_limit_lines:
                 data_limits_block = "## Data Limits\n" + "\n".join(data_limit_lines)
         else:
+            # English-first data blocks for the legacy non-`en` path.
             if self.profile.has_market_stats:
-                stats_block = f"""## 市场概况
-- 上涨: {overview.up_count} 家 | 下跌: {overview.down_count} 家 | 平盘: {overview.flat_count} 家
-- 涨停: {overview.limit_up_count} 家 | 跌停: {overview.limit_down_count} 家
-- 两市成交额: {overview.total_amount:.0f} 亿元"""
+                stats_block = f"""## Market Breadth
+- Advancers: {overview.up_count} | Decliners: {overview.down_count} | Flat: {overview.flat_count}
+- Limit-up: {overview.limit_up_count} | Limit-down: {overview.limit_down_count}
+- Total turnover: {overview.total_amount:.0f} ({self._get_turnover_unit_label()})"""
 
             if self.profile.has_sector_rankings:
-                sector_block = f"""## 板块表现
-行业领涨: {top_sectors_text if top_sectors_text else "暂无数据"}
-行业领跌: {bottom_sectors_text if bottom_sectors_text else "暂无数据"}
-概念领涨: {top_concepts_text if top_concepts_text else "暂无数据"}
-概念领跌: {bottom_concepts_text if bottom_concepts_text else "暂无数据"}"""
+                sector_block = f"""## Sector / Theme Performance
+Industry leading: {top_sectors_text if top_sectors_text else "N/A"}
+Industry lagging: {bottom_sectors_text if bottom_sectors_text else "N/A"}
+Concept leading: {top_concepts_text if top_concepts_text else "N/A"}
+Concept lagging: {bottom_concepts_text if bottom_concepts_text else "N/A"}"""
 
             data_limit_lines = []
             if not self.profile.has_market_stats:
-                data_limit_lines.append("- 该市场暂无涨跌家数、涨跌停、成交额汇总、参与度或资金流信号。")
+                data_limit_lines.append("- Market breadth, limit-up/down, aggregate turnover, participation, and fund-flow signals are not available for this market.")
             if not self.profile.has_sector_rankings:
-                data_limit_lines.append("- 该市场暂无行业板块/概念题材涨跌榜。")
+                data_limit_lines.append("- Industry sector / concept theme ranking data is not available for this market.")
             if data_limit_lines:
-                data_limits_block = "## 数据边界\n" + "\n".join(data_limit_lines)
+                data_limits_block = "## Data Limits\n" + "\n".join(data_limit_lines)
 
+        # The prompt surface is English-first for every locale: even the legacy
+        # non-`en` path feeds English labels so the model never has to guess
+        # the required output language.
         data_no_indices_hint = (
-            "注意：由于行情数据获取失败，请主要根据【市场新闻】进行定性分析和总结，不要编造具体的指数点位。"
+            "Note: Market data fetch failed. Rely mainly on [Market News] for qualitative analysis. Do not invent index levels."
             if not indices_text
             else ""
         )
-        if review_language == "en":
-            data_no_indices_hint = (
-                "Note: Market data fetch failed. Rely mainly on [Market News] for qualitative analysis. Do not invent index levels."
-                if not indices_text
-                else ""
-            )
-            indices_placeholder = indices_text if indices_text else "No index data (API error)"
-            news_placeholder = news_text if news_text else "No relevant news"
-            data_boundary_requirement = (
-                "- Respect Data Limits: do not invent or over-interpret unsupported breadth, fund-flow, turnover, participation, or sector-ranking data.\n"
-                if data_limits_block
-                else ""
-            )
-            market_summary_hint = (
-                "2-3 sentences summarizing overall market tone, index moves, and liquidity."
-                if self.profile.has_market_stats
-                else "2-3 sentences summarizing overall market tone, index moves, and available news context."
-            )
-        else:
-            indices_placeholder = indices_text if indices_text else "暂无指数数据（接口异常）"
-            news_placeholder = news_text if news_text else "暂无相关新闻"
-            data_boundary_requirement = (
-                "- 严格遵守数据边界：未提供涨跌家数、资金流、成交额汇总或板块榜时，不要编造或过度解读。\n"
-                if data_limits_block
-                else ""
-            )
-            market_summary_hint = (
-                "2-3句话概括指数、涨跌家数、成交额和情绪温度，明确“强势/偏暖/震荡/偏弱”判断"
-                if self.profile.has_market_stats
-                else "2-3句话概括指数表现、新闻线索和整体风险状态，不要补写未提供的市场宽度或资金流数据"
-            )
+        indices_placeholder = indices_text if indices_text else "No index data (API error)"
+        news_placeholder = news_text if news_text else "No relevant news"
+        data_boundary_requirement = (
+            "- Respect Data Limits: do not invent or over-interpret unsupported breadth, fund-flow, turnover, participation, or sector-ranking data.\n"
+            if data_limits_block
+            else ""
+        )
+        market_summary_hint = (
+            "2-3 sentences summarizing index moves, market breadth, turnover, and sentiment temperature; state an explicit 'strong/balanced/choppy/weak' judgment."
+            if self.profile.has_market_stats
+            else "2-3 sentences summarizing index moves, news clues, and the overall risk state; do not fabricate market-breadth or fund-flow data that was not provided."
+        )
 
         output_template_sections = self._build_output_template_sections(review_language)
-        zh_market_scope_name = self._get_market_scope_name("zh")
-        zh_report_title = f"{overview.date} 大盘复盘"
-        if self.region in ("jp", "kr"):
-            zh_report_title = f"{overview.date} {zh_market_scope_name}大盘复盘"
-        workflow_hint = (
-            "报告要像交易员盘后工作台：先给结论，再按数据表、主线、催化、计划展开"
-            if self.profile.has_market_stats or self.profile.has_sector_rankings
-            else "报告要像交易员盘后工作台：先给结论，再按指数、新闻催化和计划展开"
-        )
+        # English-first report title for the (legacy) non-`en` review path; the
+        # strict-English directive in the prompt keeps reports English-only.
+        en_market_scope_name = self._get_market_scope_name("en")
+        en_report_title = f"{overview.date} {en_market_scope_name} Recap"
 
         if review_language == "en":
             report_title = self._get_review_title(overview.date).removeprefix("## ").strip()
             return f"""You are a professional {self._get_market_scope_name('en')} analyst. Please produce a concise market recap report based on the data below.
+
+GLOBAL DIRECTIVE (highest priority): Analyze the data, translate all context, and generate the final output STRICTLY in English. Translate any non-English source material into English; never emit Chinese or other non-English text in the report.
 
 [Requirements]
 - Output pure Markdown only
@@ -1833,26 +1816,30 @@ Concept lagging: {bottom_concepts_text if bottom_concepts_text else "N/A"}"""
 Output the report content directly, no extra commentary.
 """
 
-        # A 股场景使用中文提示语
-        return f"""你是一位专业的{self._get_market_scope_name('zh')}分析师，请根据以下数据生成一份结构化的{self._get_market_scope_name('zh')}大盘复盘报告。
+        # Legacy Chinese-locale path: the LLM-facing prompt is English-first.
+        # The GLOBAL DIRECTIVE forces the model to translate any Chinese data
+        # context and write the final report STRICTLY in English.
+        return f"""You are a professional {self._get_market_scope_name('en')} analyst. Based on the data below, produce a structured {self._get_market_scope_name('en')} market recap report.
 
-【重要】输出要求：
-- 必须输出纯 Markdown 文本格式
-- 禁止输出 JSON 格式
-- 禁止输出代码块
-- emoji 仅在标题处少量使用（每个标题最多1个）
-- {workflow_hint}
-- 不要重复列出已由系统注入的表格数据；正文负责解释表格背后的含义
+GLOBAL DIRECTIVE (highest priority): Analyze the data, translate all context, and generate the final output STRICTLY in English. Translate any Chinese data/context below into English; never emit Chinese text in the report.
+
+[IMPORTANT] Output requirements:
+- Output pure Markdown text only
+- No JSON output
+- No code blocks
+- Use emoji sparingly in headings only (at most one per heading)
+- Write like a trader's post-close workbench: conclusion first, then data read, main lines, catalysts, and plan
+- Do not repeat raw tables already injected by the system; prose must explain the meaning behind the tables
 {data_boundary_requirement}
 
 ---
 
-# 今日市场数据
+# Today's Market Data
 
-## 日期
+## Date
 {overview.date}
 
-## 主要指数
+## Major Indices
 {indices_placeholder}
 
 {stats_block}
@@ -1861,7 +1848,7 @@ Output the report content directly, no extra commentary.
 
 {data_limits_block}
 
-## 市场新闻
+## Market News
 {news_placeholder}
 
 {data_no_indices_hint}
@@ -1870,23 +1857,23 @@ Output the report content directly, no extra commentary.
 
 ---
 
-# 输出格式模板（请严格按此格式输出）
+# Output Format Template (follow this structure exactly)
 
-## {zh_report_title}
+## {en_report_title}
 
-> 一句话给出今日市场状态、核心矛盾和明日优先观察方向。
+> One line stating today's market state, the core conflict, and the top priority to watch next session.
 
-### 一、盘面总览
-（{market_summary_hint}）
+### 1. Market Overview
+({market_summary_hint})
 
-### 二、指数结构
-（{self._get_index_hint()}，说明谁在护盘、谁在拖累，以及关键支撑/压力）
+### 2. Index Structure
+({self._get_index_hint()} — explain which index is holding the tape up, which is dragging it down, and the key support/resistance levels)
 
 {output_template_sections}
 
 ---
 
-请直接输出复盘报告内容，不要输出其他说明文字。
+Output the recap report content directly, without any extra commentary.
 """
     
     def _generate_template_review(self, overview: MarketOverview, news: List) -> str:

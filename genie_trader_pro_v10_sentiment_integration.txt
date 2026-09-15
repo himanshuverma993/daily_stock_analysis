@@ -1,0 +1,650 @@
+# =============================================================================
+# GENIE TRADER PRO  v10  —  MACRO-SENTIMENT & RISK ENGINE INTEGRATION PACK
+# =============================================================================
+# Delivered as .txt per request. To activate: rename/copy the Python section of
+# this file to  genie_trader_pro_v10_sentiment_integration.py  next to your
+# genie_trader_pro_v8_2.py  (import path unchanged), then wire 3 lines into
+# your main trading loop (see WIRING GUIDE at the bottom of this file).
+#
+# !! SCOPE & HONESTY NOTE !!
+# This pack is NOT a rewrite of your v8.2 bot. Your v8.2 source never reached
+# the build environment (the attachment did not transfer), so this file
+# contains ONLY the new connection layer, written against the exact JSON
+# contract emitted by the GitHub "Macro-Sentiment & Risk Engine":
+#
+#     https://raw.githubusercontent.com/himanshuverma993/
+#     daily_stock_analysis/main/sentiment_latest.json
+#
+# It does not touch your strategy logic, order management, or broker wiring.
+# Merge = copy file + 3 lines in the main loop. Nothing else changes.
+#
+# ---------------------------------------------------------------------------
+# DESIGN CONTRACT (mirrors the producer, zero tolerance):
+#   {
+#     "market_sentiment": "bullish" | "bearish" | "neutral",
+#     "macro_score": float in [-1.0, 1.0],
+#     "timestamp_utc": "YYYY-MM-DDTHH:MM:SSZ",
+#     "hermes_risk_feed": {
+#       "summary": str,
+#       "black_swan_warnings": [str, ...]
+#     },
+#     "teacher_brain_catalysts": {
+#       "key_drivers": [str, ...]
+#     }
+#   }
+#
+# ---------------------------------------------------------------------------
+# RUNTIME KNOBS (environment variables — no code edits needed):
+#   SENTIMENT_FEED_URL        override feed URL (default: your repo's raw URL)
+#   SENTIMENT_FEED_TOKEN      bearer token (only needed if repo is private)
+#   SENTIMENT_CACHE_PATH      last-good JSON cache (default: ./sentiment_cache.json)
+#   TEACHER_DB_PATH           TeacherBrain SQLite file (default: ./teacher_brain.db)
+#   SENTIMENT_MAX_AGE_HOURS   feed older than N hours is flagged stale (default 8)
+#   HERMES_STALE_STANCE       "normal" | "conservative" (default "normal")
+#   HERMES_WIDEN_SCORE        macro_score threshold to widen stops (default -0.30)
+#   HERMES_STRONG_WIDEN_SCORE                         (default -0.55)
+#   HERMES_HALT_SCORE         macro_score that halts trading (default -0.75)
+# =============================================================================
+
+from __future__ import annotations
+
+import json
+import logging
+import os
+import sqlite3
+import threading
+import time
+from dataclasses import dataclass, field
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any, Dict, List, Optional, Tuple
+
+logger = logging.getLogger("genie.sentiment")
+
+try:
+    import requests  # v8.2 already depends on requests
+except ImportError:  # pragma: no cover
+    requests = None
+
+
+# ---------------------------------------------------------------------------
+# Constants
+# ---------------------------------------------------------------------------
+
+FEED_URL_DEFAULT = (
+    "https://raw.githubusercontent.com/himanshuverma993/"
+    "daily_stock_analysis/main/sentiment_latest.json"
+)
+
+_VALID_SENTIMENTS = ("bullish", "bearish", "neutral")
+
+# Hermes: any of these inside a black_swan_warning escalates to a full halt.
+_HALT_KEYWORDS = (
+    "halt", "trading halt", "circuit breaker", "panic", "collapse",
+    "default", "contagion", "nuclear", "invasion", "bailout",
+    "insolvency", "bank run", "credit event", "emergency", "crash",
+)
+
+
+class SchemaViolationError(ValueError):
+    """The feed did not honor the exact JSON contract."""
+
+
+# ---------------------------------------------------------------------------
+# Small env helpers
+# ---------------------------------------------------------------------------
+
+def _env_float(name: str, default: float) -> float:
+    try:
+        return float(os.getenv(name, "").strip() or default)
+    except (TypeError, ValueError):
+        return float(default)
+
+
+def _env_int(name: str, default: int) -> int:
+    try:
+        return int(float(os.getenv(name, "").strip() or default))
+    except (TypeError, ValueError):
+        return int(default)
+
+
+def _utc_now() -> datetime:
+    return datetime.now(timezone.utc)
+
+
+def _parse_ts(ts: str) -> Optional[datetime]:
+    try:
+        return datetime.strptime(ts.strip(), "%Y-%m-%dT%H:%M:%SZ").replace(
+            tzinfo=timezone.utc
+        )
+    except (ValueError, AttributeError):
+        return None
+
+
+# ---------------------------------------------------------------------------
+# Contract validation (consumer copy — intentionally strict like the producer)
+# ---------------------------------------------------------------------------
+
+def validate_feed(data: Any) -> Dict[str, Any]:
+    """Raise SchemaViolationError on ANY deviation; return the dict on success."""
+    if not isinstance(data, dict):
+        raise SchemaViolationError("feed is not a JSON object")
+
+    expected = {
+        "market_sentiment", "macro_score", "timestamp_utc",
+        "hermes_risk_feed", "teacher_brain_catalysts",
+    }
+    if set(data.keys()) != expected:
+        raise SchemaViolationError(f"top-level keys mismatch: {sorted(data.keys())}")
+
+    if data["market_sentiment"] not in _VALID_SENTIMENTS:
+        raise SchemaViolationError(
+            f"market_sentiment must be one of {_VALID_SENTIMENTS}: "
+            f"{data['market_sentiment']!r}"
+        )
+
+    score = data["macro_score"]
+    if not isinstance(score, (int, float)) or isinstance(score, bool):
+        raise SchemaViolationError("macro_score must be a float")
+    if not -1.0 <= float(score) <= 1.0:
+        raise SchemaViolationError(f"macro_score out of range: {score}")
+
+    if not isinstance(data["timestamp_utc"], str) or _parse_ts(data["timestamp_utc"]) is None:
+        raise SchemaViolationError("timestamp_utc is not ISO-8601 UTC")
+
+    hermes = data["hermes_risk_feed"]
+    if not isinstance(hermes, dict) or set(hermes.keys()) != {"summary", "black_swan_warnings"}:
+        raise SchemaViolationError("hermes_risk_feed structure mismatch")
+    if not isinstance(hermes["summary"], str):
+        raise SchemaViolationError("hermes_risk_feed.summary must be a string")
+    if not isinstance(hermes["black_swan_warnings"], list) or not all(
+        isinstance(w, str) for w in hermes["black_swan_warnings"]
+    ):
+        raise SchemaViolationError("black_swan_warnings must be a list of strings")
+
+    teacher = data["teacher_brain_catalysts"]
+    if not isinstance(teacher, dict) or set(teacher.keys()) != {"key_drivers"}:
+        raise SchemaViolationError("teacher_brain_catalysts structure mismatch")
+    if not isinstance(teacher["key_drivers"], list) or not all(
+        isinstance(d, str) for d in teacher["key_drivers"]
+    ):
+        raise SchemaViolationError("key_drivers must be a list of strings")
+
+    return data
+
+
+# ---------------------------------------------------------------------------
+# Feed client: retries + cache-bust + disk fallback + staleness flagging
+# ---------------------------------------------------------------------------
+
+@dataclass(frozen=True)
+class FetchResult:
+    payload: Dict[str, Any]
+    source: str            # "network" | "disk-cache"
+    fetched_at_utc: str
+    age_hours: float
+    stale: bool
+
+
+class SentimentFeedClient:
+    """Polls sentiment_latest.json with resilience.
+
+    Guarantees: returns a contract-valid payload or raises SchemaViolationError
+    / RuntimeError — never returns half-parsed garbage to Teacher/Hermes.
+    """
+
+    def __init__(
+        self,
+        url: Optional[str] = None,
+        *,
+        timeout_s: int = 15,
+        max_retries: int = 3,
+        backoff_s: float = 2.0,
+        cache_path: Optional[str] = None,
+        max_age_hours: Optional[int] = None,
+        token: Optional[str] = None,
+    ) -> None:
+        self.url = (url or os.getenv("SENTIMENT_FEED_URL") or FEED_URL_DEFAULT).strip()
+        self.timeout_s = timeout_s
+        self.max_retries = max(1, max_retries)
+        self.backoff_s = backoff_s
+        self.cache_path = Path(
+            cache_path or os.getenv("SENTIMENT_CACHE_PATH") or "sentiment_cache.json"
+        )
+        self.max_age_hours = (
+            max_age_hours
+            if max_age_hours is not None
+            else _env_int("SENTIMENT_MAX_AGE_HOURS", 8)
+        )
+        self.token = token if token is not None else os.getenv("SENTIMENT_FEED_TOKEN", "").strip() or None
+
+    # -- network -----------------------------------------------------------
+
+    def _http_get_json(self) -> Dict[str, Any]:
+        if requests is None:
+            raise RuntimeError("`requests` is not installed")
+        headers = {
+            "User-Agent": "GenieTraderPro/10.0 (+sentiment-feed-client)",
+            "Accept": "application/json",
+            # raw.githubusercontent.com edge-caches (~5 min); cadence is 4h so a
+            # cache-buster guarantees we never sit on a stale edge object.
+            "Cache-Control": "no-cache",
+        }
+        if self.token:
+            headers["Authorization"] = f"Bearer {self.token}"
+        last_err: Optional[BaseException] = None
+        for attempt in range(1, self.max_retries + 1):
+            try:
+                sep = "&" if "?" in self.url else "?"
+                resp = requests.get(
+                    f"{self.url}{sep}t={int(time.time())}",
+                    headers=headers,
+                    timeout=self.timeout_s,
+                )
+                resp.raise_for_status()
+                return resp.json()
+            except Exception as exc:  # network errors, 4xx/5xx, JSON decode
+                last_err = exc
+                logger.warning(
+                    "feed fetch attempt %d/%d failed: %s", attempt, self.max_retries, exc
+                )
+                time.sleep(self.backoff_s * attempt)
+        raise RuntimeError(f"feed fetch failed after {self.max_retries} attempts: {last_err}")
+
+    # -- disk cache --------------------------------------------------------
+
+    def _write_cache(self, payload: Dict[str, Any]) -> None:
+        try:
+            tmp = self.cache_path.with_suffix(self.cache_path.suffix + ".tmp")
+            tmp.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
+            os.replace(tmp, self.cache_path)
+        except OSError as exc:
+            logger.warning("could not persist sentiment cache: %s", exc)
+
+    def _read_cache(self) -> Optional[Dict[str, Any]]:
+        try:
+            data = json.loads(self.cache_path.read_text(encoding="utf-8"))
+            return validate_feed(data)
+        except Exception:
+            return None
+
+    # -- public API --------------------------------------------------------
+
+    def fetch(self) -> FetchResult:
+        """Fetch + validate + flag staleness. Falls back to last-good cache."""
+        source = "network"
+        try:
+            payload = validate_feed(self._http_get_json())
+            self._write_cache(payload)
+        except (RuntimeError, SchemaViolationError) as exc:
+            logger.warning("live fetch unusable (%s); falling back to disk cache", exc)
+            cached = self._read_cache()
+            if cached is None:
+                raise
+            payload = cached
+            source = "disk-cache"
+
+        ts = _parse_ts(payload["timestamp_utc"]) or _utc_now()
+        age_hours = max(0.0, (_utc_now() - ts).total_seconds() / 3600.0)
+        stale = source == "disk-cache" or age_hours > float(self.max_age_hours)
+        return FetchResult(
+            payload=payload,
+            source=source,
+            fetched_at_utc=_utc_now().strftime("%Y-%m-%dT%H:%M:%SZ"),
+            age_hours=round(age_hours, 2),
+            stale=stale,
+        )
+
+
+# ---------------------------------------------------------------------------
+# TeacherBrain adapter — autonomous SQLite pattern intake
+# ---------------------------------------------------------------------------
+
+_TEACHER_DDL = """
+CREATE TABLE IF NOT EXISTS teacher_catalyst_events (
+    id            INTEGER PRIMARY KEY AUTOINCREMENT,
+    catalyst      TEXT    NOT NULL,
+    macro_score   REAL    NOT NULL,
+    sentiment     TEXT    NOT NULL,
+    timestamp_utc TEXT    NOT NULL,
+    summary       TEXT    NOT NULL DEFAULT '',
+    warnings      TEXT    NOT NULL DEFAULT '[]',
+    ingested_at   TEXT    NOT NULL,
+    UNIQUE (catalyst, timestamp_utc)
+);
+CREATE INDEX IF NOT EXISTS idx_teacher_catalyst_lookup
+    ON teacher_catalyst_events (catalyst, timestamp_utc);
+"""
+
+
+class TeacherBrainCatalystWriter:
+    """Feeds TeacherBrain's SQLite memory with feed catalyst cycles.
+
+    Idempotent: UNIQUE(catalyst, timestamp_utc) + INSERT OR IGNORE means you
+    may tick every 15 minutes or every 4 hours with zero duplicates, so
+    downstream pattern matching stays clean.
+    """
+
+    def __init__(self, db_path: Optional[str] = None) -> None:
+        self.db_path = str(db_path or os.getenv("TEACHER_DB_PATH") or "teacher_brain.db")
+        self._lock = threading.Lock()
+        with sqlite3.connect(self.db_path) as conn:
+            conn.executescript(_TEACHER_DDL)
+
+    def record_cycle(self, feed: Dict[str, Any]) -> int:
+        """Persist one engine cycle; returns number of NEW rows inserted."""
+        score = float(feed["macro_score"])
+        sentiment = str(feed["market_sentiment"])
+        stamp = str(feed["timestamp_utc"])
+        summary = str(feed["hermes_risk_feed"]["summary"])
+        warnings_json = json.dumps(
+            feed["hermes_risk_feed"]["black_swan_warnings"], ensure_ascii=False
+        )
+        ingested = _utc_now().strftime("%Y-%m-%dT%H:%M:%SZ")
+        drivers = [str(d).strip() for d in feed["teacher_brain_catalysts"]["key_drivers"] if str(d).strip()]
+
+        inserted = 0
+        with self._lock, sqlite3.connect(self.db_path) as conn:
+            for catalyst in drivers:
+                cur = conn.execute(
+                    """
+                    INSERT OR IGNORE INTO teacher_catalyst_events
+                        (catalyst, macro_score, sentiment, timestamp_utc,
+                         summary, warnings, ingested_at)
+                    VALUES (?, ?, ?, ?, ?, ?, ?)
+                    """,
+                    (catalyst, score, sentiment, stamp, summary, warnings_json, ingested),
+                )
+                inserted += cur.rowcount
+        logger.info(
+            "TeacherBrain: cycle %s ingested (%d new catalyst rows, score=%+.2f)",
+            stamp, inserted, score,
+        )
+        return inserted
+
+    # -- optional: example pattern match your TeacherBrain can reuse --------
+    def catalyst_bias(self, catalyst_contains: str, lookback: int = 20) -> Optional[float]:
+        """Average macro_score attached to past occurrences of a catalyst token.
+
+        Example: teacher.catalyst_bias("FOMC") -> -0.31 across recent cycles.
+        Returns None when the pattern is unknown (SQLite pattern-matching aid).
+        """
+        needle = f"%{catalyst_contains.strip()}%"
+        with sqlite3.connect(self.db_path) as conn:
+            rows = conn.execute(
+                """
+                SELECT macro_score FROM teacher_catalyst_events
+                WHERE catalyst LIKE ?
+                ORDER BY timestamp_utc DESC
+                LIMIT ?
+                """,
+                (needle, lookback),
+            ).fetchall()
+        if not rows:
+            return None
+        return round(sum(r[0] for r in rows) / len(rows), 4)
+
+
+# ---------------------------------------------------------------------------
+# HermesBrain adapter — risk overrides from the macro feed
+# ---------------------------------------------------------------------------
+
+@dataclass(frozen=True)
+class RiskDecision:
+    """What Hermes must do this cycle (single, immutable verdict)."""
+
+    action: str                    # "normal" | "widen_stops" | "halt"
+    reason: str
+    atr_multiplier: float          # multiply ATR trail/stop distances by this
+    size_multiplier: float         # multiply new-position sizing by this
+    macro_score: float
+    market_sentiment: str
+    warnings: List[str] = field(default_factory=list)
+    timestamp_utc: str = ""
+    feed_stale: bool = False
+
+
+class HermesRiskGate:
+    """Translates the macro feed into ATR-stop widening / trading halts.
+
+    Ladder (first matching rule wins, keyword escalation can always halt):
+      black-swan keyword hit  -> halt (or strong widen if kill-switch disabled)
+      score <= halt_score     -> halt
+      score <= strong_widen   -> widen ATR x1.5, size x0.5
+      score <= widen_score    -> widen ATR x1.25, size x0.75
+      warnings present        -> widen ATR x1.25 (even if score is benign)
+      else                    -> normal
+    """
+
+    def __init__(
+        self,
+        *,
+        widen_score: Optional[float] = None,
+        strong_widen_score: Optional[float] = None,
+        halt_score: Optional[float] = None,
+        atr_mild: float = 1.25,
+        atr_strong: float = 1.5,
+        size_mild: float = 0.75,
+        size_strong: float = 0.5,
+        halt_on_keyword: bool = True,
+    ) -> None:
+        self.widen_score = widen_score if widen_score is not None else _env_float("HERMES_WIDEN_SCORE", -0.30)
+        self.strong_widen_score = strong_widen_score if strong_widen_score is not None else _env_float("HERMES_STRONG_WIDEN_SCORE", -0.55)
+        self.halt_score = halt_score if halt_score is not None else _env_float("HERMES_HALT_SCORE", -0.75)
+        self.atr_mild, self.atr_strong = atr_mild, atr_strong
+        self.size_mild, self.size_strong = size_mild, size_strong
+        self.halt_on_keyword = halt_on_keyword
+        self.stale_stance = (os.getenv("HERMES_STALE_STANCE", "normal").strip().lower() or "normal")
+
+    # -- internals ----------------------------------------------------------
+
+    @staticmethod
+    def _keyword_hits(warnings: List[str]) -> List[str]:
+        hits = [
+            w for w in warnings
+            if any(k in w.lower() for k in _HALT_KEYWORDS)
+        ]
+        return hits
+
+    def _decide(self, action, reason, atr, size, feed, stale) -> RiskDecision:
+        return RiskDecision(
+            action=action,
+            reason=reason,
+            atr_multiplier=atr,
+            size_multiplier=size,
+            macro_score=float(feed["macro_score"]),
+            market_sentiment=str(feed["market_sentiment"]),
+            warnings=list(feed["hermes_risk_feed"]["black_swan_warnings"]),
+            timestamp_utc=str(feed["timestamp_utc"]),
+            feed_stale=stale,
+        )
+
+    # -- public API ---------------------------------------------------------
+
+    def evaluate(self, feed: Dict[str, Any], *, feed_stale: bool = False) -> RiskDecision:
+        score = float(feed["macro_score"])
+        warnings = list(feed["hermes_risk_feed"]["black_swan_warnings"])
+
+        if feed_stale and self.stale_stance == "conservative":
+            return self._decide(
+                "widen_stops",
+                f"stale feed ({feed['timestamp_utc']}) — conservative stance",
+                self.atr_mild, self.size_mild, feed, True,
+            )
+
+        hits = self._keyword_hits(warnings)
+        if hits:
+            if self.halt_on_keyword:
+                return self._decide(
+                    "halt",
+                    f"black-swan keyword escalation: {hits[0]}",
+                    self.atr_strong, 0.0, feed, feed_stale,
+                )
+            return self._decide(
+                "widen_stops",
+                f"black-swan severity (kill-switch off): {hits[0]}",
+                self.atr_strong, self.size_strong, feed, feed_stale,
+            )
+
+        if score <= self.halt_score:
+            return self._decide(
+                "halt",
+                f"macro_score {score:+.2f} <= halt threshold {self.halt_score:+.2f}",
+                self.atr_strong, 0.0, feed, feed_stale,
+            )
+        if score <= self.strong_widen_score:
+            return self._decide(
+                "widen_stops",
+                f"macro_score {score:+.2f} <= strong-widen {self.strong_widen_score:+.2f}",
+                self.atr_strong, self.size_strong, feed, feed_stale,
+            )
+        if score <= self.widen_score:
+            return self._decide(
+                "widen_stops",
+                f"macro_score {score:+.2f} <= widen {self.widen_score:+.2f}",
+                self.atr_mild, self.size_mild, feed, feed_stale,
+            )
+        if warnings:
+            return self._decide(
+                "widen_stops",
+                f"{len(warnings)} black-swan warning(s): {warnings[0]}",
+                self.atr_mild, self.size_mild, feed, feed_stale,
+            )
+        return self._decide(
+            "normal",
+            f"macro benign (score {score:+.2f}, sentiment {feed['market_sentiment']})",
+            1.0, 1.0, feed, feed_stale,
+        )
+
+
+# ---------------------------------------------------------------------------
+# One-call bridge used by the Genie main loop
+# ---------------------------------------------------------------------------
+
+class GenieSentimentBridge:
+    """tick() = fetch -> TeacherBrain.record -> HermesBrain.evaluate.
+
+    Fail-closed contract: if the live feed is unreachable AND no cached
+    payload exists (fresh machine + outage), tick() NEVER crashes your
+    trading loop. It emits a risk decision instead, governed by
+    HERMES_FEED_DOWN_ACTION (default "halt"; also "widen_stops" or
+    "normal" — "normal" trades blind, not recommended).
+    """
+
+    def __init__(
+        self,
+        client: Optional[SentimentFeedClient] = None,
+        teacher: Optional[TeacherBrainCatalystWriter] = None,
+        hermes: Optional[HermesRiskGate] = None,
+        *,
+        feed_down_action: Optional[str] = None,
+    ) -> None:
+        self.client = client or SentimentFeedClient()
+        self.teacher = teacher or TeacherBrainCatalystWriter()
+        self.hermes = hermes or HermesRiskGate()
+        self.feed_down_action = (
+            feed_down_action
+            or os.getenv("HERMES_FEED_DOWN_ACTION", "halt").strip().lower()
+            or "halt"
+        )
+
+    def _feed_down_decision(self, exc: BaseException) -> RiskDecision:
+        if self.feed_down_action == "normal":
+            action, atr, size = "normal", 1.0, 1.0
+        elif self.feed_down_action == "widen_stops":
+            action, atr, size = "widen_stops", self.hermes.atr_mild, self.hermes.size_mild
+        else:
+            action, atr, size = "halt", self.hermes.atr_strong, 0.0
+        return RiskDecision(
+            action=action,
+            reason=(
+                f"sentiment feed unavailable, no cached payload "
+                f"({self.feed_down_action} stance): {exc}"
+            ),
+            atr_multiplier=atr,
+            size_multiplier=size,
+            macro_score=0.0,
+            market_sentiment="unknown",
+            warnings=["feed-down: zero macro visibility this cycle"],
+            timestamp_utc=_utc_now().strftime("%Y-%m-%dT%H:%M:%SZ"),
+            feed_stale=True,
+        )
+
+    def tick(self) -> RiskDecision:
+        try:
+            result = self.client.fetch()
+        except (RuntimeError, SchemaViolationError) as exc:
+            logger.error("sentiment feed unavailable (no cache): %s", exc)
+            return self._feed_down_decision(exc)
+        feed = result.payload
+        self.teacher.record_cycle(feed)
+        decision = self.hermes.evaluate(feed, feed_stale=result.stale)
+        logger.info(
+            "Sentiment tick: action=%s atr=x%.2f size=x%.2f score=%+.2f "
+            "warnings=%d stale=%s source=%s",
+            decision.action, decision.atr_multiplier, decision.size_multiplier,
+            decision.macro_score, len(decision.warnings), result.stale, result.source,
+        )
+        return decision
+
+
+def build_default_bridge(**overrides) -> GenieSentimentBridge:
+    """Factory honoring env vars; pass constructor overrides if needed."""
+    return GenieSentimentBridge(
+        client=SentimentFeedClient(**overrides.get("client", {})),
+        teacher=TeacherBrainCatalystWriter(**overrides.get("teacher", {})),
+        hermes=HermesRiskGate(**overrides.get("hermes", {})),
+    )
+
+
+# =============================================================================
+# WIRING GUIDE — 3 lines inside your existing genie_trader_pro_v8_2.py
+# =============================================================================
+#
+# 1) TOP OF FILE:
+#       from genie_trader_pro_v10_sentiment_integration import build_default_bridge
+#       _SENTIMENT = build_default_bridge()
+#
+# 2) INSIDE THE MAIN TRADING CYCLE — before opening NEW positions:
+#       decision = _SENTIMENT.tick()
+#       if decision.action == "halt":
+#           continue                                   # Hermes: full stop this cycle
+#       atr_multiplier = decision.atr_multiplier        # -> your trailing-stop calc
+#       size_multiplier = decision.size_multiplier      # -> your position-sizing calc
+#
+# 3) POSITION MONITOR LOOP — re-evaluate every N minutes (cheap: feed is
+#    CDN-cached; tick() is idempotent for TeacherBrain thanks to UPSERT):
+#       decision = _SENTIMENT.tick()
+#       if decision.action == "halt":
+#           your_risk_layer.flatten_or_freeze(reason=decision.reason)
+#
+# NOTES
+# * decision.reason / decision.warnings are audit-grade strings — log them into
+#   HermesBrain's self-reflection journal so mistake analysis keeps the "why".
+# * Your Hermes keyword escalation lives in HermesRiskGate._HALT_KEYWORDS.
+# * Set HERMES_STALE_STANCE=conservative in production if you prefer widening
+#   stops whenever the feed is stale instead of ignoring stale feeds.
+# * tick() never throws by default: if GitHub is unreachable AND no cached
+#   feed exists yet, it returns a HALT decision (fail-closed). Override with
+#   HERMES_FEED_DOWN_ACTION=widen_stops|normal if your strategy prefers it.
+# =============================================================================
+
+
+if __name__ == "__main__":
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s %(name)s %(levelname)s %(message)s",
+    )
+    bridge = build_default_bridge()
+    verdict = bridge.tick()
+    print(json.dumps({
+        "action": verdict.action,
+        "reason": verdict.reason,
+        "atr_multiplier": verdict.atr_multiplier,
+        "size_multiplier": verdict.size_multiplier,
+        "macro_score": verdict.macro_score,
+        "market_sentiment": verdict.market_sentiment,
+        "black_swan_warnings": verdict.warnings,
+        "feed_timestamp_utc": verdict.timestamp_utc,
+        "feed_stale": verdict.feed_stale,
+    }, indent=2, ensure_ascii=False))
