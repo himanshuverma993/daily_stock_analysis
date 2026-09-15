@@ -33,10 +33,15 @@ class TestMarketAnalyzerStrategyPrompt(unittest.TestCase):
     """Validate strategy section is injected into prompt/report."""
 
     def test_cn_prompt_contains_strategy_plan_section(self):
-        analyzer = MarketAnalyzer(region="cn")
-        prompt = analyzer._build_review_prompt(MarketOverview(date="2026-02-24"), [])
+        # English-first policy: even the legacy zh locale builds an English
+        # prompt shell (strict-English directive + English section headers);
+        # the strategy blueprint block stays locale-specific data.
+        with patch("src.market_analyzer.get_config", return_value=SimpleNamespace(report_language="zh")):
+            analyzer = MarketAnalyzer(region="cn")
+            prompt = analyzer._build_review_prompt(MarketOverview(date="2026-02-24"), [])
 
-        self.assertIn("明日交易计划", prompt)
+        self.assertIn("STRICTLY in English", prompt)
+        self.assertIn("Next-Day Trading Plan", prompt)
         self.assertIn("A股市场三段式复盘策略", prompt)
 
     def test_us_prompt_contains_strategy_plan_section(self):
@@ -81,10 +86,14 @@ class TestMarketAnalyzerStrategyPrompt(unittest.TestCase):
         self.assertNotIn("Strategy Blueprint", prompt)
         self.assertIn("风险偏好", prompt)
 
-    def test_jp_kr_prompt_uses_region_aware_chinese_shell(self):
+    def test_jp_kr_prompt_uses_region_aware_english_shell_for_zh_locale(self):
+        # English-first policy: the legacy zh locale now produces an English
+        # prompt shell with the strict-English directive; the locale-specific
+        # strategy blueprint block remains as context data for the LLM to
+        # translate.
         cases = [
-            ("jp", "日本市场", "日本市场三段式复盘策略"),
-            ("kr", "韩国市场", "韩国市场三段式复盘策略"),
+            ("jp", "Japan market", "日本市场三段式复盘策略"),
+            ("kr", "Korea market", "韩国市场三段式复盘策略"),
         ]
 
         for region, market_scope_name, strategy_title in cases:
@@ -95,11 +104,11 @@ class TestMarketAnalyzerStrategyPrompt(unittest.TestCase):
                 analyzer = MarketAnalyzer(region=region)
                 prompt = analyzer._build_review_prompt(MarketOverview(date="2026-02-24"), [])
 
-            self.assertIn(f"专业的{market_scope_name}分析师", prompt)
-            self.assertIn(f"结构化的{market_scope_name}大盘复盘报告", prompt)
-            self.assertIn(f"## 2026-02-24 {market_scope_name}大盘复盘", prompt)
-            self.assertIn("## 数据边界", prompt)
-            self.assertIn("### 三、消息催化", prompt)
+            self.assertIn("STRICTLY in English", prompt)
+            self.assertIn(f"professional {market_scope_name} analyst", prompt)
+            self.assertIn(f"## 2026-02-24 {market_scope_name} Recap", prompt)
+            self.assertIn("## Data Limits", prompt)
+            self.assertIn("### 3. News Catalysts", prompt)
             self.assertIn(strategy_title, prompt)
             self.assertNotIn("### 三、板块主线", prompt)
             self.assertNotIn("### 四、资金与情绪", prompt)
@@ -166,6 +175,8 @@ class TestMarketAnalyzerStrategyPrompt(unittest.TestCase):
                 self.assertNotIn("US/A/H market analyst", prompt)
 
             with self.subTest(region=region, language="zh"):
+                # Legacy zh locale: role line is English-first and carries the
+                # strict-English directive (Chinese prompt shells eradicated).
                 with patch(
                     "src.market_analyzer.get_config",
                     return_value=SimpleNamespace(report_language="zh"),
@@ -174,7 +185,8 @@ class TestMarketAnalyzerStrategyPrompt(unittest.TestCase):
 
                 prompt = analyzer._build_review_prompt(MarketOverview(date="2026-02-24"), [])
 
-                self.assertIn(f"你是一位专业的{chinese_market}分析师", prompt)
+                self.assertIn(f"professional {english_market} analyst", prompt)
+                self.assertIn("STRICTLY in English", prompt)
                 self.assertNotIn("A/H/美股市场分析师", prompt)
 
     def test_market_stats_passes_market_review_purpose(self):

@@ -44,9 +44,13 @@ class DecisionAgentLanguageDirectiveTestCase(unittest.TestCase):
         prompt = self._system_prompt("en")
         self.assertIn("Write all human-readable JSON values in English.", prompt)
 
-    def test_chinese_directive_unchanged(self) -> None:
+    def test_chinese_locale_forces_strict_english(self) -> None:
+        # English-first policy: the legacy `zh` locale no longer mandates
+        # Chinese output; it carries the strict-English directive instead.
         prompt = self._system_prompt("zh")
-        self.assertIn("所有面向用户的人类可读文本值必须使用中文。", prompt)
+        self.assertIn("STRICTLY in English", prompt)
+        self.assertIn("Write all human-readable JSON values in English.", prompt)
+        self.assertNotIn("所有面向用户的人类可读文本值必须使用中文。", prompt)
 
 
 class StructuralLanguageRoutingTestCase(unittest.TestCase):

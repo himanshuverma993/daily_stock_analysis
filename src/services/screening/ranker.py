@@ -155,8 +155,9 @@ def rank_candidates_with_metadata(
             attempt_prompt = prompt
             if attempt:
                 attempt_prompt += (
-                    "\n\n上一次输出没有满足结构化覆盖率要求。"
-                    "请重新返回严格 JSON，并覆盖尽可能多的候选代码。"
+                    "\n\nThe previous response did not meet the structured-coverage "
+                    "requirement. Reply again with strict JSON only, covering as many "
+                    "candidate codes as possible, and generate the output STRICTLY in English."
                 )
             try:
                 # Keep transport/provider retries scoped to one model here. A
@@ -241,8 +242,8 @@ def _build_ranking_prompt(
     max_chars: int | None = _DEFAULT_RANKING_PROMPT_MAX_CHARS,
     degradation: list[str] | None = None,
 ) -> str:
-    hints_text = hints.strip() or "无额外排序提示。"
-    context_text = context.strip() or "无额外上下文。只能基于候选池结构化数据和策略偏好判断。"
+    hints_text = hints.strip() or "No additional ranking hints."
+    context_text = context.strip() or "No additional context. Judge only from the candidate pool structured data and strategy preferences."
     candidates_text = "\n".join(_format_candidate_for_prompt(p) for p in candidates)
     prompt = _render_ranking_prompt(hints_text, context_text, candidates_text)
     if max_chars is None or len(prompt) <= max_chars:
@@ -257,45 +258,48 @@ def _build_ranking_prompt(
 
 
 def _render_ranking_prompt(hints: str, context: str, candidates_text: str) -> str:
-    return f"""你是一个专业的股票研究员，任务是在“已经由代码硬筛过”的候选池内做相对排序。
-你不能推荐候选池外股票，不能修改硬筛条件，不能给目标价或承诺收益。你的价值在于：
-1. 结合策略偏好，对候选之间做跨股票比较；
-2. 识别结构化数据暴露不出的潜在催化、风格匹配和风险点；
-3. 对行业/概念热度和 DSA 补充的行情、基本面、新闻做语义归因，但不能把单日热度当作唯一买入理由；
-4. 给出简短、可审计、可复核的排序理由。
+    return f"""You are a professional equity researcher. Your task is relative ranking within a candidate pool that has already been hard-filtered by code.
 
-## 排序依据
+GLOBAL DIRECTIVE (highest priority): Analyze the data, translate all context, and generate the final output STRICTLY in English. Translate any non-English source material into English; every human-readable JSON value must be English.
+
+You must not recommend stocks outside the candidate pool, must not modify the hard filters, and must not give target prices or promise returns. Your value is:
+1. Cross-stock comparison across candidates given the strategy preferences;
+2. Surfacing latent catalysts, style fit, and risk points that structured data cannot expose;
+3. Semantic attribution of sector/concept heat and DSA-supplied quotes, fundamentals, and news — but never treat one-day heat as the sole buy reason;
+4. Short, auditable, reviewable ranking rationales.
+
+## Ranking Basis
 {hints}
 
-## 市场/情报上下文
+## Market / Intelligence Context
 {context}
 
-## 候选列表
+## Candidates
 {candidates_text}
 
-## 输出要求
-只返回 JSON，不要 Markdown，不要解释 JSON 以外的文本。
-格式：
+## Output Requirements
+Return JSON only. No Markdown. No text outside the JSON.
+Format:
 {{
-  "market_view": "一句话概括当前候选池和市场背景是否适合该策略",
-  "selection_logic": "说明本次排序最主要的2-3个判断维度",
-  "portfolio_risk": "说明最终名单可能存在的集中风险或共同风险",
+  "market_view": "One sentence: whether the candidate pool and market backdrop suit this strategy",
+  "selection_logic": "The 2-3 dominant judgment dimensions used for this ranking",
+  "portfolio_risk": "Concentration or shared risks the final list may carry",
   "ranked": [
     {{
-      "code": "股票代码",
+      "code": "Stock code",
       "llm_score": 0-100,
       "confidence": 0-1,
-      "sector": "行业/主题短标签，优先参考候选的 industry/concepts，并尽量统一，如 券商、银行、医药、AI算力",
-      "theme": "主要交易逻辑或主题",
-      "thesis": "该候选入选的核心投资假设",
-      "reason": "一句话排序理由",
-      "risk": "一句话主要风险",
-      "catalysts": ["潜在催化1", "潜在催化2"],
-      "risk_flags": ["风险标签1"],
-      "tags": ["价值", "趋势", "防守", "事件", "流动性"],
-      "style_fit": "与策略风格的匹配度说明",
-      "watch_items": ["后续应跟踪的数据或事件"],
-      "invalidators": ["会推翻该候选逻辑的观察点"]
+      "sector": "Short sector/theme label; prefer the candidate's industry/concepts and normalize them (e.g. Brokers, Banks, Pharma, AI Compute)",
+      "theme": "Primary trading logic or theme",
+      "thesis": "Core investment hypothesis for including this candidate",
+      "reason": "One-sentence ranking rationale",
+      "risk": "One-sentence primary risk",
+      "catalysts": ["potential catalyst 1", "potential catalyst 2"],
+      "risk_flags": ["risk label 1"],
+      "tags": ["Value", "Trend", "Defensive", "Event", "Liquidity"],
+      "style_fit": "How well the candidate fits the strategy style",
+      "watch_items": ["Data or events to track next"],
+      "invalidators": ["Observations that would invalidate this candidate's logic"]
     }}
   ]
 }}

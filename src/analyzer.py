@@ -1903,7 +1903,17 @@ class GeminiAnalyzer:
     # 核心模块：核心结论 + 数据透视 + 舆情情报 + 作战计划
     # ========================================
 
-    LEGACY_DEFAULT_SYSTEM_PROMPT = """你是一位专注于趋势交易的{market_placeholder}投资分析师，负责生成专业的【决策仪表盘】分析报告。
+    # English-first policy: every LLM system prompt in this repository must
+    # instruct the model, verbatim, to "Analyze the data, translate all
+    # context, and generate the final output STRICTLY in English."
+    STRICT_ENGLISH_DIRECTIVE = (
+        "Analyze the data, translate all context, and generate the final "
+        "output STRICTLY in English."
+    )
+
+    LEGACY_DEFAULT_SYSTEM_PROMPT = """You are a trend-following {market_placeholder} investment analyst responsible for producing a professional [Decision Dashboard] analysis report.
+
+GLOBAL DIRECTIVE (highest priority): """ + STRICT_ENGLISH_DIRECTIVE + """ Translate any non-English source material into English; every human-readable JSON value must be English.
 
 {guidelines_placeholder}
 
@@ -2090,7 +2100,9 @@ class GeminiAnalyzer:
 - 建议输出可选展示字段 `dashboard.signal_attribution` 六字段；解释推荐理由的构成，包括技术指标、新闻舆情、基本面、市场环境的贡献度，以及最强看多/看空信号。
 - 盘前、非交易日或未知阶段不得伪造今日盘中走势；quote/daily_bars/technical 存在 stale、fallback、missing、fetch_failed、partial 或 estimated 时，`confidence_level` 不得为高。"""
 
-    SYSTEM_PROMPT = """你是一位{market_placeholder}投资分析师，负责生成专业的【决策仪表盘】分析报告。
+    SYSTEM_PROMPT = """You are a professional {market_placeholder} investment analyst responsible for producing a professional [Decision Dashboard] analysis report.
+
+GLOBAL DIRECTIVE (highest priority): """ + STRICT_ENGLISH_DIRECTIVE + """ Translate any non-English source material into English; every human-readable JSON value must be English.
 
 {guidelines_placeholder}
 
@@ -2276,11 +2288,13 @@ class GeminiAnalyzer:
 - 建议输出可选展示字段 `dashboard.signal_attribution` 六字段；解释推荐理由的构成，包括技术指标、新闻舆情、基本面、市场环境的贡献度，以及最强看多/看空信号。
 - 盘前、非交易日或未知阶段不得伪造今日盘中走势；quote/daily_bars/technical 存在 stale、fallback、missing、fetch_failed、partial 或 estimated 时，`confidence_level` 不得为高。"""
 
-    TEXT_SYSTEM_PROMPT = """你是一位专业的股票分析助手。
+    TEXT_SYSTEM_PROMPT = """You are a professional stock analysis assistant.
 
-- 回答必须基于用户提供的数据与上下文
-- 若信息不足，要明确指出不确定性
-- 不要编造价格、财报或新闻事实
+GLOBAL DIRECTIVE (highest priority): """ + STRICT_ENGLISH_DIRECTIVE + """ Translate any non-English source material into English.
+
+- Answers must be based solely on the data and context provided by the user
+- When information is insufficient, explicitly state the uncertainty
+- Never fabricate prices, earnings, or news facts
 """
 
     def __init__(
@@ -2379,7 +2393,7 @@ class GeminiAnalyzer:
         else:
             skills_section = ""
             if skill_instructions:
-                skills_section = f"## 激活的交易技能\n\n{skill_instructions}\n"
+                skills_section = f"## Activated Trading Skills\n\n{skill_instructions}\n"
             default_skill_policy_section = ""
             if default_skill_policy:
                 default_skill_policy_section = f"{default_skill_policy}\n"
@@ -2394,6 +2408,7 @@ class GeminiAnalyzer:
 
 ## Output Language (highest priority)
 
+- """ + self.STRICT_ENGLISH_DIRECTIVE + """
 - Keep all JSON keys unchanged.
 - `decision_type` must remain `buy|hold|sell`.
 - All human-readable JSON values must be written in English.
@@ -2411,13 +2426,17 @@ class GeminiAnalyzer:
 - Use the common Korean or original listed company name when confident; do not invent one.
 - This includes `stock_name`, `trend_prediction`, `operation_advice`, `confidence_level`, nested dashboard text, checklist items, and all narrative summaries.
 """
+        # Repository policy is strict-English: even for a configured `zh`
+        # reporting locale the LLM-facing prompt forces English output; the
+        # localization layer in src/report_language.py canonicalizes enums.
         return base_prompt + """
 
-## 输出语言（最高优先级）
+## Output Language (highest priority)
 
-- 所有 JSON 键名保持不变。
-- `decision_type` 必须保持为 `buy|hold|sell`。
-- 所有面向用户的人类可读文本值必须使用中文。
+- """ + self.STRICT_ENGLISH_DIRECTIVE + """
+- Keep all JSON keys unchanged.
+- `decision_type` must remain `buy|hold|sell`.
+- All human-readable JSON values must be written in English.
 """
 
     def _has_channel_config(self, config: Config) -> bool:

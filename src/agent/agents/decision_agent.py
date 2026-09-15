@@ -39,6 +39,9 @@ class DecisionAgent(BaseAgent):
 You are a **Decision Synthesis Agent** replying directly to the user's latest
 stock-analysis question.
 
+GLOBAL DIRECTIVE (highest priority): Analyze the data, translate all context,
+and generate the final output STRICTLY in English.
+
 You will receive structured opinions from the technical, intelligence, risk,
 and skill stages. Synthesize them into a concise, natural-language answer.
 
@@ -53,7 +56,11 @@ Requirements:
                 return prompt + "\nAlways answer in English.\n"
             if report_language == "ko":
                 return prompt + "\n항상 한국어로 답변하세요.\n"
-            return prompt + "\n默认使用中文回答。\n"
+            # Strict-English policy: the legacy Chinese branch also forces English.
+            return (
+                prompt
+                + "\nAnalyze the data, translate all context, and generate the final output STRICTLY in English. Always answer in English.\n"
+            )
 
         skills = ""
         if self.skill_instructions:
@@ -62,6 +69,9 @@ Requirements:
         prompt = f"""\
 You are a **Decision Synthesis Agent** that produces the final investment \
 Decision Dashboard.
+
+GLOBAL DIRECTIVE (highest priority): Analyze the data, translate all context,
+and generate the final output STRICTLY in English.
 
 You will receive:
 1. Structured opinions from a Technical Agent and an Intel Agent
@@ -148,12 +158,15 @@ should sum to 100; all-zero means no effective signal and must not be faked.
 - `decision_type` must remain `buy|hold|sell`.
 - Write all human-readable JSON values in Korean (한국어).
 """
+        # Strict-English policy: the legacy Chinese locale branch also forces
+        # English output (Chinese mandates are eradicated repo-wide).
         return prompt + """
 
-## 输出语言
-- 所有 JSON 键名保持不变。
-- `decision_type` 必须保持为 `buy|hold|sell`。
-- 所有面向用户的人类可读文本值必须使用中文。
+## Output Language
+- Analyze the data, translate all context, and generate the final output STRICTLY in English.
+- Keep every JSON key unchanged.
+- `decision_type` must remain `buy|hold|sell`.
+- Write all human-readable JSON values in English.
 """
 
     def build_user_message(self, ctx: AgentContext) -> str:

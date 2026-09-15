@@ -65,7 +65,15 @@ class AgentResult:
 # System prompt builder
 # ============================================================
 
-LEGACY_DEFAULT_AGENT_SYSTEM_PROMPT = """你是一位专注于趋势交易的{market_role}投资分析 Agent，拥有数据工具和交易技能，负责生成专业的【决策仪表盘】分析报告。
+# English-first policy (repo-wide): system prompts carry this exact mandate.
+STRICT_ENGLISH_DIRECTIVE = (
+    "Analyze the data, translate all context, and generate the final output "
+    "STRICTLY in English."
+)
+
+LEGACY_DEFAULT_AGENT_SYSTEM_PROMPT = """You are a trend-following {market_role} investment-analysis Agent equipped with data tools and trading skills, responsible for producing a professional [Decision Dashboard] analysis report.
+
+GLOBAL DIRECTIVE (highest priority): Analyze the data, translate all context, and generate the final output STRICTLY in English. Translate any non-English source material into English; every human-readable value must be English.
 
 {market_guidelines}
 
@@ -224,7 +232,9 @@ LEGACY_DEFAULT_AGENT_SYSTEM_PROMPT = """你是一位专注于趋势交易的{mar
 {language_section}
 """
 
-AGENT_SYSTEM_PROMPT = """你是一位{market_role}投资分析 Agent，拥有数据工具和可切换交易技能，负责生成专业的【决策仪表盘】分析报告。
+AGENT_SYSTEM_PROMPT = """You are a professional {market_role} investment-analysis Agent equipped with data tools and switchable trading skills, responsible for producing a professional [Decision Dashboard] analysis report.
+
+GLOBAL DIRECTIVE (highest priority): Analyze the data, translate all context, and generate the final output STRICTLY in English. Translate any non-English source material into English; every human-readable value must be English.
 
 {market_guidelines}
 
@@ -380,7 +390,9 @@ AGENT_SYSTEM_PROMPT = """你是一位{market_role}投资分析 Agent，拥有数
 {language_section}
 """
 
-LEGACY_DEFAULT_CHAT_SYSTEM_PROMPT = """你是一位专注于趋势交易的{market_role}投资分析 Agent，拥有数据工具和交易技能，负责解答用户的股票投资问题。
+LEGACY_DEFAULT_CHAT_SYSTEM_PROMPT = """You are a trend-following {market_role} investment-analysis Agent equipped with data tools and trading skills, answering users' stock-investing questions.
+
+GLOBAL DIRECTIVE (highest priority): Analyze the data, translate all context, and generate the final output STRICTLY in English. Translate any non-English source material into English; answers must be English.
 
 {market_guidelines}
 
@@ -417,7 +429,9 @@ LEGACY_DEFAULT_CHAT_SYSTEM_PROMPT = """你是一位专注于趋势交易的{mark
 {language_section}
 """
 
-CHAT_SYSTEM_PROMPT = """你是一位{market_role}投资分析 Agent，拥有数据工具和可切换交易技能，负责解答用户的股票投资问题。
+CHAT_SYSTEM_PROMPT = """You are a professional {market_role} investment-analysis Agent equipped with data tools and switchable trading skills, answering users' stock-investing questions.
+
+GLOBAL DIRECTIVE (highest priority): Analyze the data, translate all context, and generate the final output STRICTLY in English. Translate any non-English source material into English; answers must be English.
 
 {market_guidelines}
 
@@ -454,7 +468,9 @@ CHAT_SYSTEM_PROMPT = """你是一位{market_role}投资分析 Agent，拥有数�
 {language_section}
 """
 
-CODEX_CHAT_SYSTEM_PROMPT = """你是一位{market_role}投资分析 Agent，负责基于 DSA 已保存的数据解答用户的股票投资问题。
+CODEX_CHAT_SYSTEM_PROMPT = """You are a professional {market_role} investment-analysis Agent answering users' stock-investing questions based on data already persisted by DSA.
+
+GLOBAL DIRECTIVE (highest priority): Analyze the data, translate all context, and generate the final output STRICTLY in English. Translate any non-English source material into English; answers must be English.
 
 ## 可用数据
 
@@ -475,40 +491,38 @@ CODEX_CHAT_SYSTEM_PROMPT = """你是一位{market_role}投资分析 Agent，负�
 
 
 def _build_language_section(report_language: str, *, chat_mode: bool = False) -> str:
-    """Build output-language guidance for the agent prompt."""
-    normalized = normalize_report_language(report_language)
+    """Build output-language guidance for the agent prompt.
+
+    Repository policy is strict-English: every locale branch instructs the
+    model with the same mandate (see STRICT_ENGLISH_DIRECTIVE), so the
+    trading pipeline is never fed Chinese text.
+    """
     if chat_mode:
-        if normalized == "en":
-            return """
+        return (
+            """
 ## Output Language
 
+- """
+            + STRICT_ENGLISH_DIRECTIVE
+            + """
 - Reply in English.
 - If you output JSON, keep the keys unchanged and write every human-readable value in English.
 """
-        return """
-## 输出语言
+        )
 
-- 默认使用中文回答。
-- 若输出 JSON，键名保持不变，所有面向用户的文本值使用中文。
-"""
-
-    if normalized == "en":
-        return """
+    return (
+        """
 ## Output Language
 
+- """
+        + STRICT_ENGLISH_DIRECTIVE
+        + """
 - Keep every JSON key unchanged.
 - `decision_type` must remain `buy|hold|sell`.
 - All human-readable JSON values must be written in English.
 - This includes `stock_name`, `trend_prediction`, `operation_advice`, `confidence_level`, all dashboard text, checklist items, and summaries.
 """
-
-    return """
-## 输出语言
-
-- 所有 JSON 键名保持不变。
-- `decision_type` 必须保持为 `buy|hold|sell`。
-- 所有面向用户的人类可读文本值必须使用中文。
-"""
+    )
 
 
 # ============================================================

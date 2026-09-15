@@ -115,7 +115,9 @@ class AnalyzerNewsPromptTestCase(unittest.TestCase):
 
         prompt = analyzer._get_analysis_system_prompt("zh", stock_code="600519")
 
-        self.assertIn("专注于趋势交易", prompt)
+        # English-first lead-in (legacy Chinese role text eradicated); the
+        # injected default skill policy content is preserved verbatim.
+        self.assertIn("trend-following", prompt)
         self.assertIn("多头排列必须条件", prompt)
         self.assertIn("多头排列：MA5 > MA10 > MA20", prompt)
 

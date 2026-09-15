@@ -1,0 +1,158 @@
+name: Macro Sentiment & Risk Engine (Genie Trader Pro Feed)
+
+# Hands-off macro-sentiment producer. Every 4 hours it:
+#   1. runs the Macro-Sentiment & Risk Engine (`python main.py --macro-sentiment`),
+#   2. generates `sentiment_latest.json` (strict-English market/macro risk feed),
+#   3. commits & pushes that single file back to `main` for Genie Trader Pro's
+#      TeacherBrain / HermesBrain to consume via the raw.githubusercontent.com URL.
+#
+# Human setup is limited to Repository Secrets (LLM API key). See
+# docs/macro-sentiment-engine.md for the exact keys. Requires
+# Settings -> Actions -> General -> Workflow permissions = "Read and write".
+
+on:
+  schedule:
+    # Every 4 hours, minute 7 (avoids GitHub's top-of-hour congestion).
+    - cron: '7 */4 * * *'
+
+  # Manual trigger (e.g. after rotating API keys or onboarding a new market regime).
+  workflow_dispatch:
+    inputs:
+      force_llm_model:
+        description: 'Optional: force a specific litellm model id for this run (e.g. gemini/gemini-2.5-flash)'
+        required: false
+        default: ''
+        type: string
+
+# Never run two engine cycles concurrently (keeps the JSON feed consistent).
+concurrency:
+  group: macro-sentiment-engine
+  cancel-in-progress: false
+
+permissions:
+  contents: write   # required to push sentiment_latest.json back to main
+
+jobs:
+  generate:
+    name: Generate sentiment_latest.json
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          # Full history keeps `git pull --rebase` safe when another engine
+          # run pushed a JSON commit in between.
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Create runtime directories
+        run: mkdir -p data logs reports
+
+      - name: Run Macro-Sentiment & Risk Engine
+        env:
+          # ---- LLM providers (first configured wins: Gemini -> OpenAI-compatible
+          #      -> Anthropic -> DeepSeek -> LITELLM_MODEL). Only ONE key is
+          #      mandatory overall; GEMINI_API_KEY is the recommended primary. ----
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_API_KEYS: ${{ secrets.GEMINI_API_KEYS }}
+          GEMINI_MODEL: ${{ vars.GEMINI_MODEL || secrets.GEMINI_MODEL || 'gemini-2.5-flash' }}
+          GEMINI_MODEL_FALLBACK: ${{ vars.GEMINI_MODEL_FALLBACK || secrets.GEMINI_MODEL_FALLBACK || 'gemini-2.5-flash-lite' }}
+
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_API_KEYS: ${{ secrets.OPENAI_API_KEYS }}
+          OPENAI_BASE_URL: ${{ vars.OPENAI_BASE_URL || secrets.OPENAI_BASE_URL }}
+          OPENAI_MODEL: ${{ vars.OPENAI_MODEL || secrets.OPENAI_MODEL }}
+          AIHUBMIX_KEY: ${{ secrets.AIHUBMIX_KEY }}
+
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_API_KEYS: ${{ secrets.ANTHROPIC_API_KEYS }}
+          ANTHROPIC_MODEL: ${{ vars.ANTHROPIC_MODEL || secrets.ANTHROPIC_MODEL }}
+
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          DEEPSEEK_API_KEYS: ${{ secrets.DEEPSEEK_API_KEYS }}
+
+          LITELLM_MODEL: ${{ vars.LITELLM_MODEL || secrets.LITELLM_MODEL }}
+          LITELLM_API_KEY: ${{ secrets.LITELLM_API_KEY }}
+          LITELLM_API_BASE: ${{ vars.LITELLM_API_BASE || secrets.LITELLM_API_BASE }}
+
+          # Optional richer headline search (engine falls back to free news RSS).
+          TAVILY_API_KEYS: ${{ secrets.TAVILY_API_KEYS }}
+
+          # ---- Engine tuning (all optional; sane defaults in code) ----
+          MACRO_SENTIMENT_MODEL: ${{ github.event.inputs.force_llm_model || vars.MACRO_SENTIMENT_MODEL || secrets.MACRO_SENTIMENT_MODEL || '' }}
+          MACRO_SENTIMENT_OUTPUT: ${{ vars.MACRO_SENTIMENT_OUTPUT || secrets.MACRO_SENTIMENT_OUTPUT || '' }}
+          MACRO_SENTIMENT_TEMPERATURE: ${{ vars.MACRO_SENTIMENT_TEMPERATURE || secrets.MACRO_SENTIMENT_TEMPERATURE || '0.2' }}
+
+          # ---- Runtime hygiene ----
+          REPORT_LANGUAGE: en
+          TRADING_DAY_CHECK_ENABLED: 'false'
+          SCHEDULE_ENABLED: 'false'
+          LOG_LEVEL: INFO
+        run: |
+          echo "=========================================="
+          echo "Macro-Sentiment & Risk Engine"
+          echo "=========================================="
+          echo "UTC time: $(date -u '+%Y-%m-%dT%H:%M:%SZ')"
+          echo "Gemini key:    $([ -n "$GEMINI_API_KEY" ] && echo 'configured' || ([ -n "$GEMINI_API_KEYS" ] && echo 'configured (list)' || echo 'not configured'))"
+          echo "OpenAI key:    $([ -n "$OPENAI_API_KEY" ] || [ -n "$OPENAI_API_KEYS" ] || [ -n "$AIHUBMIX_KEY" ] && echo 'configured' || echo 'not configured')"
+          echo "Anthropic key: $([ -n "$ANTHROPIC_API_KEY" ] || [ -n "$ANTHROPIC_API_KEYS" ] && echo 'configured' || echo 'not configured')"
+          echo "DeepSeek key:  $([ -n "$DEEPSEEK_API_KEY" ] || [ -n "$DEEPSEEK_API_KEYS" ] && echo 'configured' || echo 'not configured')"
+          echo "Tavily keys:   $([ -n "$TAVILY_API_KEYS" ] && echo 'configured' || echo 'not configured (free RSS fallback)')"
+          echo "=========================================="
+          python main.py --macro-sentiment
+
+      - name: Validate JSON contract
+        run: |
+          python - <<'PY'
+          import json, sys
+          with open("sentiment_latest.json", encoding="utf-8") as f:
+              payload = json.load(f)
+          assert payload["market_sentiment"] in ("bullish", "bearish", "neutral"), payload["market_sentiment"]
+          score = float(payload["macro_score"])
+          assert -1.0 <= score <= 1.0, score
+          assert isinstance(payload["timestamp_utc"], str) and payload["timestamp_utc"].endswith("Z")
+          assert isinstance(payload["hermes_risk_feed"]["summary"], str)
+          assert isinstance(payload["hermes_risk_feed"]["black_swan_warnings"], list)
+          assert isinstance(payload["teacher_brain_catalysts"]["key_drivers"], list)
+          print("sentiment_latest.json contract OK:", payload["market_sentiment"], payload["macro_score"])
+          PY
+
+      - name: Commit and push sentiment_latest.json
+        env:
+          # Scheduled runs always execute on the default branch (main); a
+          # manual workflow_dispatch pushes back to the same ref it ran on,
+          # so a test dispatch on a feature branch can never clobber main.
+          TARGET_BRANCH: ${{ github.event_name == 'schedule' && 'main' || github.ref_name }}
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add sentiment_latest.json
+          if git diff --cached --quiet; then
+            echo "sentiment_latest.json unchanged — nothing to commit"
+          else
+            git commit -m "chore(sentiment): refresh sentiment_latest.json [skip ci]"
+            git fetch origin "${TARGET_BRANCH}"
+            git pull --rebase --autostash origin "${TARGET_BRANCH}"
+            git push origin "HEAD:${TARGET_BRANCH}"
+            echo "sentiment_latest.json pushed to ${TARGET_BRANCH}"
+          fi
+
+      - name: Upload JSON artifact (audit trail)
+        uses: actions/upload-artifact@v6
+        if: always()
+        with:
+          name: sentiment-latest-${{ github.run_number }}
+          path: sentiment_latest.json
+          retention-days: 30
