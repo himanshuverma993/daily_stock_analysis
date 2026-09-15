@@ -1,12 +1,27 @@
 {
-  "market_sentiment": "neutral",
-  "macro_score": 0.0,
-  "timestamp_utc": "2026-09-14T16:14:38Z",
+  "market_sentiment": "bearish",
+  "macro_score": -0.19,
+  "timestamp_utc": "2026-09-15T09:22:59Z",
   "hermes_risk_feed": {
-    "summary": "Market data was partially unavailable; this assessment is rule-based and should be treated with reduced confidence.",
-    "black_swan_warnings": []
+    "summary": "US equities traded lower (S&P 500 -0.48% on the session) with 0 of 7 tracked global indices advancing. Volatility (VIX 17.9) implies a contained risk regime, with no systemic stress visible in market data.",
+    "black_swan_warnings": [
+      "US 10Y yield at 4.96% — tightening headwind",
+      "Headline risk: Counting the votes: Warsh faces a tough battle as the Fed girds for expected interest rate hike - CNBC",
+      "Headline risk: Fed's table is set for a rate hike, a first under Warsh - Reuters",
+      "Headline risk: Fed rate hike looms as $100 oil and inflation put Warsh and U.S. farms on alert - AgroLatam",
+      "Headline risk: A highly anticipated Fed meeting, war worries, and an unblinking stock market: What to watch this week - Yahoo Finance"
+    ]
   },
   "teacher_brain_catalysts": {
-    "key_drivers": []
+    "key_drivers": [
+      "VIX 17.9",
+      "Global equities -0.53% avg",
+      "US 10Y 4.96%",
+      "Counting the votes: Warsh faces a tough battle as the Fed girds for expected int",
+      "There Is Now An 83% to 90% Chance the Fed Raises Interest Rates on Sept. 16. Her",
+      "Fed's table is set for a rate hike, a first under Warsh",
+      "Stock market returns after Fed hikes, holds and cuts: What history shows ahead o",
+      "Fed Rate Hike Odds Above 90%: Here’s What Wall Street Is Watching"
+    ]
   }
 }
