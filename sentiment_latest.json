@@ -1,27 +1,21 @@
 {
-  "market_sentiment": "neutral",
-  "macro_score": -0.1,
-  "timestamp_utc": "2026-09-16T09:49:23Z",
+  "market_sentiment": "bearish",
+  "macro_score": -0.48,
+  "timestamp_utc": "2026-09-16T13:28:07Z",
   "hermes_risk_feed": {
-    "summary": "US equities traded lower (S&P 500 -0.45% on the session) with 4 of 7 tracked global indices advancing. Volatility (VIX 17.1) implies a contained risk regime, with no systemic stress visible in market data.",
+    "summary": "Global markets remain cautious as the Federal Reserve prepares for an imminent interest rate hike to combat persistent inflation. Soaring 10-year Treasury yields near 4.97% and elevated energy costs continue to severely tighten global financial conditions.",
     "black_swan_warnings": [
-      "US 10Y yield at 5.00% — tightening headwind",
-      "Headline risk: Counting the votes: Warsh faces a tough battle as the Fed girds for expected interest rate hike - CNBC",
-      "Headline risk: Fed Interest Rate Hike May Put Warsh on Collision Course With Trump - Realtor.com",
-      "Headline risk: Fed's table is set for a rate hike, a first under Warsh - Reuters",
-      "Headline risk: Warsh likely to side with financial markets over Trump as Fed rate hike expected - finance.yahoo.com"
+      "US 10Y Treasury yield at 4.97% — severe tightening shock",
+      "FOMC rate decision imminent — expected rate hike resumption"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
-      "VIX 17.1",
-      "Global equities -0.01% avg",
-      "US 10Y 5.00%",
-      "Trump and the Federal Reserve are on a collision course over interest rates",
-      "Stubborn inflation sets stage for Federal Reserve to hike interest rates",
-      "If the Fed hikes rates, here's how the stock market might respond",
-      "Fed expected to hike interest rates for first time since 2023. See what it means",
-      "Counting the votes: Warsh faces a tough battle as the Fed girds for expected int"
+      "FOMC rate decision",
+      "Fed interest rate hike",
+      "US 10Y Treasury yield surge",
+      "US inflation persistence",
+      "Elevated crude oil prices"
     ]
   }
 }
