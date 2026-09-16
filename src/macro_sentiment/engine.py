@@ -359,22 +359,42 @@ def _first_env_key(*names: str) -> str:
 
 
 # Auto-select free Gemini models — no manual choosing needed.
-# The engine tries them in order until one works. This survives
-# model deprecations and free-tier changes.
+# The engine tries them in order until one works, so it survives individual
+# model failures and free-tier changes.
+#
+# Live, free-tier-eligible models only (curated 2026-09-16):
+#   * the 1.5 family was shut down 2025-09-29
+#   * the 2.0 family was shut down 2026-06-01
+#   * Pro models left the free tier on 2026-04-01 (paid-only)
+# A retired id left in this list costs ~9s of pointless retry budget
+# (2 attempts + backoff) before the engine reaches a model that answers,
+# so keep it pruned — or override with MACRO_SENTIMENT_GEMINI_MODELS.
 FREE_GEMINI_MODELS: List[str] = [
-    "gemini-2.0-flash",
-    "gemini-2.0-flash-lite",
-    "gemini-1.5-flash",
-    "gemini-1.5-flash-8b",
-    "gemini-2.5-flash",
-    "gemini-2.5-flash-lite",
-    "gemini-1.5-pro",
+    "gemini-3.6-flash",       # GA — Google's documented path off 2.0 Flash
+    "gemini-3.5-flash-lite",  # GA — current cheap Flash-Lite tier
+    "gemini-3.1-flash-lite",  # GA — long deprecation runway (2027-05-07)
+    "gemini-2.5-flash",       # still free; no shutdown date announced
+    "gemini-2.5-flash-lite",  # still free; no shutdown date announced
 ]
 
 
 def _normalized_gemini_model(raw: str) -> str:
     raw = (raw or "").strip() or FREE_GEMINI_MODELS[0]
     return raw if raw.startswith("gemini/") else f"gemini/{raw}"
+
+
+def _configured_free_gemini_models() -> List[str]:
+    """Free-model auto-select list, overridable without a code change.
+
+    ``MACRO_SENTIMENT_GEMINI_MODELS`` (comma-separated) lets an operator pin the
+    models to try when Google retires one of the curated ids. Unset, empty, or
+    blank-only values fall back to :data:`FREE_GEMINI_MODELS`.
+    """
+    raw = (os.getenv("MACRO_SENTIMENT_GEMINI_MODELS") or "").strip()
+    if not raw:
+        return list(FREE_GEMINI_MODELS)
+    models = [part.strip() for part in raw.split(",") if part.strip()]
+    return models or list(FREE_GEMINI_MODELS)
 
 
 def resolve_llm_candidates() -> List[Dict[str, Any]]:
@@ -405,7 +425,7 @@ def resolve_llm_candidates() -> List[Dict[str, Any]]:
                 )
         else:
             # Auto-select: try all free models until one works
-            for free_model in FREE_GEMINI_MODELS:
+            for free_model in _configured_free_gemini_models():
                 candidates.append(
                     {"model": _normalized_gemini_model(free_model), "api_key": gemini_key}
                 )
