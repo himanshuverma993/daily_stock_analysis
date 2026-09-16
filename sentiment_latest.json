@@ -1,20 +1,21 @@
 {
   "market_sentiment": "bearish",
-  "macro_score": -0.65,
-  "timestamp_utc": "2026-09-16T19:32:53Z",
+  "macro_score": -0.75,
+  "timestamp_utc": "2026-09-16T22:53:53Z",
   "hermes_risk_feed": {
-    "summary": "The Federal Reserve has unexpectedly raised interest rates for the first time since 2023 to combat persistent inflation, sparking a risk-off correction across global equity markets. Meanwhile, the 10-year US Treasury yield has surged past the critical five percent threshold, intensifying monetary tightening headwinds.",
+    "summary": "The Federal Reserve unexpectedly hiked interest rates by 25 basis points to counter sticky inflation, signaling additional monetary tightening ahead. Global equity markets faced selling pressure while the 10-year US Treasury yield spiked above 5.00%, sharply elevating systemic risk across risk assets.",
     "black_swan_warnings": [
-      "Federal Reserve unexpected interest rate hike",
-      "US 10Y Treasury yield above 5.0%"
+      "10Y UST yield 5.01% — tightening shock",
+      "Federal Reserve rate hike and hawkish 2026 outlook"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
-      "FOMC rate decision",
+      "Fed rate hike",
+      "US 10Y yield surge",
+      "Federal Reserve monetary tightening",
       "US inflation persistence",
-      "Treasury yield breakout",
-      "Fed monetary tightening"
+      "Crude oil price drop"
     ]
   }
 }
