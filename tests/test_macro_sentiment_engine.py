@@ -141,6 +141,24 @@ class LlmCandidateResolutionTestCase(unittest.TestCase):
         self.assertEqual(candidates[1]["model"], "gpt-4o-mini")
         self.assertIn("claude", candidates[2]["model"])
 
+    def test_auto_select_free_gemini_models(self):
+        # When no GEMINI_MODEL is set, engine auto-tries free models list
+        env = {
+            "GEMINI_API_KEY": "gk",
+            "MACRO_SENTIMENT_MODEL": "",
+            "GEMINI_MODEL": "",
+            "GEMINI_MODEL_FALLBACK": "",
+        }
+        with mock.patch.dict(os.environ, env, clear=True):
+            candidates = engine.resolve_llm_candidates()
+        # Should have FREE_GEMINI_MODELS count as Gemini candidates
+        self.assertGreaterEqual(len(candidates), len(engine.FREE_GEMINI_MODELS))
+        self.assertEqual(candidates[0]["model"], f"gemini/{engine.FREE_GEMINI_MODELS[0]}")
+        self.assertEqual(candidates[1]["model"], f"gemini/{engine.FREE_GEMINI_MODELS[1]}")
+        # All should have same API key
+        for c in candidates[: len(engine.FREE_GEMINI_MODELS)]:
+            self.assertEqual(c["api_key"], "gk")
+
     def test_explicit_model_override_wins(self):
         with mock.patch.dict(os.environ, {"MACRO_SENTIMENT_MODEL": "openrouter/foo/bar", "GEMINI_API_KEY": "gk"}, clear=True):
             candidates = engine.resolve_llm_candidates()
