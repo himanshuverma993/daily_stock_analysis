@@ -1,27 +1,27 @@
 {
-  "market_sentiment": "bearish",
-  "macro_score": -0.26,
-  "timestamp_utc": "2026-09-15T22:52:45Z",
+  "market_sentiment": "neutral",
+  "macro_score": -0.13,
+  "timestamp_utc": "2026-09-16T04:43:10Z",
   "hermes_risk_feed": {
-    "summary": "US equities traded lower (S&P 500 -0.45% on the session) with 1 of 7 tracked global indices advancing. Volatility (VIX 17.2) implies a contained risk regime, with no systemic stress visible in market data.",
+    "summary": "US equities traded lower (S&P 500 -0.45% on the session) with 3 of 7 tracked global indices advancing. Volatility (VIX 17.2) implies a contained risk regime, with no systemic stress visible in market data.",
     "black_swan_warnings": [
       "US 10Y yield at 5.00% — tightening headwind",
       "Headline risk: Counting the votes: Warsh faces a tough battle as the Fed girds for expected interest rate hike - CNBC",
-      "Headline risk: Fed Interest Rate Hike May Put Chair Kevin Warsh on Collision Course With Trump - Realtor.com",
-      "Headline risk: Fed's table is set for a rate hike, a first under Warsh - Reuters",
-      "Headline risk: Fed rate hike expected Wednesday under Kevin Warsh - qz.com"
+      "Headline risk: Fed Interest Rate Hike May Put Warsh on Collision Course With Trump - realtor.com",
+      "Headline risk: Fed's table is set for a rate hike, a first under Warsh - reuters.com",
+      "Headline risk: FOMC Meeting Preview: Three Questions for Chairman Warsh - FOREX.com"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
       "VIX 17.2",
-      "Global equities -0.38% avg",
+      "Global equities -0.15% avg",
       "US 10Y 5.00%",
-      "WTI Crude Oil +3.9% oil spike",
       "Stubborn inflation sets stage for Federal Reserve to hike interest rates",
       "If the Fed hikes rates, here's how the stock market might respond",
+      "Trump and the Federal Reserve are on a collision course over interest rates",
       "Fed expected to hike interest rates for first time since 2023. See what it means",
-      "Markets are bracing for a rate hike this week. Here's what investors need to kno"
+      "Counting the votes: Warsh faces a tough battle as the Fed girds for expected int"
     ]
   }
 }
