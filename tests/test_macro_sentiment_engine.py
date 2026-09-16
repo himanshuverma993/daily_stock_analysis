@@ -21,6 +21,18 @@ CONTRACT_KEYS = [
     "teacher_brain_catalysts",
 ]
 
+# Gemini ids Google has already shut down (1.5 family 2025-09-29, 2.0 family
+# 2026-06-01, plus their dated snapshots). Guards against re-adding dead models.
+RETIRED_GEMINI_MODELS = {
+    "gemini-1.5-pro",
+    "gemini-1.5-flash",
+    "gemini-1.5-flash-8b",
+    "gemini-2.0-flash",
+    "gemini-2.0-flash-001",
+    "gemini-2.0-flash-lite",
+    "gemini-2.0-flash-lite-001",
+}
+
 
 def _snapshot_vix(level: float, change: float = 0.0):
     return [
@@ -158,6 +170,49 @@ class LlmCandidateResolutionTestCase(unittest.TestCase):
         # All should have same API key
         for c in candidates[: len(engine.FREE_GEMINI_MODELS)]:
             self.assertEqual(c["api_key"], "gk")
+
+    def test_auto_select_list_has_no_retired_models(self):
+        # A retired id in the auto-select list costs ~9s of retry budget per
+        # attempt cycle before a live model is reached — keep the list pruned.
+        overlap = RETIRED_GEMINI_MODELS & set(engine.FREE_GEMINI_MODELS)
+        self.assertEqual(
+            overlap, set(), f"retired Gemini models in auto-select list: {sorted(overlap)}"
+        )
+
+    def test_blank_model_normalizes_to_live_default(self):
+        default = engine._normalized_gemini_model("")
+        self.assertEqual(default, f"gemini/{engine.FREE_GEMINI_MODELS[0]}")
+        self.assertNotIn(engine.FREE_GEMINI_MODELS[0], RETIRED_GEMINI_MODELS)
+
+    def test_auto_select_models_env_override(self):
+        env = {
+            "GEMINI_API_KEY": "gk",
+            "MACRO_SENTIMENT_MODEL": "",
+            "GEMINI_MODEL": "",
+            "GEMINI_MODEL_FALLBACK": "",
+            "MACRO_SENTIMENT_GEMINI_MODELS": "gemini-3.6-flash, gemini-2.5-flash",
+        }
+        with mock.patch.dict(os.environ, env, clear=True):
+            candidates = engine.resolve_llm_candidates()
+        self.assertEqual(
+            [c["model"] for c in candidates[:2]],
+            ["gemini/gemini-3.6-flash", "gemini/gemini-2.5-flash"],
+        )
+
+    def test_blank_env_override_falls_back_to_curated_list(self):
+        env = {
+            "GEMINI_API_KEY": "gk",
+            "MACRO_SENTIMENT_MODEL": "",
+            "GEMINI_MODEL": "",
+            "GEMINI_MODEL_FALLBACK": "",
+            "MACRO_SENTIMENT_GEMINI_MODELS": "  ,  ",
+        }
+        with mock.patch.dict(os.environ, env, clear=True):
+            candidates = engine.resolve_llm_candidates()
+        self.assertEqual(candidates[0]["model"], f"gemini/{engine.FREE_GEMINI_MODELS[0]}")
+        self.assertEqual(
+            len(candidates[: len(engine.FREE_GEMINI_MODELS)]), len(engine.FREE_GEMINI_MODELS)
+        )
 
     def test_explicit_model_override_wins(self):
         with mock.patch.dict(os.environ, {"MACRO_SENTIMENT_MODEL": "openrouter/foo/bar", "GEMINI_API_KEY": "gk"}, clear=True):

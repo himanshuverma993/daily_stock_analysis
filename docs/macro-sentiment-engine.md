@@ -103,7 +103,7 @@ Repository path: **Settings → Secrets and variables → Actions → New reposi
 
 | Secret | Purpose | Get it at |
 | --- | --- | --- |
-| `GEMINI_API_KEY` | Primary LLM (auto-selects free models: 2.0-flash, 1.5-flash, 2.5-flash etc.) | https://aistudio.google.com/apikey (free tier) |
+| `GEMINI_API_KEY` | Primary LLM (auto-selects free models: 3.6-flash, 3.5-flash-lite, 3.1-flash-lite, 2.5-flash) | https://aistudio.google.com/apikey (free tier) |
 | `OPENAI_API_KEY` | Fallback LLM #1 | https://platform.openai.com/api-keys |
 | `AIHUBMIX_KEY` | OpenAI-compatible aggregator (engine auto-uses `https://aihubmix.com/v1`) | https://aihubmix.com |
 | `ANTHROPIC_API_KEY` | Fallback LLM #2 (engine default `claude-3-5-sonnet-20241022`) | https://console.anthropic.com |
@@ -113,10 +113,16 @@ If **none** is set, the engine still runs on the rule-based fallback — but for
 real signal quality, configure at least one.
 
 > **Auto-select free Gemini models:** When only `GEMINI_API_KEY` is set (no `GEMINI_MODEL`),
-> the engine auto-tries `gemini-2.0-flash` → `2.0-flash-lite` → `1.5-flash` → `1.5-flash-8b`
-> → `2.5-flash` → `2.5-flash-lite` → `1.5-pro` until one works. No manual model
-> choosing needed — survives deprecations and free-tier changes. Power users can
-> still force a model via `GEMINI_MODEL` or `MACRO_SENTIMENT_MODEL`.
+> the engine auto-tries `gemini-3.6-flash` → `3.5-flash-lite` → `3.1-flash-lite`
+> → `2.5-flash` → `2.5-flash-lite` until one works. No manual model
+> choosing needed. Power users can still force a model via `GEMINI_MODEL` or
+> `MACRO_SENTIMENT_MODEL`, or replace the whole list with
+> `MACRO_SENTIMENT_GEMINI_MODELS` (comma-separated).
+>
+> ⚠️ The list is curated against **live, free-tier-eligible** models only. The 1.5
+> family was shut down on 2025-09-29, the 2.0 family on 2026-06-01, and Pro models
+> left the free tier on 2026-04-01 — retired ids are removed because every dead
+> entry costs ~9s of retry budget before a working model is reached.
 
 ### Optional
 
