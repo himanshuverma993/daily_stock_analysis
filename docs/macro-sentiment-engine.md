@@ -103,7 +103,7 @@ Repository path: **Settings → Secrets and variables → Actions → New reposi
 
 | Secret | Purpose | Get it at |
 | --- | --- | --- |
-| `GEMINI_API_KEY` | Primary LLM (engine default model `gemini-2.5-flash`) | https://aistudio.google.com/apikey (free tier) |
+| `GEMINI_API_KEY` | Primary LLM (auto-selects free models: 2.0-flash, 1.5-flash, 2.5-flash etc.) | https://aistudio.google.com/apikey (free tier) |
 | `OPENAI_API_KEY` | Fallback LLM #1 | https://platform.openai.com/api-keys |
 | `AIHUBMIX_KEY` | OpenAI-compatible aggregator (engine auto-uses `https://aihubmix.com/v1`) | https://aihubmix.com |
 | `ANTHROPIC_API_KEY` | Fallback LLM #2 (engine default `claude-3-5-sonnet-20241022`) | https://console.anthropic.com |
@@ -112,13 +112,19 @@ Repository path: **Settings → Secrets and variables → Actions → New reposi
 If **none** is set, the engine still runs on the rule-based fallback — but for
 real signal quality, configure at least one.
 
+> **Auto-select free Gemini models:** When only `GEMINI_API_KEY` is set (no `GEMINI_MODEL`),
+> the engine auto-tries `gemini-2.0-flash` → `2.0-flash-lite` → `1.5-flash` → `1.5-flash-8b`
+> → `2.5-flash` → `2.5-flash-lite` → `1.5-pro` until one works. No manual model
+> choosing needed — survives deprecations and free-tier changes. Power users can
+> still force a model via `GEMINI_MODEL` or `MACRO_SENTIMENT_MODEL`.
+
 ### Optional
 
 | Secret / Variable | Purpose | Default if unset |
 | --- | --- | --- |
 | `TAVILY_API_KEYS` (secret) | Richer macro headline search | Free Google News RSS (no key) |
-| `GEMINI_MODEL` (variable) | Override primary model | `gemini-2.5-flash` |
-| `GEMINI_MODEL_FALLBACK` (variable) | Gemini fallback model | `gemini-2.5-flash-lite` |
+| `GEMINI_MODEL` (variable) | Force a specific Gemini model (optional, auto-selects if empty) | auto-select free list |
+| `GEMINI_MODEL_FALLBACK` (variable) | Second choice when GEMINI_MODEL is forced | none (auto list used when GEMINI_MODEL empty) |
 | `OPENAI_MODEL` (variable) | OpenAI model | `gpt-4o-mini` |
 | `OPENAI_BASE_URL` (variable) | Custom OpenAI-compatible endpoint | official API |
 | `ANTHROPIC_MODEL` (variable) | Claude model | `claude-3-5-sonnet-20241022` |

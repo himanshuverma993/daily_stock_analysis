@@ -358,13 +358,33 @@ def _first_env_key(*names: str) -> str:
     return ""
 
 
+# Auto-select free Gemini models — no manual choosing needed.
+# The engine tries them in order until one works. This survives
+# model deprecations and free-tier changes.
+FREE_GEMINI_MODELS: List[str] = [
+    "gemini-2.0-flash",
+    "gemini-2.0-flash-lite",
+    "gemini-1.5-flash",
+    "gemini-1.5-flash-8b",
+    "gemini-2.5-flash",
+    "gemini-2.5-flash-lite",
+    "gemini-1.5-pro",
+]
+
+
 def _normalized_gemini_model(raw: str) -> str:
-    raw = (raw or "").strip() or "gemini-2.5-flash"
+    raw = (raw or "").strip() or FREE_GEMINI_MODELS[0]
     return raw if raw.startswith("gemini/") else f"gemini/{raw}"
 
 
 def resolve_llm_candidates() -> List[Dict[str, Any]]:
-    """Ordered candidate LLMs — first available wins (Gemini primary)."""
+    """Ordered candidate LLMs — first available wins (Gemini primary).
+
+    Auto-select behavior (per user request): if GEMINI_API_KEY is set and
+    no explicit GEMINI_MODEL is provided, the system auto-tries all
+    FREE_GEMINI_MODELS in order. Manual override via GEMINI_MODEL or
+    MACRO_SENTIMENT_MODEL still works for power users.
+    """
     candidates: List[Dict[str, Any]] = []
 
     explicit = (os.getenv("MACRO_SENTIMENT_MODEL") or "").strip()
@@ -374,13 +394,21 @@ def resolve_llm_candidates() -> List[Dict[str, Any]]:
 
     gemini_key = _first_env_key("GEMINI_API_KEYS", "GEMINI_API_KEY")
     if gemini_key:
-        model = _normalized_gemini_model(os.getenv("GEMINI_MODEL", ""))
-        candidates.append({"model": model, "api_key": gemini_key})
-        fallback_model = (os.getenv("GEMINI_MODEL_FALLBACK") or "").strip()
-        if fallback_model:
-            candidates.append(
-                {"model": _normalized_gemini_model(fallback_model), "api_key": gemini_key}
-            )
+        explicit_gemini = (os.getenv("GEMINI_MODEL") or "").strip()
+        if explicit_gemini:
+            # User explicitly chose a model — respect it
+            candidates.append({"model": _normalized_gemini_model(explicit_gemini), "api_key": gemini_key})
+            fallback_model = (os.getenv("GEMINI_MODEL_FALLBACK") or "").strip()
+            if fallback_model:
+                candidates.append(
+                    {"model": _normalized_gemini_model(fallback_model), "api_key": gemini_key}
+                )
+        else:
+            # Auto-select: try all free models until one works
+            for free_model in FREE_GEMINI_MODELS:
+                candidates.append(
+                    {"model": _normalized_gemini_model(free_model), "api_key": gemini_key}
+                )
 
     aihubmix_key = (os.getenv("AIHUBMIX_KEY") or "").strip()
     openai_key = _first_env_key("OPENAI_API_KEYS", "OPENAI_API_KEY") or aihubmix_key
