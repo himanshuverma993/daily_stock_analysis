@@ -1,21 +1,21 @@
 {
   "market_sentiment": "neutral",
-  "macro_score": -0.2,
-  "timestamp_utc": "2026-09-17T19:43:05Z",
+  "macro_score": -0.1,
+  "timestamp_utc": "2026-09-17T22:50:54Z",
   "hermes_risk_feed": {
-    "summary": "Global equity indices advanced moderately and volatility subsided following the Federal Reserve's first rate hike since 2023. However, elevated 10Y Treasury yields near 4.95% and ongoing policy friction present persistent tightening headwinds.",
+    "summary": "Global equity markets rallied and volatility plunged despite the Federal Reserve approving its first interest rate hike in three years to combat inflation. However, the US 10-year Treasury yield remaining near 4.95% poses severe monetary tightening headwinds for risk assets.",
     "black_swan_warnings": [
-      "10Y UST yield 4.95% — tightening shock",
+      "US 10Y Treasury yield at 4.95% — severe tightening shock",
       "Federal Reserve rate hike cycle resumption"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
-      "Federal Reserve rate hike",
-      "stubborn inflation",
-      "Treasury yield surge",
-      "political policy pressure",
-      "global equity rally"
+      "FOMC rate hike",
+      "US 10Y yield surge",
+      "Resurgent inflation",
+      "Fed political friction",
+      "Global equity rebound"
     ]
   }
 }
