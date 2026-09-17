@@ -1,21 +1,20 @@
 {
   "market_sentiment": "bearish",
-  "macro_score": -0.75,
-  "timestamp_utc": "2026-09-16T22:53:53Z",
+  "macro_score": -0.8,
+  "timestamp_utc": "2026-09-17T04:46:12Z",
   "hermes_risk_feed": {
-    "summary": "The Federal Reserve unexpectedly hiked interest rates by 25 basis points to counter sticky inflation, signaling additional monetary tightening ahead. Global equity markets faced selling pressure while the 10-year US Treasury yield spiked above 5.00%, sharply elevating systemic risk across risk assets.",
+    "summary": "The Federal Reserve delivered a surprise interest rate hike to combat stubborn inflation, signaling further monetary policy tightening ahead. US 10-Year Treasury yields breached 5.00%, creating severe valuation pressure across global risk assets.",
     "black_swan_warnings": [
-      "10Y UST yield 5.01% — tightening shock",
-      "Federal Reserve rate hike and hawkish 2026 outlook"
+      "10Y UST yield 5.01% — tightening shock"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
-      "Fed rate hike",
-      "US 10Y yield surge",
-      "Federal Reserve monetary tightening",
-      "US inflation persistence",
-      "Crude oil price drop"
+      "FOMC rate hike",
+      "US 10Y yield spike",
+      "persistent inflation",
+      "Fed rate path",
+      "political pressure on Fed"
     ]
   }
 }
