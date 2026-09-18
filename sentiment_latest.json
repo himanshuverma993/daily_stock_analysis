@@ -1,21 +1,19 @@
 {
-  "market_sentiment": "bearish",
-  "macro_score": -0.65,
-  "timestamp_utc": "2026-09-18T19:01:10Z",
+  "market_sentiment": "neutral",
+  "macro_score": -0.15,
+  "timestamp_utc": "2026-09-18T22:33:11Z",
   "hermes_risk_feed": {
-    "summary": "Global markets face intense tightening pressure as the Federal Reserve delivers its first interest rate hike in three years amid stubborn inflation. Simultaneously, surging US 10-year Treasury yields above 5.0% and a sharp 6.19% plunge in WTI crude oil amplify systemic risk concerns.",
+    "summary": "Global equities remain resilient despite the Federal Reserve enacting its first interest rate hike in over three years. However, elevated Treasury yields and persistent inflation concerns continue to create tightening headwinds.",
     "black_swan_warnings": [
-      "10Y UST yield 5.002% — tightening shock",
-      "Federal Reserve unexpected interest rate hike"
+      "10Y UST yield 4.998% — tightening shock"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
       "Federal Reserve rate hike",
-      "US 10Y Treasury yield 5 percent",
-      "Stubborn US inflation",
-      "Fed independence friction",
-      "WTI crude oil selloff"
+      "US inflation persistence",
+      "Treasury yield surge",
+      "Kevin Warsh Fed policy"
     ]
   }
 }
