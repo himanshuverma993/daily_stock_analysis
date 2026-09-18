@@ -662,7 +662,7 @@ describe('SettingsField', () => {
             <SettingsField
               item={{
                 key: 'OPENAI_MODEL',
-                value: 'gemini/gemini-3.1-pro-preview',
+                value: 'gemini/gemini-3.6-flash',
                 rawValueExists: true,
                 isMasked: false,
                 schema: {
@@ -681,7 +681,7 @@ describe('SettingsField', () => {
                   description: 'Primary model description',
                 },
               }}
-              value="gemini/gemini-3.1-pro-preview"
+              value="gemini/gemini-3.6-flash"
               onChange={vi.fn()}
             />
             <SettingsField
