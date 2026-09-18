@@ -54,7 +54,7 @@ export const LLM_PROVIDER_TEMPLATES: LLMProviderTemplate[] = [
     label: 'AIHubmix（聚合平台）',
     protocol: 'openai',
     baseUrl: 'https://aihubmix.com/v1',
-    placeholderModels: 'gpt-5.5,claude-sonnet-4-6,gemini-3.1-pro-preview',
+    placeholderModels: 'gpt-5.5,claude-sonnet-4-6,gemini-3.6-flash',
     capabilities: ['openai-compatible', 'aggregator'],
     officialSources: [{ label: 'AIHubmix', url: 'https://inferera.com/?aff=CfMq' }],
   },
@@ -165,7 +165,7 @@ export const LLM_PROVIDER_TEMPLATES: LLMProviderTemplate[] = [
     label: 'Gemini 官方',
     protocol: 'gemini',
     baseUrl: '',
-    placeholderModels: 'gemini-3.1-pro-preview,gemini-3-flash-preview',
+    placeholderModels: 'gemini-3.6-flash,gemini-3.5-flash-lite',
     capabilities: ['official-api', 'vision'],
     officialSources: [{ label: 'Gemini Models', url: 'https://ai.google.dev/gemini-api/docs/models' }],
   },
@@ -228,8 +228,8 @@ export function isKnownProviderTemplate(channelId: string): boolean {
 export const MODEL_PLACEHOLDERS_BY_PROTOCOL: Record<ChannelProtocol, string> = {
   openai: 'gpt-5.5,qwen3.6-plus',
   deepseek: 'deepseek-v4-flash,deepseek-v4-pro',
-  gemini: 'gemini-3.1-pro-preview,gemini-3-flash-preview',
+  gemini: 'gemini-3.6-flash,gemini-3.5-flash-lite',
   anthropic: 'claude-sonnet-4-6,claude-opus-4-7',
-  vertex_ai: 'gemini-3.1-pro-preview',
+  vertex_ai: 'gemini-3.6-flash',
   ollama: 'llama3.2,qwen2.5',
 };
