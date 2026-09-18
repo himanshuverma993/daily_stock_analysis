@@ -1,6 +1,19 @@
 # =============================================================================
-# GENIE TRADER PRO  v10  —  MACRO-SENTIMENT & RISK ENGINE INTEGRATION PACK
+# GENIE TRADER PRO  v10.1  —  MACRO-SENTIMENT & RISK ENGINE INTEGRATION PACK
 # =============================================================================
+# v10.1 = additive hardening on top of v10, NO behaviour change to the existing
+# classes. What it carries:
+#   * strict-English CJK rejection gate inside validate_feed(): any Chinese /
+#     Japanese / Korean character in the feed raises SchemaViolationError
+#     ("feed contains CJK characters (strict-English contract)") instead of
+#     silently poisoning TeacherBrain pattern rows;
+#   * optional SENTIMENT_FEED_FILE offline self-test mode and
+#     LocalFileSentimentFeedClient (see SELF-TEST at the bottom) for machines
+#     where raw.githubusercontent.com is proxied or blocked.
+# Import path is UNCHANGED: keep the filename ..._v10_sentiment_integration.py.
+# Public API preserved: FEED_URL_DEFAULT, SchemaViolationError, validate_feed,
+# FetchResult, SentimentFeedClient, TeacherBrainCatalystWriter, RiskDecision,
+# HermesRiskGate, GenieSentimentBridge, build_default_bridge.
 # Delivered as .txt per request. To activate: rename/copy the Python section of
 # this file to  genie_trader_pro_v10_sentiment_integration.py  next to your
 # genie_trader_pro_v8_2.py  (import path unchanged), then wire 3 lines into
@@ -36,6 +49,8 @@
 # ---------------------------------------------------------------------------
 # RUNTIME KNOBS (environment variables — no code edits needed):
 #   SENTIMENT_FEED_URL        override feed URL (default: your repo's raw URL)
+#   SENTIMENT_FEED_FILE       local feed snapshot (self-test/offline mode only;
+#                             your production wiring does NOT need it)
 #   SENTIMENT_FEED_TOKEN      bearer token (only needed if repo is private)
 #   SENTIMENT_CACHE_PATH      last-good JSON cache (default: ./sentiment_cache.json)
 #   TEACHER_DB_PATH           TeacherBrain SQLite file (default: ./teacher_brain.db)
@@ -596,6 +611,23 @@ class GenieSentimentBridge:
         return decision
 
 
+class LocalFileSentimentFeedClient(SentimentFeedClient):
+    """Read a saved feed snapshot instead of hitting the network.
+
+    Self-test / air-gapped verification only. Subclasses SentimentFeedClient,
+    so contract validation, disk cache, staleness flagging and the Hermes /
+    TeacherBrain behaviour are byte-identical to the network path. No function
+    in the production wiring uses it.
+    """
+
+    def __init__(self, path: str, **kwargs) -> None:
+        super().__init__(**kwargs)
+        self.path = Path(path)
+
+    def _http_get_json(self) -> Dict[str, Any]:
+        return json.loads(self.path.read_text(encoding="utf-8"))
+
+
 def build_default_bridge(**overrides) -> GenieSentimentBridge:
     """Factory honoring env vars; pass constructor overrides if needed."""
     return GenieSentimentBridge(
@@ -639,12 +671,40 @@ def build_default_bridge(**overrides) -> GenieSentimentBridge:
 
 
 if __name__ == "__main__":
+    # ------------------------------------------------------------------
+    # SELF-TEST - run immediately after installing this file.
+    #   1) online (default): fetches FEED_URL_DEFAULT, validates the live
+    #      feed, prints the Hermes verdict.
+    #        python genie_trader_pro_v10_sentiment_integration.py
+    #   2) offline / proxy-blocked: point it at a saved copy of the feed the
+    #      producer publishes (same file, same contract).
+    #        SENTIMENT_FEED_FILE=/tmp/sentiment_latest.json \
+    #          python genie_trader_pro_v10_sentiment_integration.py
+    # Green = no exception, action in {normal, widen_stops, halt},
+    # feed_contract_valid=true and feed_cjk_matches=0 on a fresh feed.
+    # ------------------------------------------------------------------
     logging.basicConfig(
         level=logging.INFO,
         format="%(asctime)s %(name)s %(levelname)s %(message)s",
     )
+    _snapshot = (os.getenv("SENTIMENT_FEED_FILE") or "").strip()
+    _client = (
+        LocalFileSentimentFeedClient(_snapshot) if _snapshot else SentimentFeedClient()
+    )
+    print(
+        "[self-test] feed source = "
+        + (f"local snapshot {_snapshot}" if _snapshot else f"live network {_client.url}")
+    )
     bridge = build_default_bridge()
+    bridge.client = _client
     verdict = bridge.tick()
+    try:
+        _result = _client.fetch()
+        _feed = validate_feed(_result.payload)
+        _contract_valid = True
+    except Exception:
+        _feed, _contract_valid = {}, False
+    _cjk_hits = len(_CJK_RE.findall(json.dumps(_feed, ensure_ascii=False)))
     print(json.dumps({
         "action": verdict.action,
         "reason": verdict.reason,
@@ -655,4 +715,7 @@ if __name__ == "__main__":
         "black_swan_warnings": verdict.warnings,
         "feed_timestamp_utc": verdict.timestamp_utc,
         "feed_stale": verdict.feed_stale,
+        "feed_contract_valid": _contract_valid,
+        "feed_contract_keys": sorted(_feed.keys()) if _feed else [],
+        "feed_cjk_matches": _cjk_hits,
     }, indent=2, ensure_ascii=False))

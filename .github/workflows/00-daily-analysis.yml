@@ -104,10 +104,18 @@ jobs:
           LLM_HERMES_ENABLED: ${{ vars.LLM_HERMES_ENABLED || secrets.LLM_HERMES_ENABLED }}
 
           # Gemini AI（主选）
+          # Auto-select free-tier models: leave empty to let the app try the
+          # curated GA free list (gemini-3.6-flash -> gemini-3.5-flash-lite -> ...)
+          # in order. '' is safe here because src/config.py treats an empty
+          # GEMINI_MODEL/GEMINI_MODEL_FALLBACK as "not configured" (`or` default),
+          # so it can no longer degrade to a broken 'gemini/' model name.
+          # Set GEMINI_MODEL only to pin one model; retired/pro-preview ids
+          # (gemini-3.1-pro-preview is paid-only since 2026-04-01) must not be
+          # used as defaults.
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GEMINI_API_KEYS: ${{ secrets.GEMINI_API_KEYS }}
-          GEMINI_MODEL: ${{ vars.GEMINI_MODEL || secrets.GEMINI_MODEL || 'gemini-3-flash-preview' }}
-          GEMINI_MODEL_FALLBACK: ${{ vars.GEMINI_MODEL_FALLBACK || secrets.GEMINI_MODEL_FALLBACK || 'gemini-2.5-flash' }}
+          GEMINI_MODEL: ${{ vars.GEMINI_MODEL || secrets.GEMINI_MODEL || '' }}
+          GEMINI_MODEL_FALLBACK: ${{ vars.GEMINI_MODEL_FALLBACK || secrets.GEMINI_MODEL_FALLBACK || '' }}
           GEMINI_REQUEST_DELAY: '3.0'
           
           # AIHubMix（优先于 OPENAI_API_KEY，自动适配 base_url，推荐国内用户）

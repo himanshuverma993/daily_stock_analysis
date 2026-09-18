@@ -20,6 +20,7 @@ import time
 from typing import Any, Dict, List, Optional, Tuple
 
 from src.config import Config, channel_allows_empty_api_key, get_config
+from src.model_selection import DEFAULT_GEMINI_MODEL
 from src.llm.hermes import route_has_hermes
 
 logger = logging.getLogger(__name__)
@@ -216,7 +217,7 @@ def _resolve_vision_model() -> str:
     if not model:
         # Fallback: infer from available keys
         if cfg.gemini_api_keys:
-            model_name = cfg.gemini_model or "gemini-3.1-pro-preview"
+            model_name = cfg.gemini_model or DEFAULT_GEMINI_MODEL
             model = model_name if "/" in model_name else f"gemini/{model_name}"
         elif cfg.anthropic_api_keys:
             model = f"anthropic/{cfg.anthropic_model or 'claude-sonnet-4-6'}"

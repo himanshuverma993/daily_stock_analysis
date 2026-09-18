@@ -74,6 +74,11 @@ from src.llm.hermes import (
 )
 from src.scheduler import normalize_schedule_times
 from src.utils.market_review_region import normalize_market_review_region_lenient
+from src.model_selection import (
+    DEFAULT_GEMINI_MODEL,
+    DEFAULT_GEMINI_MODEL_FALLBACK,
+    free_gemini_fallback_models,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -906,7 +911,7 @@ class Config:
     generation_backend_max_concurrency: int = DEFAULT_GENERATION_BACKEND_MAX_CONCURRENCY
     local_cli_backend_max_concurrency: int = DEFAULT_LOCAL_CLI_BACKEND_MAX_CONCURRENCY
     opencode_cli_model: str = ""
-    # LiteLLM unified model config (provider/model format, e.g. gemini/gemini-3.1-pro-preview)
+    # LiteLLM unified model config (provider/model format, e.g. gemini/gemini-3.6-flash)
     litellm_model: str = ""  # Primary model; must include provider prefix when set explicitly
     litellm_fallback_models: List[str] = field(default_factory=list)  # Cross-model fallback list
 
@@ -945,8 +950,8 @@ class Config:
 
     # Legacy single-key fields (kept for backward compatibility; gemini_api_keys[0] when set)
     gemini_api_key: Optional[str] = None
-    gemini_model: str = "gemini-3.1-pro-preview"  # 主模型
-    gemini_model_fallback: str = "gemini-3-flash-preview"  # 备选模型
+    gemini_model: str = field(default=DEFAULT_GEMINI_MODEL)  # 主模型（默认=免费额度 auto-select 首选）
+    gemini_model_fallback: str = field(default=DEFAULT_GEMINI_MODEL_FALLBACK)  # 备选模型
     gemini_temperature: float = 0.7  # 温度参数（0.0-2.0，控制输出随机性，默认0.7）
 
     # Gemini API 请求配置（防止 429 限流）
@@ -969,7 +974,8 @@ class Config:
 
     # === Vision 配置 ===
     # VISION_MODEL: litellm model string used for image understanding calls.
-    # Fallback chain: VISION_MODEL → OPENAI_VISION_MODEL → gemini/gemini-2.0-flash
+    # Fallback chain: VISION_MODEL → OPENAI_VISION_MODEL → primary LITELLM_MODEL
+    #   (auto-selected free-tier Gemini, e.g. gemini/gemini-3.6-flash)
     vision_model: str = ""
     # VISION_PROVIDER_PRIORITY: comma-separated provider order for Vision fallback.
     vision_provider_priority: str = "gemini,anthropic,openai"
@@ -1585,7 +1591,10 @@ class Config:
                 llm_models_source = "legacy_env"
 
             if not litellm_model:
-                _gemini_model_name = os.getenv('GEMINI_MODEL', 'gemini-3.1-pro-preview').strip()
+                # `or` (not the getenv default) so an EMPTY GEMINI_MODEL — e.g. the
+                # `${{ vars.X || secrets.X || '' }}` pattern in workflows — still falls
+                # back to the auto-selected free-tier primary instead of 'gemini/'.
+                _gemini_model_name = (os.getenv('GEMINI_MODEL') or '').strip() or DEFAULT_GEMINI_MODEL
                 _anthropic_model_name = os.getenv('ANTHROPIC_MODEL', 'claude-sonnet-4-6').strip()
                 if gemini_api_keys:
                     litellm_model = f'gemini/{_gemini_model_name}'
@@ -1602,11 +1611,23 @@ class Config:
                         litellm_model = _openai_model_name
 
             if not litellm_fallback_models and not litellm_fallback_models_explicit:
-                # Backward compat: use gemini_model_fallback when primary is gemini
-                _gemini_fallback = os.getenv('GEMINI_MODEL_FALLBACK', 'gemini-3-flash-preview').strip()
+                # Backward compat: use gemini_model_fallback when primary is gemini.
+                _gemini_fallback = (os.getenv('GEMINI_MODEL_FALLBACK') or '').strip() or DEFAULT_GEMINI_MODEL_FALLBACK
                 if litellm_model.startswith('gemini/') and _gemini_fallback:
                     _fb = f'gemini/{_gemini_fallback}' if '/' not in _gemini_fallback else _gemini_fallback
                     litellm_fallback_models = [_fb]
+                    # Auto-select (nothing pinned by the user) -> keep walking the
+                    # free-tier list after the primary. An explicitly pinned
+                    # GEMINI_MODEL keeps the historic single-fallback shape.
+                    _auto_select_gemini = not (os.getenv('GEMINI_MODEL') or '').strip()
+                    _fallback_unpinned = not (os.getenv('GEMINI_MODEL_FALLBACK') or '').strip()
+                    if _auto_select_gemini and _fallback_unpinned:
+                        _seen_fb = {_fb}
+                        litellm_fallback_models += [
+                            f'gemini/{m}' if '/' not in m else m
+                            for m in free_gemini_fallback_models(exclude=litellm_model.split('/', 1)[-1])
+                            if (f'gemini/{m}' if '/' not in m else m) not in _seen_fb
+                        ]
 
         if (
             inferred_legacy_deepseek_model
@@ -1846,8 +1867,8 @@ class Config:
             openai_api_keys=openai_api_keys,
             deepseek_api_keys=deepseek_api_keys,
             gemini_api_key=os.getenv('GEMINI_API_KEY'),
-            gemini_model=os.getenv('GEMINI_MODEL', 'gemini-3.1-pro-preview'),
-            gemini_model_fallback=os.getenv('GEMINI_MODEL_FALLBACK', 'gemini-3-flash-preview'),
+            gemini_model=(os.getenv('GEMINI_MODEL') or DEFAULT_GEMINI_MODEL).strip(),
+            gemini_model_fallback=(os.getenv('GEMINI_MODEL_FALLBACK') or DEFAULT_GEMINI_MODEL_FALLBACK).strip(),
             gemini_temperature=parse_env_float(os.getenv('GEMINI_TEMPERATURE'), 0.7, field_name='GEMINI_TEMPERATURE'),
             gemini_request_delay=parse_env_float(os.getenv('GEMINI_REQUEST_DELAY'), 2.0, field_name='GEMINI_REQUEST_DELAY', minimum=0.0),
             gemini_max_retries=parse_env_int(os.getenv('GEMINI_MAX_RETRIES'), 5, field_name='GEMINI_MAX_RETRIES', minimum=0),
@@ -1861,7 +1882,7 @@ class Config:
             # Overall provider fallback order: Gemini > Anthropic > OpenAI-compatible (incl. AIHubmix).
             # base_url is auto-set to aihubmix.com/v1 when AIHUBMIX_KEY is used and no explicit
             # OPENAI_BASE_URL override is provided.
-            # Model names match upstream (e.g. gemini-3.1-pro-preview, gpt-5.5, deepseek-v4-flash).
+            # Model names match upstream (e.g. gemini-3.6-flash, gpt-5.5, deepseek-v4-flash).
             openai_api_key=openai_api_keys[0] if openai_api_keys else None,
             openai_base_url=openai_base_url,
             openai_model=_openai_model_name,
@@ -3276,8 +3297,8 @@ class Config:
             issues.append(ConfigIssue(
                 severity="info",
                 message=(
-                    "尚未明确指定主模型，系统将自动从可用 API Key 推断。"
-                    "建议尽早配置主模型（格式如 gemini/gemini-3.1-pro-preview）"
+                    "尚未明确指定主模型，系统将自动从可用 API Key 推断（Gemini 默认走免费额度 auto-select）。"
+                    "如需固定主模型，可显式配置（格式如 gemini/gemini-3.6-flash）"
                 ),
                 field="LITELLM_MODEL",
             ))

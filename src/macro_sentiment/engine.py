@@ -53,6 +53,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
+from src.model_selection import FREE_GEMINI_MODELS
+
 logger = logging.getLogger(__name__)
 
 ENGINE_VERSION = "1.0.0"
@@ -358,24 +360,17 @@ def _first_env_key(*names: str) -> str:
     return ""
 
 
-# Auto-select free Gemini models — no manual choosing needed.
-# The engine tries them in order until one works, so it survives individual
-# model failures and free-tier changes.
+# Auto-select free Gemini models — no manual choosing needed. The engine tries
+# them in order until one works, so it survives individual model failures and
+# free-tier changes.
 #
-# Live, free-tier-eligible models only (curated 2026-09-16):
-#   * the 1.5 family was shut down 2025-09-29
-#   * the 2.0 family was shut down 2026-06-01
-#   * Pro models left the free tier on 2026-04-01 (paid-only)
-# A retired id left in this list costs ~9s of pointless retry budget
-# (2 attempts + backoff) before the engine reaches a model that answers,
-# so keep it pruned — or override with MACRO_SENTIMENT_GEMINI_MODELS.
-FREE_GEMINI_MODELS: List[str] = [
-    "gemini-3.6-flash",       # GA — Google's documented path off 2.0 Flash
-    "gemini-3.5-flash-lite",  # GA — current cheap Flash-Lite tier
-    "gemini-3.1-flash-lite",  # GA — long deprecation runway (2027-05-07)
-    "gemini-2.5-flash",       # still free; no shutdown date announced
-    "gemini-2.5-flash-lite",  # still free; no shutdown date announced
-]
+# The list itself lives in src.model_selection (single source of truth, shared
+# with the main app config) and is kept pruned to live free-tier ids only.
+# Operators can override it without a code change via MACRO_SENTIMENT_GEMINI_MODELS.
+#
+# Importing it here also re-exports it as ``engine.FREE_GEMINI_MODELS`` (public
+# surface consumed by tests/docs); :data:`src.model_selection.FREE_GEMINI_MODELS`
+# is the definition to edit.
 
 
 def _normalized_gemini_model(raw: str) -> str:

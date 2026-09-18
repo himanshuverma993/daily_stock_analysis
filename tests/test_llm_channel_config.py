@@ -20,6 +20,7 @@ from src.config import (
     get_fixed_litellm_temperature,
     normalize_litellm_temperature,
 )
+from src.model_selection import DEFAULT_GEMINI_MODEL
 from src.llm.backend_registry import GENERATION_ONLY_BACKEND_IDS
 from src.llm.hermes import open_hermes_no_proxy_client, parse_hermes_channel, route_has_hermes
 from src.llm.generation_params import (
@@ -348,7 +349,7 @@ class LLMChannelConfigTestCase(unittest.TestCase):
         self.assertEqual(config.openai_api_keys, [])
         self.assertEqual(config.llm_channels, [])
         self.assertEqual(config.llm_models_source, "legacy_env")
-        self.assertEqual(config.litellm_model, "gemini/gemini-3.1-pro-preview")
+        self.assertEqual(config.litellm_model, f"gemini/{DEFAULT_GEMINI_MODEL}")
         self.assertTrue(config.llm_model_list)
         self.assertEqual(
             [issue["code"] for issue in config.llm_channel_config_issues],
@@ -377,7 +378,7 @@ class LLMChannelConfigTestCase(unittest.TestCase):
         self.assertEqual(config.openai_api_keys, [])
         self.assertEqual(config.llm_channels, [])
         self.assertEqual(config.llm_models_source, "legacy_env")
-        self.assertEqual(config.litellm_model, "gemini/gemini-3.1-pro-preview")
+        self.assertEqual(config.litellm_model, f"gemini/{DEFAULT_GEMINI_MODEL}")
         self.assertTrue(config.llm_model_list)
         self.assertEqual(
             [issue["code"] for issue in config.llm_channel_config_issues],
@@ -1164,7 +1165,7 @@ class LLMChannelConfigTestCase(unittest.TestCase):
         with patch.dict(os.environ, env, clear=True):
             config = Config._load_from_env()
 
-        self.assertEqual(config.litellm_model, "gemini/gemini-3.1-pro-preview")
+        self.assertEqual(config.litellm_model, f"gemini/{DEFAULT_GEMINI_MODEL}")
         self.assertAlmostEqual(config.llm_temperature, 0.15)
 
     @patch("src.config.setup_env")
