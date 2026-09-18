@@ -1,21 +1,20 @@
 {
-  "market_sentiment": "neutral",
-  "macro_score": -0.1,
-  "timestamp_utc": "2026-09-17T22:50:54Z",
+  "market_sentiment": "bearish",
+  "macro_score": -0.65,
+  "timestamp_utc": "2026-09-18T04:34:49Z",
   "hermes_risk_feed": {
-    "summary": "Global equity markets rallied and volatility plunged despite the Federal Reserve approving its first interest rate hike in three years to combat inflation. However, the US 10-year Treasury yield remaining near 4.95% poses severe monetary tightening headwinds for risk assets.",
+    "summary": "The Federal Reserve has executed its first interest rate hike in three years amid persistent inflationary pressures, signaling additional tightening ahead. Concurrently, elevated 10Y Treasury yields near 4.95% present a severe tightening headwind for risk assets.",
     "black_swan_warnings": [
-      "US 10Y Treasury yield at 4.95% — severe tightening shock",
-      "Federal Reserve rate hike cycle resumption"
+      "Federal Reserve unexpected interest rate hike cycle initiation",
+      "10Y UST yield at 4.95% — tightening shock risk"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
-      "FOMC rate hike",
-      "US 10Y yield surge",
-      "Resurgent inflation",
-      "Fed political friction",
-      "Global equity rebound"
+      "Federal Reserve rate hike",
+      "Stubborn inflation persistence",
+      "Treasury yield surge",
+      "Monetary policy tightening"
     ]
   }
 }
