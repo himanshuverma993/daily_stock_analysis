@@ -161,7 +161,8 @@ class TestAnalyzerSchemaFallback(unittest.TestCase):
         self.assertEqual(result.sentiment_score, 72)
         self.assertEqual(result.analysis_summary, "技术面向好")
         self.assertEqual(result.action, "hold")
-        self.assertEqual(result.action_label, "持有")
+        # Default report_language is "en" -> action_label is "Hold"
+        self.assertEqual(result.action_label, "Hold")
 
     def test_parse_response_preserves_explicit_action_in_raw_result(self) -> None:
         analyzer = GeminiAnalyzer()
@@ -179,10 +180,46 @@ class TestAnalyzerSchemaFallback(unittest.TestCase):
         raw_result = result.to_dict()
 
         self.assertEqual(result.action, "watch")
-        self.assertEqual(result.action_label, "观望")
+        # Default report_language is "en" -> action_label is "Watch"
+        self.assertEqual(result.action_label, "Watch")
         self.assertEqual(result.decision_type, "hold")
         self.assertEqual(raw_result["action"], "watch")
-        self.assertEqual(raw_result["action_label"], "观望")
+        self.assertEqual(raw_result["action_label"], "Watch")
+
+    def test_parse_response_localizes_action_label_for_configured_language(self) -> None:
+        from src.config import Config
+        for lang, expected_hold, expected_watch in [("en", "Hold", "Watch"), ("zh", "持有", "观望")]:
+            with self.subTest(language=lang):
+                cfg = Config(report_language=lang)
+                analyzer = GeminiAnalyzer(config=cfg)
+                # Test hold
+                resp_hold = json.dumps({
+                    "stock_name": "贵州茅台",
+                    "sentiment_score": 72,
+                    "trend_prediction": "看多",
+                    "operation_advice": "持有",
+                    "decision_type": "hold",
+                    "confidence_level": "高",
+                    "analysis_summary": "技术面向好",
+                })
+                res_hold = analyzer._parse_response(resp_hold, "600519", "股票600519")
+                self.assertEqual(res_hold.action, "hold")
+                self.assertEqual(res_hold.action_label, expected_hold)
+
+                # Test explicit watch
+                resp_watch = json.dumps({
+                    "stock_name": "贵州茅台",
+                    "sentiment_score": 58,
+                    "trend_prediction": "震荡",
+                    "operation_advice": "持有观察",
+                    "decision_type": "hold",
+                    "action": "watch",
+                    "analysis_summary": "等待确认",
+                })
+                res_watch = analyzer._parse_response(resp_watch, "600519", "股票600519")
+                self.assertEqual(res_watch.action, "watch")
+                self.assertEqual(res_watch.action_label, expected_watch)
+                self.assertEqual(res_watch.to_dict()["action_label"], expected_watch)
 
     def test_parse_response_keeps_unknown_dashboard_fields(self) -> None:
         analyzer = GeminiAnalyzer()

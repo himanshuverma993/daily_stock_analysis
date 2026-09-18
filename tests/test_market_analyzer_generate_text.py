@@ -4656,8 +4656,11 @@ Index text.
             market_light_snapshot={"dimensions": {"breadth": {"score": 55, "available": False}}},
         )
 
-        assert "行业领涨: 半导体(+2.35%)" in prompt
-        assert "概念领涨: 机器人概念(+4.20%)" in prompt
+        assert "## Sector / Theme Performance" in prompt
+        assert "Industry leading: 半导体(+2.35%)" in prompt
+        assert "Industry lagging: 煤炭(-1.10%)" in prompt
+        assert "Concept leading: 机器人概念(+4.20%)" in prompt
+        assert "Concept lagging: 转基因(-2.05%)" in prompt
         assert "#### 概念板块领涨 Top 5" in table_block
         assert "| 1 | 机器人概念 | +4.20% |" in table_block
         assert payload["sectors"]["top"][0]["name"] == "半导体"
