@@ -393,7 +393,7 @@ Add these Secrets:
 | `BRAVE_API_KEYS` | Brave Search API Key | Optional |
 | `MINIMAX_API_KEYS` | MiniMax Coding Plan Web Search | Optional |
 | `TUSHARE_TOKEN` | Tushare Token | Optional |
-| `GEMINI_MODEL` | Model name (default gemini-2.0-flash) | Optional |
+| `GEMINI_MODEL` | Model name (default auto-selects free model, e.g. gemini-3.6-flash) | Optional |
 
 > *Note: Configure at least one notification channel, multiple channels supported for simultaneous push
 

@@ -51,6 +51,7 @@ from __future__ import annotations
 import json
 import logging
 import os
+import re
 import sqlite3
 import threading
 import time
@@ -88,6 +89,9 @@ _HALT_KEYWORDS = (
 
 class SchemaViolationError(ValueError):
     """The feed did not honor the exact JSON contract."""
+
+
+_CJK_RE = re.compile(r"[\u4e00-\u9fff\u3040-\u30ff\uac00-\ud7af]")
 
 
 # ---------------------------------------------------------------------------
@@ -169,6 +173,10 @@ def validate_feed(data: Any) -> Dict[str, Any]:
         isinstance(d, str) for d in teacher["key_drivers"]
     ):
         raise SchemaViolationError("key_drivers must be a list of strings")
+
+    serialized = json.dumps(data, ensure_ascii=False)
+    if _CJK_RE.search(serialized):
+        raise SchemaViolationError("feed contains CJK characters (strict-English contract)")
 
     return data
 

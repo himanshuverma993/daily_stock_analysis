@@ -225,6 +225,19 @@ class LlmCandidateResolutionTestCase(unittest.TestCase):
         self.assertEqual(candidates[0]["base_url"], "https://aihubmix.com/v1")
 
 
+class DriftGuardTestCase(unittest.TestCase):
+    """Drift-guard tests ensuring consistency across engine and main app defaults."""
+
+    def test_auto_select_list_and_config_registry_defaults_match(self):
+        """Free-tier auto-select candidates must be live and free-tier eligible."""
+        self.assertNotIn(engine.FREE_GEMINI_MODELS[0], RETIRED_GEMINI_MODELS)
+        self.assertTrue(all(m not in RETIRED_GEMINI_MODELS for m in engine.FREE_GEMINI_MODELS))
+
+    def test_auto_select_list_is_ordered_and_non_empty(self):
+        self.assertGreaterEqual(len(engine.FREE_GEMINI_MODELS), 1)
+        self.assertEqual(engine.FREE_GEMINI_MODELS[0], "gemini-3.6-flash")
+
+
 class PromptContractTestCase(unittest.TestCase):
     def test_system_prompt_carries_strict_english_directive(self):
         self.assertIn(
