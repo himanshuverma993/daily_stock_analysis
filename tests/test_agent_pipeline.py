@@ -21,6 +21,7 @@ from unittest.mock import MagicMock, patch, PropertyMock
 from dataclasses import dataclass, field
 from typing import List, Optional, Dict, Any
 
+from src.model_selection import DEFAULT_GEMINI_MODEL_FALLBACK
 from tests.litellm_stub import ensure_litellm_stub
 
 ensure_litellm_stub()
@@ -121,7 +122,10 @@ class TestAgentConfig(unittest.TestCase):
                     "GEMINI_MODEL": "gemini-2.5-flash",
                     "AGENT_LITELLM_MODEL": "",
                 },
-                ["gemini/gemini-2.5-flash", "gemini/gemini-3-flash-preview"],
+                [
+                    "gemini/gemini-2.5-flash",  # explicit GEMINI_MODEL is respected as-is
+                    f"gemini/{DEFAULT_GEMINI_MODEL_FALLBACK}",  # inherited free-tier fallback
+                ],
             ),
             (
                 {

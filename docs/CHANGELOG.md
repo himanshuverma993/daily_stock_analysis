@@ -19,7 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - [测试] 修复股票名称解析冷启动超时并发测试的同步竞态：在放行后台抓取前确认两个等待者均已结束并返回空结果，避免 Docker 发布门禁偶发失败。
 - [文档] 将仓库内所有 SerpApi 链接统一更新为新的赞助转化追踪地址。
 - [修复] 智能导入兼容带 UTF-8 BOM 的 CSV 与剪贴板文本，避免 `code` 表头被误当成数据并丢失有效股票代码。
-
+- [改进] 主应用（每日分析）Gemini 模型默认值迁移与 auto-select 加固：新增 `src/model_selection.py` 作为免费额度模型列表的单一真源（宏情绪引擎与主配置共用），`GEMINI_MODEL` / `GEMINI_MODEL_FALLBACK` 等默认值改为常量引用；修复 `GEMINI_MODEL=""`（workflow `vars || secrets || ''` 传空）时产生破损模型名 `gemini/` 的问题，现在留空即按免费额度列表顺序 auto-select（`gemini-3.6-flash` → `gemini-3.5-flash-lite` → `gemini-3.1-flash-lite`），显式配置（`GEMINI_MODEL` / `LITELLM_MODEL` / `LITELLM_FALLBACK_MODELS` / `MACRO_SENTIMENT_GEMINI_MODELS`）继续优先；每日分析 workflow 的 Gemini 默认值改为留空以启用 auto-select，文档与 `.env.example` 同步移除已退役的付费预览 id。
 <!-- 新条目格式：- [类型] 描述（类型取值：新功能/改进/修复/文档/测试/chore）-->
 <!-- 每条独立一行追加到本段末尾，无需分类标题，合并时冲突最小 -->
 

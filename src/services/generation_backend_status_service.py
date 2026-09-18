@@ -41,6 +41,7 @@ from src.llm.hermes import (
     is_reserved_hermes_name,
     parse_hermes_channel,
 )
+from src.model_selection import DEFAULT_GEMINI_MODEL
 from src.llm.local_cli_backend import (
     DEFAULT_GENERATION_BACKEND_MAX_CONCURRENCY,
     DEFAULT_LOCAL_CLI_BACKEND_MAX_CONCURRENCY,
@@ -801,7 +802,7 @@ class GenerationBackendStatusService:
     def _infer_legacy_litellm_model(cls, effective_map: Dict[str, str]) -> str:
         gemini_keys = cls._split_csv(effective_map.get("GEMINI_API_KEYS") or effective_map.get("GEMINI_API_KEY") or "")
         if gemini_keys:
-            model = (effective_map.get("GEMINI_MODEL") or "gemini-3.1-pro-preview").strip()
+            model = (effective_map.get("GEMINI_MODEL") or DEFAULT_GEMINI_MODEL).strip()
             return model if "/" in model else f"gemini/{model}"
 
         anthropic_keys = cls._split_csv(

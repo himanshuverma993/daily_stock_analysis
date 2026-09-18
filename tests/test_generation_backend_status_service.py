@@ -10,6 +10,7 @@ from tests.litellm_stub import ensure_litellm_stub
 ensure_litellm_stub()
 
 from src.llm.generation_backend import GenerationError, GenerationErrorCode
+from src.model_selection import DEFAULT_GEMINI_MODEL, DEFAULT_GEMINI_MODEL_FALLBACK
 from src.services.generation_backend_status_service import GenerationBackendStatusService
 
 
@@ -302,7 +303,7 @@ def test_litellm_legacy_key_infers_runtime_model_for_smoke_config() -> None:
     payload = service.smoke_test(mode="json")
 
     assert payload["success"] is True
-    assert _CapturingAnalyzer.configs[-1].litellm_model == "gemini/gemini-3.1-pro-preview"
+    assert _CapturingAnalyzer.configs[-1].litellm_model == f"gemini/{DEFAULT_GEMINI_MODEL}"
 
 
 def test_litellm_validation_issues_are_not_available() -> None:

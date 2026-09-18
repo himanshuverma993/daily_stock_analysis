@@ -88,6 +88,7 @@ from src.notification_sender.ntfy_sender import resolve_ntfy_endpoint
 from src.services.stock_list_parser import split_stock_list
 from src.services.generation_backend_status_service import GenerationBackendStatusService
 from src.services.agent_backend_status_service import AgentBackendStatusService
+from src.model_selection import DEFAULT_GEMINI_MODEL
 
 logger = logging.getLogger(__name__)
 
@@ -3518,7 +3519,7 @@ class SystemConfigService:
     @classmethod
     def _infer_setup_legacy_primary_model(cls, effective_map: Dict[str, str]) -> str:
         if cls._has_any_config_value(effective_map, ("GEMINI_API_KEYS", "GEMINI_API_KEY")):
-            model = (effective_map.get("GEMINI_MODEL") or "gemini-3.1-pro-preview").strip()
+            model = (effective_map.get("GEMINI_MODEL") or DEFAULT_GEMINI_MODEL).strip()
             return model if "/" in model else f"gemini/{model}"
         if cls._has_any_config_value(effective_map, ("ANTHROPIC_API_KEYS", "ANTHROPIC_API_KEY")):
             model = (effective_map.get("ANTHROPIC_MODEL") or "claude-sonnet-4-6").strip()
