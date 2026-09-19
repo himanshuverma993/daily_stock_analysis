@@ -1,20 +1,21 @@
 {
   "market_sentiment": "bearish",
-  "macro_score": -0.42,
-  "timestamp_utc": "2026-09-19T18:35:17Z",
+  "macro_score": -0.58,
+  "timestamp_utc": "2026-09-19T22:19:33Z",
   "hermes_risk_feed": {
-    "summary": "The Federal Reserve delivered a surprise interest rate hike under Chair Kevin Warsh, triggering aggressive tightening concerns across global markets. Concurrently, the 10-year US Treasury yield surged near 5.0%, creating severe macroeconomic headwinds for risk assets.",
+    "summary": "The Federal Reserve has resumed interest rate hikes amid persistent inflation concerns, driving the 10-Year Treasury yield to nearly 5.0%. Elevated borrowing costs and aggressive monetary tightening pose significant downside risks to broader market valuations.",
     "black_swan_warnings": [
-      "US 10Y Treasury yield at 4.998% — tightening shock",
-      "Federal Reserve surprise rate hike cycle initiation"
+      "10Y UST yield at 5.00% — severe monetary tightening shock",
+      "FOMC interest rate hike cycle resumption"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
-      "Federal Reserve rate hike",
-      "Kevin Warsh Fed leadership",
-      "US 10Y Treasury yield surge",
-      "Stagflation concerns"
+      "Can Kevin Warsh Change the Federal Reserve? - Time Magazine",
+      "Fed Chair Kevin Warsh and the FOMC Just Hiked Interest Rates, and 36 Years of History Make Clear What Comes Next for Stocks - Yahoo Finance",
+      "Three words from Kevin Warsh have Wall Street wondering how far the Fed will go with rate hikes - cnbc.com",
+      "Gold Analysis: XAU/USD Remains Under Pressure After Fed Rate Decision - forex.com",
+      "The Markets See Rates Going Higher Than the Fed Does. Is Stagflation Ahead? - Barron's"
     ]
   }
 }
