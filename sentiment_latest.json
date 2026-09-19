@@ -1,19 +1,20 @@
 {
   "market_sentiment": "neutral",
-  "macro_score": -0.15,
-  "timestamp_utc": "2026-09-18T22:33:11Z",
+  "macro_score": -0.25,
+  "timestamp_utc": "2026-09-19T04:32:27Z",
   "hermes_risk_feed": {
-    "summary": "Global equities remain resilient despite the Federal Reserve enacting its first interest rate hike in over three years. However, elevated Treasury yields and persistent inflation concerns continue to create tightening headwinds.",
+    "summary": "Global markets digest the Federal Reserve's first interest rate hike since 2023 amid persistent inflation concerns. Meanwhile, the 10-year Treasury yield approaches the 5 percent threshold, creating significant tightening headwinds for risk assets.",
     "black_swan_warnings": [
-      "10Y UST yield 4.998% — tightening shock"
+      "10Y UST yield at 4.998% — tightening shock",
+      "Federal Reserve rate hike cycle resumption"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
-      "Federal Reserve rate hike",
+      "Fed rate hike",
+      "10Y Treasury yield surge",
       "US inflation persistence",
-      "Treasury yield surge",
-      "Kevin Warsh Fed policy"
+      "Global bond market focus"
     ]
   }
 }
