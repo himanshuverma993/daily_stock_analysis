@@ -1,19 +1,19 @@
 {
   "market_sentiment": "bearish",
-  "macro_score": -0.45,
-  "timestamp_utc": "2026-09-19T12:28:25Z",
+  "macro_score": -0.42,
+  "timestamp_utc": "2026-09-19T18:35:17Z",
   "hermes_risk_feed": {
-    "summary": "The Federal Reserve executed an interest rate hike driven by persistent inflation concerns, pushing the 10-Year US Treasury yield near 5.00%. While global stock markets showed mixed performance, elevated bond yields and hawkish policy signals present ongoing tightening headwinds.",
+    "summary": "The Federal Reserve delivered a surprise interest rate hike under Chair Kevin Warsh, triggering aggressive tightening concerns across global markets. Concurrently, the 10-year US Treasury yield surged near 5.0%, creating severe macroeconomic headwinds for risk assets.",
     "black_swan_warnings": [
-      "10Y UST yield at 5.00% — severe yield tightening shock"
+      "US 10Y Treasury yield at 4.998% — tightening shock",
+      "Federal Reserve surprise rate hike cycle initiation"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
-      "FOMC rate hike",
-      "US 10Y yield surge",
-      "Hawkish Fed guidance",
-      "Inflation risks",
+      "Federal Reserve rate hike",
+      "Kevin Warsh Fed leadership",
+      "US 10Y Treasury yield surge",
       "Stagflation concerns"
     ]
   }
