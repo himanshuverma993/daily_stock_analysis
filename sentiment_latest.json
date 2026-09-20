@@ -1,21 +1,21 @@
 {
   "market_sentiment": "neutral",
-  "macro_score": -0.25,
-  "timestamp_utc": "2026-09-20T18:44:13Z",
+  "macro_score": -0.15,
+  "timestamp_utc": "2026-09-20T22:24:23Z",
   "hermes_risk_feed": {
-    "summary": "Global markets navigate hawkish Federal Reserve rate hikes and elevated 10Y Treasury yields near 5.0%. Meanwhile, WTI crude drops sharply while equities show resilience despite ongoing monetary tightening pressures.",
+    "summary": "Global equity indices show resilience despite a hawkish Federal Reserve rate hike led by Chair Kevin Warsh. However, the 10-year Treasury yield hovering near 5% and persistent inflation pressures create ongoing tightening headwinds.",
     "black_swan_warnings": [
-      "10Y UST yield 4.998% — tightening shock",
-      "Hawkish Federal Reserve rate hike cycle"
+      "10Y UST yield at 4.998% — tightening shock",
+      "Hawkish Fed rate hike cycle under Chair Kevin Warsh"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
       "Fed rate hike",
-      "US 10Y yield surge",
-      "Fed Chair Kevin Warsh press conference",
-      "US-China Summit in Washington",
-      "Oil price drop"
+      "US 10Y Treasury yield",
+      "US inflation persistence",
+      "US-China summit",
+      "SEC crypto rules"
     ]
   }
 }
