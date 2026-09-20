@@ -1,21 +1,21 @@
 {
   "market_sentiment": "bearish",
-  "macro_score": -0.68,
-  "timestamp_utc": "2026-09-20T04:47:46Z",
+  "macro_score": -0.55,
+  "timestamp_utc": "2026-09-20T13:02:33Z",
   "hermes_risk_feed": {
-    "summary": "The Federal Reserve under Chair Kevin Warsh executed a rate hike, signaling sustained monetary tightening to combat stubborn inflation. Global markets face acute headwinds as the US 10-year Treasury yield surges near 5.00%, elevating borrowing costs across major asset classes.",
+    "summary": "Global markets face intense tightening pressures following a surprise Federal Reserve interest rate hike and surging Treasury yields. The 10-year yield approaching five percent and a sharp plunge in crude oil prices elevate systemic cross-asset risks.",
     "black_swan_warnings": [
-      "10Y UST yield at 5.00% — severe monetary tightening shock",
-      "Resumption of FOMC interest rate hike cycle"
+      "US 10Y Treasury Yield at 4.998% — tightening shock",
+      "Federal Reserve unexpected interest rate hike"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
-      "FOMC rate hike",
-      "10Y UST yield spike",
-      "Fed hawkish pivot",
-      "US monetary tightening",
-      "Stagflation concerns"
+      "FOMC rate hike surprise",
+      "US 10Y yield surge",
+      "Federal Reserve monetary tightening",
+      "WTI crude oil selloff",
+      "US-China summit in Washington"
     ]
   }
 }
