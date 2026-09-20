@@ -1,21 +1,21 @@
 {
-  "market_sentiment": "bearish",
-  "macro_score": -0.55,
-  "timestamp_utc": "2026-09-20T13:02:33Z",
+  "market_sentiment": "neutral",
+  "macro_score": -0.25,
+  "timestamp_utc": "2026-09-20T18:44:13Z",
   "hermes_risk_feed": {
-    "summary": "Global markets face intense tightening pressures following a surprise Federal Reserve interest rate hike and surging Treasury yields. The 10-year yield approaching five percent and a sharp plunge in crude oil prices elevate systemic cross-asset risks.",
+    "summary": "Global markets navigate hawkish Federal Reserve rate hikes and elevated 10Y Treasury yields near 5.0%. Meanwhile, WTI crude drops sharply while equities show resilience despite ongoing monetary tightening pressures.",
     "black_swan_warnings": [
-      "US 10Y Treasury Yield at 4.998% — tightening shock",
-      "Federal Reserve unexpected interest rate hike"
+      "10Y UST yield 4.998% — tightening shock",
+      "Hawkish Federal Reserve rate hike cycle"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
-      "FOMC rate hike surprise",
+      "Fed rate hike",
       "US 10Y yield surge",
-      "Federal Reserve monetary tightening",
-      "WTI crude oil selloff",
-      "US-China summit in Washington"
+      "Fed Chair Kevin Warsh press conference",
+      "US-China Summit in Washington",
+      "Oil price drop"
     ]
   }
 }
