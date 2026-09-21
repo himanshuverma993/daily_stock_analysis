@@ -1,20 +1,20 @@
 {
-  "market_sentiment": "bearish",
-  "macro_score": -0.4,
-  "timestamp_utc": "2026-09-21T04:48:28Z",
+  "market_sentiment": "neutral",
+  "macro_score": -0.25,
+  "timestamp_utc": "2026-09-21T15:06:32Z",
   "hermes_risk_feed": {
-    "summary": "The Federal Reserve executed an interest rate hike to combat persistent inflation, pushing the 10-year US Treasury yield past critical threshold levels. While global equities remain mixed, elevated benchmark yields pose a severe macroeconomic tightening shock to risk assets.",
+    "summary": "Global equity markets are showing resilience despite the Federal Reserve's recent rate hike and ongoing political friction between the White House and the central bank. However, the 10Y Treasury yield remains at elevated levels, signaling persistent tightening pressure and potential systemic headwinds.",
     "black_swan_warnings": [
-      "10Y UST yield at 5.00% — severe tightening shock"
+      "10Y UST yield 4.957% — tightening shock"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
-      "FOMC rate hike",
-      "Hawkish Fed policy",
-      "US 10Y yield shock",
-      "Broadening US inflation",
-      "WTI crude oil drop"
+      "Fed rate hike",
+      "US-Fed political friction",
+      "10Y UST yield",
+      "Inflation persistence",
+      "WTI crude volatility"
     ]
   }
 }
