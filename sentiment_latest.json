@@ -1,21 +1,20 @@
 {
-  "market_sentiment": "neutral",
-  "macro_score": -0.15,
-  "timestamp_utc": "2026-09-21T20:25:34Z",
+  "market_sentiment": "bullish",
+  "macro_score": 0.25,
+  "timestamp_utc": "2026-09-22T04:45:57Z",
   "hermes_risk_feed": {
-    "summary": "Global equity markets show resilient gains despite aggressive Federal Reserve rate hikes and persistent inflation concerns. However, elevated Treasury yields and hawkish central bank commentary continue to present tightening headwinds for risk assets.",
+    "summary": "Global equities advanced broadly despite ongoing Federal Reserve rate hike signals and sticky inflation concerns. Elevated Treasury yields remain a persistent headwind that requires careful portfolio risk monitoring.",
     "black_swan_warnings": [
-      "10Y UST yield 4.96% — tightening shock",
-      "Federal Reserve hawkish rate hike cycle acceleration"
+      "10Y UST yield 4.96% — tightening shock"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
       "Fed rate hike cycle",
-      "persistent inflation concerns",
-      "US 10Y Treasury yield surge",
-      "crude oil price plunge",
-      "Bitcoin volatility surge"
+      "US Treasury yields elevated",
+      "Sticky inflation persistence",
+      "Global equity rally",
+      "Crypto market momentum"
     ]
   }
 }
