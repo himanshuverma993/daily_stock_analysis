@@ -1,21 +1,21 @@
 {
   "market_sentiment": "neutral",
-  "macro_score": 0.15,
-  "timestamp_utc": "2026-09-22T19:44:21Z",
+  "macro_score": 0.05,
+  "timestamp_utc": "2026-09-22T22:55:33Z",
   "hermes_risk_feed": {
-    "summary": "Global equities remain mixed following a recent Federal Reserve interest rate hike amid persistent inflation concerns. Meanwhile, the 10-year Treasury yield sits elevated near 4.97% alongside a sharp drop in crude oil prices.",
+    "summary": "Global equity indices show mixed performance alongside a subdued VIX, while the 10-year US Treasury yield hovering near 4.97% presents a persistent tightening headwind. Recent Federal Reserve rate hikes and persistent inflation commentary dominate macroeconomic headwinds.",
     "black_swan_warnings": [
-      "10Y UST yield 4.97% — tightening shock",
-      "Federal Reserve 25 bps rate hike"
+      "US 10Y Treasury yield at 4.968% — tightening shock",
+      "Federal Reserve rate hike and higher-for-longer inflation persistence"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
       "Federal Reserve rate hike",
-      "persistent inflation risks",
-      "10Y UST yield elevation",
-      "WTI crude oil selloff",
-      "Fed Chair Kevin Warsh commentary"
+      "Higher-for-longer inflation",
+      "US 10Y Treasury yield",
+      "Crude oil price drop",
+      "Fed dot plot reform"
     ]
   }
 }
