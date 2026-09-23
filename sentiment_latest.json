@@ -1,20 +1,21 @@
 {
-  "market_sentiment": "bullish",
-  "macro_score": 0.45,
-  "timestamp_utc": "2026-09-23T04:39:12Z",
+  "market_sentiment": "neutral",
+  "macro_score": 0.12,
+  "timestamp_utc": "2026-09-23T13:36:50Z",
   "hermes_risk_feed": {
-    "summary": "Global equity indices advanced strongly, led by technology and broad risk-on sentiment despite elevated Treasury yields. Meanwhile, persistent Federal Reserve hawkishness and high 10Y UST yields continue to pose macro headwinds.",
+    "summary": "Global equity markets show mixed performance amid persistent hawkish rhetoric from Federal Reserve officials following recent rate hikes. Meanwhile, elevated 10-year Treasury yields continue to exert tightening pressure on broader asset classes.",
     "black_swan_warnings": [
-      "10Y UST yield 4.968% — tightening shock"
+      "10Y UST yield 4.99% — tightening shock",
+      "Federal Reserve hawkish rate hike cycle resumption"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
       "Federal Reserve rate hike",
       "higher-for-longer inflation",
-      "US 10Y yield surge",
-      "equity market rally",
-      "crude oil price drop"
+      "US 10Y Treasury yield surge",
+      "DXY strength",
+      "Fed hawkish rhetoric"
     ]
   }
 }
