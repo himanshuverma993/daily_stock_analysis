@@ -1,21 +1,21 @@
 {
-  "market_sentiment": "neutral",
-  "macro_score": 0.12,
-  "timestamp_utc": "2026-09-23T13:36:50Z",
+  "market_sentiment": "bearish",
+  "macro_score": -0.65,
+  "timestamp_utc": "2026-09-23T19:39:47Z",
   "hermes_risk_feed": {
-    "summary": "Global equity markets show mixed performance amid persistent hawkish rhetoric from Federal Reserve officials following recent rate hikes. Meanwhile, elevated 10-year Treasury yields continue to exert tightening pressure on broader asset classes.",
+    "summary": "Global equities and risk assets retreat as hawkish Federal Reserve commentary drives US 10-year Treasury yields to multi-year highs above 5.1 percent. Surging rate hike expectations and a strengthening dollar weigh heavily on commodities and broader market sentiment.",
     "black_swan_warnings": [
-      "10Y UST yield 4.99% — tightening shock",
-      "Federal Reserve hawkish rate hike cycle resumption"
+      "US 10Y Treasury yield at 5.114% — severe rate shock",
+      "Hawkish Fed commentary signaling consecutive rate hikes"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
-      "Federal Reserve rate hike",
-      "higher-for-longer inflation",
-      "US 10Y Treasury yield surge",
-      "DXY strength",
-      "Fed hawkish rhetoric"
+      "US 10Y yield surge",
+      "Fed rate hike expectations",
+      "US inflation surprise",
+      "Strong US Dollar Index",
+      "Gold price correction"
     ]
   }
 }
