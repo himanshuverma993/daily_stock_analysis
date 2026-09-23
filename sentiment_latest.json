@@ -1,21 +1,20 @@
 {
-  "market_sentiment": "neutral",
-  "macro_score": 0.05,
-  "timestamp_utc": "2026-09-22T22:55:33Z",
+  "market_sentiment": "bullish",
+  "macro_score": 0.45,
+  "timestamp_utc": "2026-09-23T04:39:12Z",
   "hermes_risk_feed": {
-    "summary": "Global equity indices show mixed performance alongside a subdued VIX, while the 10-year US Treasury yield hovering near 4.97% presents a persistent tightening headwind. Recent Federal Reserve rate hikes and persistent inflation commentary dominate macroeconomic headwinds.",
+    "summary": "Global equity indices advanced strongly, led by technology and broad risk-on sentiment despite elevated Treasury yields. Meanwhile, persistent Federal Reserve hawkishness and high 10Y UST yields continue to pose macro headwinds.",
     "black_swan_warnings": [
-      "US 10Y Treasury yield at 4.968% — tightening shock",
-      "Federal Reserve rate hike and higher-for-longer inflation persistence"
+      "10Y UST yield 4.968% — tightening shock"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
       "Federal Reserve rate hike",
-      "Higher-for-longer inflation",
-      "US 10Y Treasury yield",
-      "Crude oil price drop",
-      "Fed dot plot reform"
+      "higher-for-longer inflation",
+      "US 10Y yield surge",
+      "equity market rally",
+      "crude oil price drop"
     ]
   }
 }
