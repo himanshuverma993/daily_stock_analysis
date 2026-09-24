@@ -1,21 +1,20 @@
 {
   "market_sentiment": "bearish",
-  "macro_score": -0.78,
-  "timestamp_utc": "2026-09-23T22:56:03Z",
+  "macro_score": -0.75,
+  "timestamp_utc": "2026-09-24T04:38:32Z",
   "hermes_risk_feed": {
-    "summary": "Hawkish Federal Reserve commentary and strong PMI data have spurred market expectations of further rate hikes, pushing the 10-year US Treasury yield past 5.11%. Rising bond yields and a surging US dollar continue to weigh heavily on US equities, commodities, and crypto assets.",
+    "summary": "Global equity markets face severe headwinds as surging US Treasury yields and aggressive Federal Reserve rate-hike expectations trigger widespread risk aversion. Stubborn inflation data and hawkish central bank commentary have driven the 10-year yield above 5.1%, severely pressuring risk assets.",
     "black_swan_warnings": [
-      "10Y UST yield at 5.11% — severe rate tightening shock",
-      "Unexpected October Fed rate hike expectations"
+      "10Y UST yield at 5.11% - tightening shock",
+      "October Fed rate hike odds surge to 70%"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
-      "Market sees next Fed hike in October, following Barr comments and hot inflation reading - CNBC",
-      "Fed's Barr says more rate hikes are needed to bring down inflation - finance.yahoo.com",
-      "Kevin Hassett Questions Fed Rate Hike, Says Warsh Leads an Unusually Partisan Fed - bloomingbit",
-      "Fed's Michael Barr backs more rate hikes as PMI hits 5-year high - qz.com",
-      "Federal Reserve Interest Rate Predictions for 2026 - Norada Real Estate Investments"
+      "US CPI reacceleration",
+      "Fed rate hike expectations",
+      "10Y Treasury yield surge",
+      "Middle East tensions"
     ]
   }
 }
