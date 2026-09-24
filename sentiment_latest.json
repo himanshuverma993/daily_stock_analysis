@@ -1,20 +1,27 @@
 {
   "market_sentiment": "bearish",
-  "macro_score": -0.75,
-  "timestamp_utc": "2026-09-24T04:38:32Z",
+  "macro_score": -0.15,
+  "timestamp_utc": "2026-09-24T13:35:04Z",
   "hermes_risk_feed": {
-    "summary": "Global equity markets face severe headwinds as surging US Treasury yields and aggressive Federal Reserve rate-hike expectations trigger widespread risk aversion. Stubborn inflation data and hawkish central bank commentary have driven the 10-year yield above 5.1%, severely pressuring risk assets.",
+    "summary": "US equities traded lower (S&P 500 -0.50% on the session) with 2 of 7 tracked global indices advancing. Volatility (VIX 15.2) implies a contained risk regime, with no systemic stress visible in market data.",
     "black_swan_warnings": [
-      "10Y UST yield at 5.11% - tightening shock",
-      "October Fed rate hike odds surge to 70%"
+      "US 10Y yield at 5.10% — tightening headwind",
+      "Headline risk: Kevin Warsh does his job, not Trump’s command - Las Vegas Sun",
+      "Headline risk: No Forward-Looking Guidance Needed: 5 Words From Fed Chair Kevin Warsh Strongly Signal What's Next for Interest Rates - The Motley Fool",
+      "Headline risk: If Kevin Warsh Keeps Rates Elevated, These 2 Stocks Are Built to Handle It - The Globe and Mail",
+      "Headline risk: Fed's Collins warns inflation could be 'notably' higher after backing rate hike - CNBC"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
-      "US CPI reacceleration",
-      "Fed rate hike expectations",
-      "10Y Treasury yield surge",
-      "Middle East tensions"
+      "VIX 15.2",
+      "Global equities -0.33% avg",
+      "US 10Y 5.10%",
+      "Fed’s Barr says future interest rate hikes ‘likely’ needed to tame inflation",
+      "Why the US Fed Rate Hike Spells Bad News for Private Equity Exits",
+      "Market sees next Fed hike in October, following Barr comments and hot inflation",
+      "Fed's Barr says more rate hikes are needed to bring down inflation",
+      "Fed will act to ensure inflation resumes its moderation"
     ]
   }
 }
