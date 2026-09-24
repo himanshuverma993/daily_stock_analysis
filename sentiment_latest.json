@@ -1,27 +1,21 @@
 {
   "market_sentiment": "bearish",
-  "macro_score": -0.15,
-  "timestamp_utc": "2026-09-24T13:35:04Z",
+  "macro_score": -0.65,
+  "timestamp_utc": "2026-09-24T19:58:52Z",
   "hermes_risk_feed": {
-    "summary": "US equities traded lower (S&P 500 -0.50% on the session) with 2 of 7 tracked global indices advancing. Volatility (VIX 15.2) implies a contained risk regime, with no systemic stress visible in market data.",
+    "summary": "Hawkish Federal Reserve commentary signaling potential additional rate hikes has pushed the 10-year Treasury yield above 5.10%, intensifying severe tightening headwinds for risk assets. Rising crude oil prices alongside elevated bond yields are exacerbating market strain and tightening financial conditions.",
     "black_swan_warnings": [
-      "US 10Y yield at 5.10% — tightening headwind",
-      "Headline risk: Kevin Warsh does his job, not Trump’s command - Las Vegas Sun",
-      "Headline risk: No Forward-Looking Guidance Needed: 5 Words From Fed Chair Kevin Warsh Strongly Signal What's Next for Interest Rates - The Motley Fool",
-      "Headline risk: If Kevin Warsh Keeps Rates Elevated, These 2 Stocks Are Built to Handle It - The Globe and Mail",
-      "Headline risk: Fed's Collins warns inflation could be 'notably' higher after backing rate hike - CNBC"
+      "US 10Y Treasury yield at 5.16% — tightening shock",
+      "Hawkish Fed rate hike expectations and hot inflation readings"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
-      "VIX 15.2",
-      "Global equities -0.33% avg",
-      "US 10Y 5.10%",
-      "Fed’s Barr says future interest rate hikes ‘likely’ needed to tame inflation",
-      "Why the US Fed Rate Hike Spells Bad News for Private Equity Exits",
-      "Market sees next Fed hike in October, following Barr comments and hot inflation",
-      "Fed's Barr says more rate hikes are needed to bring down inflation",
-      "Fed will act to ensure inflation resumes its moderation"
+      "Fed rate hike expectations",
+      "Rising 10Y UST yield",
+      "Hot inflation readings",
+      "Crude oil price surge",
+      "Hawkish Fed commentary"
     ]
   }
 }
