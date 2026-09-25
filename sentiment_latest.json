@@ -1,20 +1,21 @@
 {
   "market_sentiment": "bearish",
-  "macro_score": -0.75,
-  "timestamp_utc": "2026-09-24T23:11:39Z",
+  "macro_score": -0.65,
+  "timestamp_utc": "2026-09-25T04:48:31Z",
   "hermes_risk_feed": {
-    "summary": "Hawkish Fed commentary and persistent inflation data have driven market expectations toward additional interest rate hikes. Concurrently, the US 10-Year Treasury yield climbing above 5.16% alongside rising oil prices poses severe headwinds for risk assets.",
+    "summary": "Global markets face intense tightening pressure as US 10-year Treasury yields surge past 5.1 percent amid mounting Federal Reserve rate hike expectations. Sticky inflation readings and hawkish central bank commentary have driven bond market stress and weighed on risk assets.",
     "black_swan_warnings": [
-      "US 10Y Treasury yield at 5.16% — severe tightening shock"
+      "10Y UST yield 5.16% - extreme tightening shock",
+      "Fed officials signaling additional interest rate hikes"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
-      "Kevin Warsh is against forward guidance. But that hasn't stopped other Fed officials. - marketplace.org",
-      "Fed Officials Don’t Sound Done Hiking Interest Rates - Investopedia",
-      "Surging Treasury yields pose a brand new problem for Kevin Warsh and the Fed - CNBC",
-      "Why the bond market is freaking out, and what it means for your money - CBS News",
-      "Fed’s Barr says future interest rate hikes ‘likely’ needed to tame inflation - The Hill"
+      "US 10Y Treasury yield surge",
+      "Federal Reserve rate hike expectations",
+      "Sticky inflation data",
+      "Bond market volatility",
+      "Hawkish Fed commentary"
     ]
   }
 }
