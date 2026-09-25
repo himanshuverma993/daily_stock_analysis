@@ -1,21 +1,20 @@
 {
   "market_sentiment": "bearish",
   "macro_score": -0.65,
-  "timestamp_utc": "2026-09-25T04:48:31Z",
+  "timestamp_utc": "2026-09-25T13:40:46Z",
   "hermes_risk_feed": {
-    "summary": "Global markets face intense tightening pressure as US 10-year Treasury yields surge past 5.1 percent amid mounting Federal Reserve rate hike expectations. Sticky inflation readings and hawkish central bank commentary have driven bond market stress and weighed on risk assets.",
+    "summary": "Surging US 10-year Treasury yields above 5.18 percent are triggering severe tightening headwinds and extreme bond market stress. Meanwhile, persistent inflation pressures are driving expectations of additional Federal Reserve rate hikes.",
     "black_swan_warnings": [
-      "10Y UST yield 5.16% - extreme tightening shock",
-      "Fed officials signaling additional interest rate hikes"
+      "US 10Y Treasury yield at 5.18 percent — severe tightening shock",
+      "Bond market dislocation and surging yields threatening equity liquidity"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
-      "US 10Y Treasury yield surge",
+      "US Treasury yield surge",
       "Federal Reserve rate hike expectations",
-      "Sticky inflation data",
-      "Bond market volatility",
-      "Hawkish Fed commentary"
+      "persistent inflation pressures",
+      "bond market stress"
     ]
   }
 }
