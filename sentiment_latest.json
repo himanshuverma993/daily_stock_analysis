@@ -1,21 +1,21 @@
 {
-  "market_sentiment": "neutral",
-  "macro_score": -0.25,
-  "timestamp_utc": "2026-09-26T13:02:08Z",
+  "market_sentiment": "bearish",
+  "macro_score": -0.4,
+  "timestamp_utc": "2026-09-26T19:12:21Z",
   "hermes_risk_feed": {
-    "summary": "Global equity indices show mild gains despite mounting pressure from surging Treasury yields and hawkish Federal Reserve commentary. Persistent inflation risks and rising rate expectations continue to drive bond market volatility and tighten financial conditions.",
+    "summary": "Global equities displayed mixed performance with modest gains in US benchmarks, even as hawkish Federal Reserve commentary signaled potential further rate hikes. However, the 10-year US Treasury yield surging above 5.18% creates a critical tightening shock and presents a major systemic headwind for risk assets.",
     "black_swan_warnings": [
-      "10Y UST yield 5.18% — tightening shock",
-      "Hawkish Fed rate hike and rising rate-hike odds"
+      "10Y UST yield at 5.18% — severe tightening shock",
+      "Hawkish Fed trajectory amid 3-year high inflation"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
-      "Fed rate hike",
-      "Rising Treasury yields",
-      "Persistent inflation",
-      "Hawkish Fed guidance",
-      "Bond market volatility"
+      "US 10Y Treasury yield spike",
+      "Hawkish Fed policy",
+      "US inflation surge",
+      "FOMC rate hike odds",
+      "China equity weakness"
     ]
   }
 }
