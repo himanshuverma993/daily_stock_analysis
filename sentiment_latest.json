@@ -1,21 +1,21 @@
 {
   "market_sentiment": "bearish",
-  "macro_score": -0.38,
-  "timestamp_utc": "2026-09-27T19:45:03Z",
+  "macro_score": -0.45,
+  "timestamp_utc": "2026-09-27T22:59:34Z",
   "hermes_risk_feed": {
-    "summary": "Global equity markets were mixed as US indices notched modest gains while Asian benchmarks stumbled under inflationary pressure. Meanwhile, surging US 10-Year Treasury yields above 5.18% and rising odds of upcoming Fed rate hikes continue to pose severe macro tightening risks.",
+    "summary": "Global equity indices show modest gains while Treasury yields hover at elevated levels, creating persistent headwinds for risk assets. Rising rate hike expectations and sticky inflation pressure broader market sentiment.",
     "black_swan_warnings": [
-      "US 10Y Treasury yield at 5.184% — severe tightening shock",
-      "October FOMC rate hike odds reach 70% following persistent inflation misses"
+      "10Y UST yield 5.184% — tightening shock",
+      "Fed rate hike trajectory and sticky inflation"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
-      "FOMC rate decision",
-      "US 10Y Treasury yield spike",
-      "US inflation persistence",
-      "Fed rate hike expectations",
-      "Global monetary tightening"
+      "Fed rate decision",
+      "US inflation surprise",
+      "US 10Y Treasury yield",
+      "US Jobs Report",
+      "Global inflation reports"
     ]
   }
 }
