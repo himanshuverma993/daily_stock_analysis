@@ -1,21 +1,19 @@
 {
   "market_sentiment": "bearish",
-  "macro_score": -0.55,
-  "timestamp_utc": "2026-09-27T05:12:14Z",
+  "macro_score": -0.42,
+  "timestamp_utc": "2026-09-27T13:53:45Z",
   "hermes_risk_feed": {
-    "summary": "Global equity indices show modest gains while Treasury yields hover at elevated levels amid rising inflation concerns. Hawkish Federal Reserve commentary and persistent supply shocks continue to drive fears of higher-for-longer interest rates.",
+    "summary": "US stock indices traded higher while volatility fell, even as hawkish Fed commentary emphasized elevated inflation risks. However, the 10-Year US Treasury yield soaring past 5.18% poses a critical tightening headwind across global asset markets.",
     "black_swan_warnings": [
-      "US 10Y Treasury yield at 5.18% — restrictive tightening shock",
-      "Persistent inflation misses and hawkish Fed rate hike bets"
+      "10Y UST yield at 5.18% — tightening shock"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
-      "Fed rate decision",
-      "US 10Y Treasury yield surge",
-      "Sticky inflation data",
-      "US PMI economic strength",
-      "Federal Reserve hawkish pivot"
+      "US 10Y UST yield spike",
+      "Hawkish Fed rate expectations",
+      "US CPI inflation concerns",
+      "China equity market pullbacks"
     ]
   }
 }
