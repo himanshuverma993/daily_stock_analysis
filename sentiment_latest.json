@@ -1,21 +1,20 @@
 {
-  "market_sentiment": "bearish",
-  "macro_score": -0.45,
-  "timestamp_utc": "2026-09-27T22:59:34Z",
+  "market_sentiment": "neutral",
+  "macro_score": -0.25,
+  "timestamp_utc": "2026-09-28T05:15:31Z",
   "hermes_risk_feed": {
-    "summary": "Global equity indices show modest gains while Treasury yields hover at elevated levels, creating persistent headwinds for risk assets. Rising rate hike expectations and sticky inflation pressure broader market sentiment.",
+    "summary": "Global equity markets show resilience despite ongoing headwinds from elevated Treasury yields and persistent inflation concerns. The 10-year US Treasury yield remaining above 5.1% continues to present a significant tightening shock to risk assets.",
     "black_swan_warnings": [
-      "10Y UST yield 5.184% — tightening shock",
-      "Fed rate hike trajectory and sticky inflation"
+      "10Y UST yield 5.18% - tightening shock",
+      "Iran war oil price shock and Fed policy pressure"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
-      "Fed rate decision",
-      "US inflation surprise",
-      "US 10Y Treasury yield",
-      "US Jobs Report",
-      "Global inflation reports"
+      "Fed rate hike expectations",
+      "US 10Y Treasury yield surge",
+      "Geopolitical oil price pressure",
+      "US CPI inflation surprise"
     ]
   }
 }
