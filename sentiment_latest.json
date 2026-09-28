@@ -1,20 +1,22 @@
 {
-  "market_sentiment": "neutral",
-  "macro_score": -0.25,
-  "timestamp_utc": "2026-09-28T05:15:31Z",
+  "market_sentiment": "bearish",
+  "macro_score": -0.65,
+  "timestamp_utc": "2026-09-28T16:44:38Z",
   "hermes_risk_feed": {
-    "summary": "Global equity markets show resilience despite ongoing headwinds from elevated Treasury yields and persistent inflation concerns. The 10-year US Treasury yield remaining above 5.1% continues to present a significant tightening shock to risk assets.",
+    "summary": "Global markets are under significant pressure as the US 10Y Treasury yield surges past 5.2%, signaling intense tightening headwinds. Hawkish Fed sentiment and rising geopolitical tensions are driving capital out of risk assets and precious metals.",
     "black_swan_warnings": [
-      "10Y UST yield 5.18% - tightening shock",
-      "Iran war oil price shock and Fed policy pressure"
+      "US 10Y Treasury yield 5.21% — extreme tightening shock",
+      "Gold price collapse below $4,200 indicating liquidity stress",
+      "Iran war escalation risks impacting global energy supply"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
-      "Fed rate hike expectations",
-      "US 10Y Treasury yield surge",
-      "Geopolitical oil price pressure",
-      "US CPI inflation surprise"
+      "US 10Y Treasury yield",
+      "Fed hawkish pivot",
+      "Iran war risk",
+      "Gold price volatility",
+      "October rate hike expectations"
     ]
   }
 }
