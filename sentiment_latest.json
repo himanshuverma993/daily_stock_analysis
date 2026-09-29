@@ -1,21 +1,20 @@
 {
   "market_sentiment": "bearish",
-  "macro_score": -0.65,
-  "timestamp_utc": "2026-09-29T10:38:01Z",
+  "macro_score": -0.62,
+  "timestamp_utc": "2026-09-29T18:03:29Z",
   "hermes_risk_feed": {
-    "summary": "Global equities trade under pressure as surging 10-year Treasury yields and hawkish Federal Reserve rate-hike expectations tighten financial conditions. Geopolitical conflict involving Iran and persistent inflation concerns further elevate macro stress.",
+    "summary": "Global equity indices drift lower and bond yields surge further as markets price in rising probabilities of a Federal Reserve rate hike. Persistent inflation pressures and restrictive monetary policy continue to weigh heavily on risk assets.",
     "black_swan_warnings": [
-      "10Y UST yield 5.24% — aggressive tightening shock",
-      "Iran war costs and high oil prices threatening inflation spikes"
+      "US 10Y Treasury Yield 5.28% — tightening shock",
+      "Rising October Fed rate hike expectations"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
-      "Fed rate hike expectations",
-      "Surging 10Y Treasury yield",
-      "Iran war geopolitical risk",
-      "Persistent inflation pressures",
-      "Treasury Secretary Fed pressure"
+      "US inflation report",
+      "Federal Reserve rate hike expectations",
+      "US 10Y Treasury yield surge",
+      "US Dollar Index strength"
     ]
   }
 }
