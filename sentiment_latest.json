@@ -1,20 +1,20 @@
 {
   "market_sentiment": "bearish",
-  "macro_score": -0.62,
-  "timestamp_utc": "2026-09-29T18:03:29Z",
+  "macro_score": -0.55,
+  "timestamp_utc": "2026-09-29T23:40:27Z",
   "hermes_risk_feed": {
-    "summary": "Global equity indices drift lower and bond yields surge further as markets price in rising probabilities of a Federal Reserve rate hike. Persistent inflation pressures and restrictive monetary policy continue to weigh heavily on risk assets.",
+    "summary": "Global markets face persistent tightening headwinds as elevated US Treasury yields and looming Federal Reserve rate hike expectations weigh on risk assets. Meanwhile, surging bond yields and rising oil market volatility continue to test broader equity resilience.",
     "black_swan_warnings": [
-      "US 10Y Treasury Yield 5.28% — tightening shock",
-      "Rising October Fed rate hike expectations"
+      "10Y UST yield 5.26% — tightening shock",
+      "Markets price 69% chance of October Fed rate hike"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
-      "US inflation report",
-      "Federal Reserve rate hike expectations",
+      "Federal Reserve rate hike",
       "US 10Y Treasury yield surge",
-      "US Dollar Index strength"
+      "US inflation report",
+      "Higher-for-longer Fed policy"
     ]
   }
 }
