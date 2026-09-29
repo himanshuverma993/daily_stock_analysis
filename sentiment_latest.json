@@ -1,21 +1,21 @@
 {
   "market_sentiment": "bearish",
-  "macro_score": -0.78,
-  "timestamp_utc": "2026-09-29T00:21:09Z",
+  "macro_score": -0.65,
+  "timestamp_utc": "2026-09-29T10:38:01Z",
   "hermes_risk_feed": {
-    "summary": "Surging 10-year U.S. Treasury yields to 5.24% and elevated crude oil prices driven by Middle East tension are heavily pressuring global markets. Growing expectations of an October Fed rate hike continue to suppress equity valuations and drive broad risk-off sentiment.",
+    "summary": "Global equities trade under pressure as surging 10-year Treasury yields and hawkish Federal Reserve rate-hike expectations tighten financial conditions. Geopolitical conflict involving Iran and persistent inflation concerns further elevate macro stress.",
     "black_swan_warnings": [
-      "10Y UST yield 5.24% — severe tightening shock",
-      "Middle East war escalation and oil supply surge"
+      "10Y UST yield 5.24% — aggressive tightening shock",
+      "Iran war costs and high oil prices threatening inflation spikes"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
-      "US 10Y yield surge",
-      "Hawkish Fed expectations",
-      "Middle East geopolitical risk",
-      "WTI crude oil rally",
-      "Global equity selloff"
+      "Fed rate hike expectations",
+      "Surging 10Y Treasury yield",
+      "Iran war geopolitical risk",
+      "Persistent inflation pressures",
+      "Treasury Secretary Fed pressure"
     ]
   }
 }
