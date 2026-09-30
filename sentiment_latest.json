@@ -1,20 +1,19 @@
 {
-  "market_sentiment": "bearish",
-  "macro_score": -0.62,
-  "timestamp_utc": "2026-09-30T05:25:12Z",
+  "market_sentiment": "neutral",
+  "macro_score": -0.25,
+  "timestamp_utc": "2026-09-30T14:53:53Z",
   "hermes_risk_feed": {
-    "summary": "Global markets face severe tightening headwinds as the US 10-Year Treasury yield surges above 5.25% amid hawkish Federal Reserve expectations. Equity markets remain under pressure while investors closely monitor upcoming US CPI and PCE inflation reports.",
+    "summary": "Equities show mixed resilience despite ongoing monetary tightening concerns and persistent inflation pressures. However, the 10-year Treasury yield remaining above 5% continues to pose a severe tightening headwind for risk assets.",
     "black_swan_warnings": [
-      "US 10Y UST yield at 5.25% — extreme tightening shock"
+      "US 10Y Treasury yield at 5.274% — severe tightening shock"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
-      "US 10Y UST yield spike",
-      "Fed rate hike expectations",
-      "US CPI report",
-      "US Core PCE report",
-      "Hawkish Fed rhetoric"
+      "US Core PCE inflation",
+      "Federal Reserve rate hike expectations",
+      "US 10Y Treasury yield surge",
+      "WTI crude oil price strength"
     ]
   }
 }
