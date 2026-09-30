@@ -1,19 +1,19 @@
 {
-  "market_sentiment": "neutral",
-  "macro_score": -0.25,
-  "timestamp_utc": "2026-09-30T14:53:53Z",
+  "market_sentiment": "bearish",
+  "macro_score": -0.65,
+  "timestamp_utc": "2026-09-30T20:47:01Z",
   "hermes_risk_feed": {
-    "summary": "Equities show mixed resilience despite ongoing monetary tightening concerns and persistent inflation pressures. However, the 10-year Treasury yield remaining above 5% continues to pose a severe tightening headwind for risk assets.",
+    "summary": "Global equities faced downward pressure as persistent inflation concerns and a soaring US 10-year treasury yield weighed on market sentiment. Meanwhile, shifting expectations regarding Federal Reserve rate hikes created heightened volatility across asset classes.",
     "black_swan_warnings": [
-      "US 10Y Treasury yield at 5.274% — severe tightening shock"
+      "US 10Y Treasury yield 5.29% — tightening shock"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
-      "US Core PCE inflation",
-      "Federal Reserve rate hike expectations",
+      "US PCE inflation print",
       "US 10Y Treasury yield surge",
-      "WTI crude oil price strength"
+      "Fed rate hike expectations",
+      "WTI Crude Oil price rally"
     ]
   }
 }
