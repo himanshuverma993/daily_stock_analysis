@@ -1,19 +1,18 @@
 {
   "market_sentiment": "bearish",
-  "macro_score": -0.65,
-  "timestamp_utc": "2026-09-30T20:47:01Z",
+  "macro_score": -0.62,
+  "timestamp_utc": "2026-10-01T05:42:44Z",
   "hermes_risk_feed": {
-    "summary": "Global equities faced downward pressure as persistent inflation concerns and a soaring US 10-year treasury yield weighed on market sentiment. Meanwhile, shifting expectations regarding Federal Reserve rate hikes created heightened volatility across asset classes.",
-    "black_swan_warnings": [
-      "US 10Y Treasury yield 5.29% — tightening shock"
-    ]
+    "summary": "Global markets face intense tightening headwinds as the US 10-year Treasury yield surges to 5.29%, severely pressuring equities and risk assets. Meanwhile, sticky inflation metrics and hawkish Federal Reserve commentary keep rate hike expectations elevated.",
+    "black_swan_warnings": []
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
-      "US PCE inflation print",
-      "US 10Y Treasury yield surge",
-      "Fed rate hike expectations",
-      "WTI Crude Oil price rally"
+      "Markets Brace For Two More Fed Rate Hikes In 2026 - Forbes",
+      "Fed’s preferred measure of inflation dips to 3.4 percent in August - The Hill",
+      "Polymarket Puts ‘Another Fed Rate Hike in 2026?’ at 81% After Hawkish Fed Chorus - tech-insider.org",
+      "Historical CD Interest Rates 1984-2025 - Bankrate",
+      "Why Fed's Barr thinks we might not be done raising interest rates yet - Detroit Free Press"
     ]
   }
 }
