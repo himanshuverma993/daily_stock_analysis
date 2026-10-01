@@ -1,21 +1,19 @@
 {
-  "market_sentiment": "bearish",
-  "macro_score": -0.65,
-  "timestamp_utc": "2026-10-01T15:25:00Z",
+  "market_sentiment": "neutral",
+  "macro_score": -0.2,
+  "timestamp_utc": "2026-10-01T21:00:21Z",
   "hermes_risk_feed": {
-    "summary": "Elevated Treasury yields exceeding 5 percent continue to create severe macro headwinds for risk assets. Meanwhile, hawkish Federal Reserve rate hike expectations and persistent inflationary pressures are driving defensive market positioning.",
+    "summary": "Global equity indices are displaying mixed performance alongside moderate risk sentiment as central bank rate hike expectations remain elevated. Meanwhile, elevated US 10-year Treasury yields above 5% continue to pose a persistent tightening headwind for broader asset classes.",
     "black_swan_warnings": [
-      "US 10Y Treasury yield at 5.30% — extreme tightening shock",
-      "Hawkish Fed rate hike expectations for late 2026"
+      "10Y UST yield 5.237% — tightening shock"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
-      "US 10Y Treasury yield surge",
       "Fed rate hike expectations",
-      "August PCE inflation print",
-      "Crude oil price rally",
-      "DXY strength"
+      "US inflation metrics",
+      "Treasury yield surge",
+      "Crude oil price rally"
     ]
   }
 }
