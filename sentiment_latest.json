@@ -1,21 +1,21 @@
 {
-  "market_sentiment": "neutral",
-  "macro_score": 0.05,
-  "timestamp_utc": "2026-10-02T14:43:34Z",
+  "market_sentiment": "bullish",
+  "macro_score": 0.45,
+  "timestamp_utc": "2026-10-02T20:40:28Z",
   "hermes_risk_feed": {
-    "summary": "Global equity indices show mixed performance as US Treasury yields remain elevated above five percent, creating ongoing macro headwinds. Meanwhile, Federal Reserve officials tilt toward pausing rate hikes in October following recent economic reports.",
+    "summary": "Global equities advance alongside a falling VIX as weak US job growth reduces expectations for an immediate Federal Reserve rate hike in October. However, elevated 10-year Treasury yields above 5.2% and lingering hawkish Fed commentary present ongoing tightening headwinds.",
     "black_swan_warnings": [
-      "10Y UST yield 5.20% — tightening shock",
-      "Iran war oil price spike"
+      "10Y UST yield 5.27% — tightening shock",
+      "Geopolitical oil price shock following Iran conflict"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
-      "Fed rate pause",
-      "US employment report",
-      "10Y UST yield",
-      "Iran oil shock",
-      "US Core PCE"
+      "US weak jobs report",
+      "Federal Reserve rate pause",
+      "US 10Y Treasury yield surge",
+      "Iran war oil shock",
+      "Goldman Sachs December rate hike forecast"
     ]
   }
 }
