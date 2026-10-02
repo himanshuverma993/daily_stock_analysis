@@ -1,20 +1,21 @@
 {
-  "market_sentiment": "bearish",
-  "macro_score": -0.45,
-  "timestamp_utc": "2026-10-02T05:27:44Z",
+  "market_sentiment": "neutral",
+  "macro_score": 0.05,
+  "timestamp_utc": "2026-10-02T14:43:34Z",
   "hermes_risk_feed": {
-    "summary": "Global equity markets face headwinds from persistent central bank tightening expectations and elevated Treasury yields. Meanwhile, hawkish commentary from Federal Reserve officials regarding further rate hikes continues to weigh on risk appetite.",
+    "summary": "Global equity indices show mixed performance as US Treasury yields remain elevated above five percent, creating ongoing macro headwinds. Meanwhile, Federal Reserve officials tilt toward pausing rate hikes in October following recent economic reports.",
     "black_swan_warnings": [
-      "10Y UST yield 5.24% — tightening shock"
+      "10Y UST yield 5.20% — tightening shock",
+      "Iran war oil price spike"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
-      "US 10Y Treasury Yield 5.24%",
-      "Fed rate hike expectations",
-      "US Core PCE inflation data",
-      "Fed monetary policy divergence",
-      "Treasury market volatility"
+      "Fed rate pause",
+      "US employment report",
+      "10Y UST yield",
+      "Iran oil shock",
+      "US Core PCE"
     ]
   }
 }
