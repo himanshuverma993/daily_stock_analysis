@@ -1,19 +1,20 @@
 {
-  "market_sentiment": "neutral",
-  "macro_score": -0.2,
-  "timestamp_utc": "2026-10-01T21:00:21Z",
+  "market_sentiment": "bearish",
+  "macro_score": -0.45,
+  "timestamp_utc": "2026-10-02T05:27:44Z",
   "hermes_risk_feed": {
-    "summary": "Global equity indices are displaying mixed performance alongside moderate risk sentiment as central bank rate hike expectations remain elevated. Meanwhile, elevated US 10-year Treasury yields above 5% continue to pose a persistent tightening headwind for broader asset classes.",
+    "summary": "Global equity markets face headwinds from persistent central bank tightening expectations and elevated Treasury yields. Meanwhile, hawkish commentary from Federal Reserve officials regarding further rate hikes continues to weigh on risk appetite.",
     "black_swan_warnings": [
-      "10Y UST yield 5.237% — tightening shock"
+      "10Y UST yield 5.24% — tightening shock"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
+      "US 10Y Treasury Yield 5.24%",
       "Fed rate hike expectations",
-      "US inflation metrics",
-      "Treasury yield surge",
-      "Crude oil price rally"
+      "US Core PCE inflation data",
+      "Fed monetary policy divergence",
+      "Treasury market volatility"
     ]
   }
 }
