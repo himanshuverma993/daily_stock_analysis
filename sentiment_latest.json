@@ -1,20 +1,20 @@
 {
-  "market_sentiment": "neutral",
-  "macro_score": 0.15,
-  "timestamp_utc": "2026-10-03T05:10:37Z",
+  "market_sentiment": "bullish",
+  "macro_score": 0.1,
+  "timestamp_utc": "2026-10-03T13:19:29Z",
   "hermes_risk_feed": {
-    "summary": "Global equity markets show mixed performance as US equities gain despite a sharp 10Y Treasury yield surge to 5.28%. Meanwhile, the macroeconomic landscape remains tense due to hawkish Fed commentary and a weaker September jobs report showing only 29,000 jobs added.",
+    "summary": "US equities gained led by technology sectors while volatility dropped, despite expectations for a Federal Reserve rate pause in October. However, the US 10-Year Treasury yield surging to 5.28% maintains severe monetary tightening headwinds across global markets.",
     "black_swan_warnings": [
-      "US 10Y UST yield 5.28% — tightening shock",
-      "September jobs report weak employment growth of 29,000"
+      "US 10Y Treasury yield at 5.28% — severe tightening shock"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
-      "US employment report",
-      "US 10Y Treasury yield",
-      "Federal Reserve rate policy",
-      "Fed rate hike speculation"
+      "FOMC rate pause expectations",
+      "Hawkish Fed commentary",
+      "US 10Y Treasury yield surge",
+      "US labor market slowdown",
+      "Tech sector rally"
     ]
   }
 }
