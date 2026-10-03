@@ -1,21 +1,20 @@
 {
-  "market_sentiment": "neutral",
-  "macro_score": -0.15,
-  "timestamp_utc": "2026-10-03T19:11:58Z",
+  "market_sentiment": "bearish",
+  "macro_score": -0.25,
+  "timestamp_utc": "2026-10-03T22:51:31Z",
   "hermes_risk_feed": {
-    "summary": "Global equities show mixed performance while the US 10-year Treasury yield hovers at an elevated 5.27%, posing ongoing tightening headwinds. Meanwhile, conflicting signals from Federal Reserve officials regarding potential rate hikes and a slowing labor market keep broader risk appetite constrained.",
+    "summary": "US equities advanced as weak nonfarm payrolls increased expectations for a Federal Reserve rate pause in October. However, the US 10-Year Treasury yield spiking to 5.28% presents an acute tightening shock for global risk sentiment.",
     "black_swan_warnings": [
-      "US 10Y Treasury yield at 5.27% — severe tightening shock",
-      "Fed policy divergence and hawkish commentary regarding additional rate hikes"
+      "US 10Y Treasury yield at 5.277% — severe tightening shock above 4.80% threshold"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
-      "US 10Y Treasury yield surge",
-      "US employment report slowdown",
-      "Federal Reserve rate pause debate",
-      "Core PCE inflation reading",
-      "Crude oil price fluctuation"
+      "Fed's Logan calls for '50 bps or more' in rate hikes - Reuters",
+      "Traders now see little chance of a Fed rate hike in October after weak jobs report - CNBC",
+      "Fed Vice Chair: Central Bank ‘May Take More Time’ Before Another Rate Hike - themortgagepoint.com",
+      "How Do Fed Rate Hikes Affect US Stocks? A Detailed Breakdown of the Logic - TradingKey",
+      "Fed Rate Hike In October Looks Less Likely After Weak Jobs Report - Realtor.com"
     ]
   }
 }
