@@ -1,21 +1,20 @@
 {
-  "market_sentiment": "bullish",
-  "macro_score": 0.45,
-  "timestamp_utc": "2026-10-02T20:40:28Z",
+  "market_sentiment": "neutral",
+  "macro_score": 0.15,
+  "timestamp_utc": "2026-10-03T05:10:37Z",
   "hermes_risk_feed": {
-    "summary": "Global equities advance alongside a falling VIX as weak US job growth reduces expectations for an immediate Federal Reserve rate hike in October. However, elevated 10-year Treasury yields above 5.2% and lingering hawkish Fed commentary present ongoing tightening headwinds.",
+    "summary": "Global equity markets show mixed performance as US equities gain despite a sharp 10Y Treasury yield surge to 5.28%. Meanwhile, the macroeconomic landscape remains tense due to hawkish Fed commentary and a weaker September jobs report showing only 29,000 jobs added.",
     "black_swan_warnings": [
-      "10Y UST yield 5.27% — tightening shock",
-      "Geopolitical oil price shock following Iran conflict"
+      "US 10Y UST yield 5.28% — tightening shock",
+      "September jobs report weak employment growth of 29,000"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
-      "US weak jobs report",
-      "Federal Reserve rate pause",
-      "US 10Y Treasury yield surge",
-      "Iran war oil shock",
-      "Goldman Sachs December rate hike forecast"
+      "US employment report",
+      "US 10Y Treasury yield",
+      "Federal Reserve rate policy",
+      "Fed rate hike speculation"
     ]
   }
 }
