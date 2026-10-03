@@ -1,20 +1,21 @@
 {
-  "market_sentiment": "bullish",
-  "macro_score": 0.1,
-  "timestamp_utc": "2026-10-03T13:19:29Z",
+  "market_sentiment": "neutral",
+  "macro_score": -0.15,
+  "timestamp_utc": "2026-10-03T19:11:58Z",
   "hermes_risk_feed": {
-    "summary": "US equities gained led by technology sectors while volatility dropped, despite expectations for a Federal Reserve rate pause in October. However, the US 10-Year Treasury yield surging to 5.28% maintains severe monetary tightening headwinds across global markets.",
+    "summary": "Global equities show mixed performance while the US 10-year Treasury yield hovers at an elevated 5.27%, posing ongoing tightening headwinds. Meanwhile, conflicting signals from Federal Reserve officials regarding potential rate hikes and a slowing labor market keep broader risk appetite constrained.",
     "black_swan_warnings": [
-      "US 10Y Treasury yield at 5.28% — severe tightening shock"
+      "US 10Y Treasury yield at 5.27% — severe tightening shock",
+      "Fed policy divergence and hawkish commentary regarding additional rate hikes"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
-      "FOMC rate pause expectations",
-      "Hawkish Fed commentary",
       "US 10Y Treasury yield surge",
-      "US labor market slowdown",
-      "Tech sector rally"
+      "US employment report slowdown",
+      "Federal Reserve rate pause debate",
+      "Core PCE inflation reading",
+      "Crude oil price fluctuation"
     ]
   }
 }
