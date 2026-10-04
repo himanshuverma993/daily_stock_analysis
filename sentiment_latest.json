@@ -1,21 +1,21 @@
 {
   "market_sentiment": "bullish",
-  "macro_score": 0.35,
-  "timestamp_utc": "2026-10-04T19:33:50Z",
+  "macro_score": 0.25,
+  "timestamp_utc": "2026-10-04T23:02:28Z",
   "hermes_risk_feed": {
-    "summary": "Major US equity indices climbed as easing near-term rate hike expectations bolstered market sentiment despite elevated Treasury yields. However, the 10-year yield remaining above 5.2% and ongoing inflation pressures continue to pose severe tightening headwinds.",
+    "summary": "Global equity indices show resilience with moderate gains despite elevated US Treasury yields acting as a key monetary headwind. Meanwhile, persistent inflation pressures and hawkish central bank commentary continue to test macroeconomic stability.",
     "black_swan_warnings": [
-      "10Y UST yield 5.277% — tightening shock",
-      "Fed inflation hitting 3-year high amid oil price spikes"
+      "US 10Y Treasury yield 5.277 percent — extreme tightening shock",
+      "Stubborn inflation pushing US 3-year high"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
-      "Fed rate pause bets",
-      "US Treasury yield surge",
-      "NVIDIA all-time high",
-      "US jobs data release",
-      "Inflation CPI print"
+      "Fed interest rate decision",
+      "US Core PCE inflation data",
+      "US 10Y Treasury yield surge",
+      "NVIDIA all-time high earnings",
+      "Geopolitical oil price shock"
     ]
   }
 }
