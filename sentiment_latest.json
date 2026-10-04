@@ -1,20 +1,20 @@
 {
   "market_sentiment": "neutral",
-  "macro_score": -0.15,
-  "timestamp_utc": "2026-10-04T05:44:20Z",
+  "macro_score": 0.05,
+  "timestamp_utc": "2026-10-04T13:55:59Z",
   "hermes_risk_feed": {
-    "summary": "U.S. equities rallied as a weaker-than-expected September jobs report eased immediate fears of a Federal Reserve rate hike. However, elevated Treasury yields above 5.2% continue to exert a persistent macroeconomic tightening headwind on risk assets.",
+    "summary": "U.S. equities advanced as weak September employment data reduced immediate pressure for an October Federal Reserve rate hike. However, elevated Treasury yields and persistent inflation concerns continue to present structural headwinds for risk assets.",
     "black_swan_warnings": [
-      "10Y UST yield 5.28% — extreme tightening shock"
+      "US 10Y Treasury Yield 5.28% — tightening shock"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
-      "US employment report",
-      "FOMC rate pause odds",
-      "Treasury yield surge",
-      "Federal Reserve policy",
-      "inflation persistence"
+      "US employment data",
+      "FOMC rate pause expectations",
+      "US 10Y Treasury yield surge",
+      "Fed inflation minutes",
+      "Tech sector rally"
     ]
   }
 }
