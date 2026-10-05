@@ -1,21 +1,20 @@
 {
-  "market_sentiment": "bullish",
-  "macro_score": 0.25,
-  "timestamp_utc": "2026-10-04T23:02:28Z",
+  "market_sentiment": "neutral",
+  "macro_score": 0.15,
+  "timestamp_utc": "2026-10-05T05:28:05Z",
   "hermes_risk_feed": {
-    "summary": "Global equity indices show resilience with moderate gains despite elevated US Treasury yields acting as a key monetary headwind. Meanwhile, persistent inflation pressures and hawkish central bank commentary continue to test macroeconomic stability.",
+    "summary": "Global equity markets remain resilient with moderate gains despite elevated Treasury yields and persistent Federal Reserve tightening pressures. The 10-year yield hovering above 5.2% introduces significant tightening headwinds and systemic risk to risk-on assets.",
     "black_swan_warnings": [
-      "US 10Y Treasury yield 5.277 percent — extreme tightening shock",
-      "Stubborn inflation pushing US 3-year high"
+      "US 10Y Treasury yield at 5.277% — structural tightening shock"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
-      "Fed interest rate decision",
-      "US Core PCE inflation data",
-      "US 10Y Treasury yield surge",
-      "NVIDIA all-time high earnings",
-      "Geopolitical oil price shock"
+      "US 10Y Treasury yield",
+      "FOMC rate decision",
+      "US inflation sticky",
+      "US employment slowdown",
+      "NVIDIA all-time high"
     ]
   }
 }
