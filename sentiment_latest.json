@@ -1,20 +1,21 @@
 {
   "market_sentiment": "neutral",
-  "macro_score": 0.15,
-  "timestamp_utc": "2026-10-06T01:17:46Z",
+  "macro_score": 0.05,
+  "timestamp_utc": "2026-10-06T11:13:21Z",
   "hermes_risk_feed": {
-    "summary": "Global equities show modest gains while U.S. Treasury yields remain severely elevated near 5.31 percent, presenting a persistent tightening headwind. Central bank policy uncertainty and inflation concerns continue to cap broader risk-on momentum despite stable major indices.",
+    "summary": "Global equities push higher alongside modest gains in cryptocurrencies while subdued volatility contrasts with tightening pressures from surging Treasury yields. Meanwhile, political friction between the White House and Federal Reserve leadership elevates policy uncertainty ahead of upcoming central bank minutes.",
     "black_swan_warnings": [
-      "10Y UST yield 5.31% — structural tightening shock"
+      "US 10Y Treasury Yield 5.31% — severe tightening shock",
+      "Executive pressure on Federal Reserve leadership"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
-      "US 10Y yield surge",
-      "FOMC rate decision",
-      "US jobs report",
-      "Federal Reserve minutes",
-      "Inflation fears"
+      "FOMC minutes release",
+      "US Treasury yield surge",
+      "White House Fed friction",
+      "October Fed rate hold bets",
+      "US jobs shock"
     ]
   }
 }
