@@ -1,21 +1,22 @@
 {
   "market_sentiment": "bullish",
-  "macro_score": 0.45,
-  "timestamp_utc": "2026-10-06T18:19:20Z",
+  "macro_score": 0.28,
+  "timestamp_utc": "2026-10-06T23:46:34Z",
   "hermes_risk_feed": {
-    "summary": "Global equities advance following a soft U.S. jobs report and easing Fed rate-hike expectations, despite elevated 10Y Treasury yields remaining above 5.2%. Volatility subsides with the VIX dropping to 15.03, though fiscal headwinds and tightening monetary policy concerns linger.",
+    "summary": "Global equity markets rallied led by a 2.4% surge in the Nikkei as easing Fed rate hike expectations and a weaker US dollar provided relief. However, elevated 10-year Treasury yields above 5.2% and upcoming FOMC minutes maintain significant macroeconomic headwinds.",
     "black_swan_warnings": [
-      "10Y UST yield 5.27% — tightening shock",
-      "FOMC minutes release and rate path uncertainty"
+      "US 10Y Treasury yield at 5.27% — extreme yield tightening shock",
+      "FOMC minutes release within 24h — potential interest rate volatility"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
-      "US jobs shock",
-      "FOMC minutes",
-      "Fed rate hike speculation",
-      "US 10Y yield pressure",
-      "Gold price rebound"
+      "FOMC minutes release",
+      "US 10Y Treasury yield surge",
+      "Fed rate hike uncertainty",
+      "Trump Fed criticism",
+      "US labor market slowdown",
+      "US dollar weakness"
     ]
   }
 }
