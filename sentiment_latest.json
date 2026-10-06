@@ -1,21 +1,21 @@
 {
-  "market_sentiment": "neutral",
-  "macro_score": 0.05,
-  "timestamp_utc": "2026-10-06T11:13:21Z",
+  "market_sentiment": "bullish",
+  "macro_score": 0.45,
+  "timestamp_utc": "2026-10-06T18:19:20Z",
   "hermes_risk_feed": {
-    "summary": "Global equities push higher alongside modest gains in cryptocurrencies while subdued volatility contrasts with tightening pressures from surging Treasury yields. Meanwhile, political friction between the White House and Federal Reserve leadership elevates policy uncertainty ahead of upcoming central bank minutes.",
+    "summary": "Global equities advance following a soft U.S. jobs report and easing Fed rate-hike expectations, despite elevated 10Y Treasury yields remaining above 5.2%. Volatility subsides with the VIX dropping to 15.03, though fiscal headwinds and tightening monetary policy concerns linger.",
     "black_swan_warnings": [
-      "US 10Y Treasury Yield 5.31% — severe tightening shock",
-      "Executive pressure on Federal Reserve leadership"
+      "10Y UST yield 5.27% — tightening shock",
+      "FOMC minutes release and rate path uncertainty"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
-      "FOMC minutes release",
-      "US Treasury yield surge",
-      "White House Fed friction",
-      "October Fed rate hold bets",
-      "US jobs shock"
+      "US jobs shock",
+      "FOMC minutes",
+      "Fed rate hike speculation",
+      "US 10Y yield pressure",
+      "Gold price rebound"
     ]
   }
 }
