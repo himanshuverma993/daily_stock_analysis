@@ -1,20 +1,20 @@
 {
   "market_sentiment": "neutral",
-  "macro_score": 0.05,
-  "timestamp_utc": "2026-10-05T17:06:38Z",
+  "macro_score": 0.15,
+  "timestamp_utc": "2026-10-06T01:17:46Z",
   "hermes_risk_feed": {
-    "summary": "Global equity indices show mixed performance as surging US 10-year Treasury yields at 5.33% present severe tightening headwinds. Meanwhile, a soft US jobs report has tempered aggressive Federal Reserve rate-hike expectations ahead of upcoming FOMC minutes.",
+    "summary": "Global equities show modest gains while U.S. Treasury yields remain severely elevated near 5.31 percent, presenting a persistent tightening headwind. Central bank policy uncertainty and inflation concerns continue to cap broader risk-on momentum despite stable major indices.",
     "black_swan_warnings": [
-      "US 10Y Treasury yield at 5.33% — severe tightening shock"
+      "10Y UST yield 5.31% — structural tightening shock"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
+      "US 10Y yield surge",
+      "FOMC rate decision",
       "US jobs report",
-      "FOMC minutes",
-      "US 10Y Treasury yield surge",
-      "Fed rate expectations",
-      "Bitcoin price action"
+      "Federal Reserve minutes",
+      "Inflation fears"
     ]
   }
 }
