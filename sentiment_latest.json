@@ -1,21 +1,20 @@
 {
-  "market_sentiment": "neutral",
-  "macro_score": 0.05,
-  "timestamp_utc": "2026-10-07T05:48:47Z",
+  "market_sentiment": "bearish",
+  "macro_score": -0.35,
+  "timestamp_utc": "2026-10-07T15:31:21Z",
   "hermes_risk_feed": {
-    "summary": "Global equity indices are displaying modest gains while remaining constrained by elevated treasury yields and looming central bank policy decisions. Persistent inflationary pressures and potential Federal Reserve rate hike speculation continue to dominate risk sentiment.",
+    "summary": "Global equities and risk assets retreat as rising Treasury yields and a stronger US dollar weigh on investor sentiment. Markets remain defensive ahead of the upcoming FOMC meeting minutes release.",
     "black_swan_warnings": [
-      "10Y UST yield 5.269% — tightening shock",
-      "FOMC meeting minutes release"
+      "10Y UST yield 5.31% — tightening shock"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
-      "FOMC meeting minutes",
-      "US 10Y Treasury yield",
-      "Fed rate hike expectations",
-      "US Dollar strength",
-      "Crude oil price action"
+      "FOMC minutes release",
+      "US 10Y Treasury yield surge",
+      "US Dollar Index strength",
+      "Bitcoin pullback",
+      "Gold price pressure"
     ]
   }
 }
