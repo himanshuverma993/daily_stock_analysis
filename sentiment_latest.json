@@ -1,20 +1,20 @@
 {
   "market_sentiment": "bearish",
-  "macro_score": -0.35,
-  "timestamp_utc": "2026-10-07T15:31:21Z",
+  "macro_score": -0.48,
+  "timestamp_utc": "2026-10-07T21:16:15Z",
   "hermes_risk_feed": {
-    "summary": "Global equities and risk assets retreat as rising Treasury yields and a stronger US dollar weigh on investor sentiment. Markets remain defensive ahead of the upcoming FOMC meeting minutes release.",
+    "summary": "Hawkish FOMC minutes confirmed that most Fed officials expect another interest rate hike this year to combat persistent inflation risks. Meanwhile, elevated US 10-Year Treasury yields above 5.27% continue to apply severe tightening pressure across global risk assets.",
     "black_swan_warnings": [
-      "10Y UST yield 5.31% — tightening shock"
+      "10Y UST yield 5.28% — severe tightening shock"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
-      "FOMC minutes release",
-      "US 10Y Treasury yield surge",
-      "US Dollar Index strength",
-      "Bitcoin pullback",
-      "Gold price pressure"
+      "Fed officials see another hike coming, but no sign as to when, minutes show - CNBC",
+      "Most Fed Officials See Another Rate Hike This Year but Leave Timing Open - Barron's",
+      "All Fed officials backed vote to hike benchmark rate: FOMC minutes - CFO Dive",
+      "Fed Policymakers Think Another Interest Rate Hike Is Likely This Year, Minutes Show - Realtor.com",
+      "Fed policymakers divided over rate-hike logic in September, minutes show - Yahoo Finance"
     ]
   }
 }
