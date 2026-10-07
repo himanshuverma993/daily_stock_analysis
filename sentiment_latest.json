@@ -1,22 +1,21 @@
 {
-  "market_sentiment": "bullish",
-  "macro_score": 0.28,
-  "timestamp_utc": "2026-10-06T23:46:34Z",
+  "market_sentiment": "neutral",
+  "macro_score": 0.05,
+  "timestamp_utc": "2026-10-07T05:48:47Z",
   "hermes_risk_feed": {
-    "summary": "Global equity markets rallied led by a 2.4% surge in the Nikkei as easing Fed rate hike expectations and a weaker US dollar provided relief. However, elevated 10-year Treasury yields above 5.2% and upcoming FOMC minutes maintain significant macroeconomic headwinds.",
+    "summary": "Global equity indices are displaying modest gains while remaining constrained by elevated treasury yields and looming central bank policy decisions. Persistent inflationary pressures and potential Federal Reserve rate hike speculation continue to dominate risk sentiment.",
     "black_swan_warnings": [
-      "US 10Y Treasury yield at 5.27% — extreme yield tightening shock",
-      "FOMC minutes release within 24h — potential interest rate volatility"
+      "10Y UST yield 5.269% — tightening shock",
+      "FOMC meeting minutes release"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
-      "FOMC minutes release",
-      "US 10Y Treasury yield surge",
-      "Fed rate hike uncertainty",
-      "Trump Fed criticism",
-      "US labor market slowdown",
-      "US dollar weakness"
+      "FOMC meeting minutes",
+      "US 10Y Treasury yield",
+      "Fed rate hike expectations",
+      "US Dollar strength",
+      "Crude oil price action"
     ]
   }
 }
