@@ -1,20 +1,21 @@
 {
   "market_sentiment": "bearish",
-  "macro_score": -0.48,
-  "timestamp_utc": "2026-10-07T21:16:15Z",
+  "macro_score": -0.65,
+  "timestamp_utc": "2026-10-08T05:54:20Z",
   "hermes_risk_feed": {
-    "summary": "Hawkish FOMC minutes confirmed that most Fed officials expect another interest rate hike this year to combat persistent inflation risks. Meanwhile, elevated US 10-Year Treasury yields above 5.27% continue to apply severe tightening pressure across global risk assets.",
+    "summary": "Global equity markets face persistent downward pressure driven by hawkish FOMC minutes signaling upcoming rate hikes to combat sticky inflation. Meanwhile, elevated 10-year Treasury yields above 5.2% and surging crude oil prices continue to exacerbate macroeconomic tightening headwinds.",
     "black_swan_warnings": [
-      "10Y UST yield 5.28% — severe tightening shock"
+      "US 10Y Treasury yield at 5.277% — extreme tightening shock",
+      "Bitcoin daily drop of -3.29% signaling broader risk asset liquidations"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
-      "Fed officials see another hike coming, but no sign as to when, minutes show - CNBC",
-      "Most Fed Officials See Another Rate Hike This Year but Leave Timing Open - Barron's",
-      "All Fed officials backed vote to hike benchmark rate: FOMC minutes - CFO Dive",
-      "Fed Policymakers Think Another Interest Rate Hike Is Likely This Year, Minutes Show - Realtor.com",
-      "Fed policymakers divided over rate-hike logic in September, minutes show - Yahoo Finance"
+      "FOMC rate hike expectations",
+      "Persistent inflation risks",
+      "Elevated 10Y Treasury yield",
+      "WTI crude oil price surge",
+      "Geopolitical and tariff concerns"
     ]
   }
 }
