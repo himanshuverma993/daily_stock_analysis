@@ -1,22 +1,20 @@
 {
   "market_sentiment": "bearish",
-  "macro_score": -0.62,
-  "timestamp_utc": "2026-10-08T15:35:11Z",
+  "macro_score": -0.65,
+  "timestamp_utc": "2026-10-08T21:16:45Z",
   "hermes_risk_feed": {
-    "summary": "Global equity markets face persistent downward pressure amid hawkish Federal Reserve minutes signaling additional rate hikes to combat stubborn inflation. Concurrently, surging crude oil prices and elevated US 10-year Treasury yields continue to exacerbate macroeconomic tightening headwinds.",
+    "summary": "Global equities faced selling pressure led by technology weakness as hawkish FOMC minutes reinforced expectations for further interest rate hikes. Elevated US 10-year Treasury yields and rising crude oil prices continue to amplify macro tightening headwinds.",
     "black_swan_warnings": [
-      "US 10Y Treasury yield at 5.305% — severe tightening shock",
-      "WTI Crude Oil surge +5.15% to $92.83 — energy cost pressure",
-      "Fed minutes signaling multiple additional rate hikes in 2026"
+      "US 10Y Treasury yield at 5.23% — severe tightening shock"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
-      "FOMC rate hike signaling",
-      "US 10Y Treasury yield surge",
-      "WTI Crude Oil supply rally",
-      "Persistent inflation pressures",
-      "Fed policy division"
+      "FOMC meeting minutes",
+      "Hawkish Fed policy",
+      "US Treasury yield spike",
+      "WTI crude oil rally",
+      "Persistent inflation pressures"
     ]
   }
 }
