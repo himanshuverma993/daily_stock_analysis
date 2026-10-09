@@ -1,21 +1,21 @@
 {
   "market_sentiment": "bearish",
-  "macro_score": -0.68,
-  "timestamp_utc": "2026-10-09T05:59:49Z",
+  "macro_score": -0.65,
+  "timestamp_utc": "2026-10-09T15:15:37Z",
   "hermes_risk_feed": {
-    "summary": "Global equity markets faced selling pressure led by technology stocks as hawkish FOMC minutes highlighted expectations for further interest rate hikes. Meanwhile, elevated US 10-year Treasury yields at 5.23% present severe monetary headwinds despite gold gaining on safe-haven demand.",
+    "summary": "Global equity markets remain under severe tightening pressure as elevated 10Y Treasury yields and hawkish Federal Reserve minutes signal further monetary tightening. Persistent inflation concerns and looming rate hikes continue to drive systemic risk-off sentiment across asset classes.",
     "black_swan_warnings": [
-      "10Y UST yield 5.23% — severe monetary tightening shock",
-      "Hawkish Fed trajectory — persistent rate hike pressure"
+      "10Y UST yield 5.28% — extreme tightening shock",
+      "FOMC minutes signal multiple upcoming rate hikes"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
-      "The Fed's going to take its time with rate hikes - Axios",
-      "Fed officials see another hike coming, but no sign as to when, minutes show - CNBC",
-      "Fed policymakers divided over rate-hike logic in September, minutes show - Reuters",
-      "A Top Fed Official Casts Further Doubt on a Rate Rise This Month - The New York Times",
-      "Fed officials view another rate hike as ‘likely,’ meeting minutes show - The Hill"
+      "FOMC rate hike expectations",
+      "Persistent US inflation",
+      "US 10Y Treasury yield surge",
+      "Fed hawkish commentary",
+      "Global monetary tightening"
     ]
   }
 }
