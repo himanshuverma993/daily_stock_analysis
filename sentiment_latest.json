@@ -1,21 +1,21 @@
 {
   "market_sentiment": "neutral",
-  "macro_score": -0.25,
-  "timestamp_utc": "2026-10-10T05:43:35Z",
+  "macro_score": -0.15,
+  "timestamp_utc": "2026-10-10T14:27:19Z",
   "hermes_risk_feed": {
-    "summary": "Global equities show modest gains while the US 10-year Treasury yield hovers at an elevated 5.244 percent. Persistent Federal Reserve rate hike expectations and tightening pressures continue to weigh on macro sentiment.",
+    "summary": "Global equity indices show modest resilience despite persistent hawkish Federal Reserve commentary and elevated borrowing costs. However, the 10-year Treasury yield remaining above 5.2% presents a severe structural tightening headwind for risk assets.",
     "black_swan_warnings": [
-      "10Y UST yield 5.244% — tightening shock",
-      "US Fed rate hike expectations and elevated inflation"
+      "10Y UST yield 5.24% — extreme tightening shock",
+      "US inflation hitting 3-year high amid active Fed rate-hike pressures"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
-      "Fed rate hike cycle",
+      "US inflation multi-year high",
+      "Fed hawkish rate hike expectations",
       "US 10Y Treasury yield surge",
-      "Elevated US inflation",
-      "Oil price strength",
-      "FOMC policy outlook"
+      "US CPI data release anticipation",
+      "DXY strength"
     ]
   }
 }
