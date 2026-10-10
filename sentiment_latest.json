@@ -1,21 +1,20 @@
 {
   "market_sentiment": "neutral",
-  "macro_score": -0.15,
-  "timestamp_utc": "2026-10-10T14:27:19Z",
+  "macro_score": -0.1,
+  "timestamp_utc": "2026-10-10T20:01:22Z",
   "hermes_risk_feed": {
-    "summary": "Global equity indices show modest resilience despite persistent hawkish Federal Reserve commentary and elevated borrowing costs. However, the 10-year Treasury yield remaining above 5.2% presents a severe structural tightening headwind for risk assets.",
+    "summary": "Global equity indices show modest gains alongside low volatility, but elevated Treasury yields and persistent inflation concerns create underlying headwinds. Hawkish Federal Reserve signals and rising bond yields demand cautious risk management.",
     "black_swan_warnings": [
-      "10Y UST yield 5.24% — extreme tightening shock",
-      "US inflation hitting 3-year high amid active Fed rate-hike pressures"
+      "US 10Y Treasury Yield 5.24% — tightening shock"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
-      "US inflation multi-year high",
-      "Fed hawkish rate hike expectations",
+      "Fed rate hike expectations",
+      "Elevated US inflation",
       "US 10Y Treasury yield surge",
-      "US CPI data release anticipation",
-      "DXY strength"
+      "US CPI data release",
+      "Crude oil price strength"
     ]
   }
 }
