@@ -1,20 +1,19 @@
 {
   "market_sentiment": "neutral",
-  "macro_score": -0.1,
-  "timestamp_utc": "2026-10-10T20:01:22Z",
+  "macro_score": -0.15,
+  "timestamp_utc": "2026-10-10T23:29:45Z",
   "hermes_risk_feed": {
-    "summary": "Global equity indices show modest gains alongside low volatility, but elevated Treasury yields and persistent inflation concerns create underlying headwinds. Hawkish Federal Reserve signals and rising bond yields demand cautious risk management.",
+    "summary": "Global equities show modest gains while the VIX remains subdued at 14.84, yet elevated US Treasury yields and hawkish Federal Reserve rate hike expectations continue to apply tightening pressure. Traders should monitor persistent inflation headwinds and upcoming macroeconomic data releases closely.",
     "black_swan_warnings": [
-      "US 10Y Treasury Yield 5.24% — tightening shock"
+      "US 10Y Treasury yield at 5.24% — extreme tightening shock"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
       "Fed rate hike expectations",
-      "Elevated US inflation",
+      "US CPI inflation release",
       "US 10Y Treasury yield surge",
-      "US CPI data release",
-      "Crude oil price strength"
+      "Persistent inflation pressure"
     ]
   }
 }
