@@ -1,21 +1,21 @@
 {
-  "market_sentiment": "bearish",
-  "macro_score": -0.38,
-  "timestamp_utc": "2026-10-09T20:49:49Z",
+  "market_sentiment": "neutral",
+  "macro_score": -0.25,
+  "timestamp_utc": "2026-10-10T05:43:35Z",
   "hermes_risk_feed": {
-    "summary": "US equity markets gained while Asian indices pulled back as investors digested hawkish FOMC minutes and lingering inflation concerns. The US 10-Year Treasury yield surged above 5.24%, creating a severe monetary tightening headwind despite subdued volatility metrics.",
+    "summary": "Global equities show modest gains while the US 10-year Treasury yield hovers at an elevated 5.244 percent. Persistent Federal Reserve rate hike expectations and tightening pressures continue to weigh on macro sentiment.",
     "black_swan_warnings": [
-      "10Y UST yield at 5.24% — extreme tightening shock",
-      "FOMC rate decision pending October 28 — hawkish policy risk"
+      "10Y UST yield 5.244% — tightening shock",
+      "US Fed rate hike expectations and elevated inflation"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
-      "FOMC rate decision",
-      "US 10Y yield spike",
-      "Fed rate hike expectations",
-      "Persistent US inflation",
-      "High oil prices"
+      "Fed rate hike cycle",
+      "US 10Y Treasury yield surge",
+      "Elevated US inflation",
+      "Oil price strength",
+      "FOMC policy outlook"
     ]
   }
 }
