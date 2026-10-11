@@ -1,21 +1,20 @@
 {
-  "market_sentiment": "bullish",
-  "macro_score": 0.15,
-  "timestamp_utc": "2026-10-11T05:37:59Z",
+  "market_sentiment": "neutral",
+  "macro_score": 0.1,
+  "timestamp_utc": "2026-10-11T14:53:37Z",
   "hermes_risk_feed": {
-    "summary": "Global equities posted solid gains as market volatility subsided, despite hawkish Federal Reserve messaging regarding potential additional rate hikes. However, the US 10-Year Treasury yield holding above 5.2% presents a severe macro tightening headwind alongside upcoming CPI data.",
+    "summary": "Global equities posted solid gains led by European and Asian benchmarks while volatility remained subdued. However, surging US 10-Year Treasury yields above 5.2% and persistent inflation concerns continue to impose significant financial tightening headwinds.",
     "black_swan_warnings": [
-      "10Y UST yield at 5.24% — extreme tightening shock",
-      "Upcoming US CPI release and October 28 FOMC rate decision"
+      "10Y UST yield 5.24% — tightening shock"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
-      "Fed rate hike expectations",
-      "US CPI inflation release",
-      "US 10Y Treasury yield spike",
-      "Elevated crude oil prices",
-      "Q3 bank earnings season"
+      "US 10Y yield spike",
+      "US CPI release",
+      "FOMC rate decision",
+      "Wall Street earnings season",
+      "Inflation pressures"
     ]
   }
 }
