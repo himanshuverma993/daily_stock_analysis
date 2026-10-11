@@ -1,20 +1,21 @@
 {
   "market_sentiment": "neutral",
-  "macro_score": 0.1,
-  "timestamp_utc": "2026-10-11T14:53:37Z",
+  "macro_score": 0.05,
+  "timestamp_utc": "2026-10-11T20:12:55Z",
   "hermes_risk_feed": {
-    "summary": "Global equities posted solid gains led by European and Asian benchmarks while volatility remained subdued. However, surging US 10-Year Treasury yields above 5.2% and persistent inflation concerns continue to impose significant financial tightening headwinds.",
+    "summary": "Global equity markets show mild resilience while Treasury yields remain elevated above 5 percent. Persistent inflation pressures and looming Federal Reserve rate hike risks temper risk appetite.",
     "black_swan_warnings": [
-      "10Y UST yield 5.24% — tightening shock"
+      "US 10Y Treasury yield at 5.24 percent creating severe tightening headwinds",
+      "Stubborn inflation prints and Federal Reserve rate hike expectations"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
-      "US 10Y yield spike",
       "US CPI release",
-      "FOMC rate decision",
-      "Wall Street earnings season",
-      "Inflation pressures"
+      "Federal Reserve rate path",
+      "US 10Y Treasury yield",
+      "Major bank earnings season",
+      "IMF-World Bank meetings"
     ]
   }
 }
