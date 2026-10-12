@@ -1,21 +1,21 @@
 {
   "market_sentiment": "neutral",
-  "macro_score": 0.05,
-  "timestamp_utc": "2026-10-12T05:48:15Z",
+  "macro_score": -0.15,
+  "timestamp_utc": "2026-10-12T17:48:26Z",
   "hermes_risk_feed": {
-    "summary": "Global equity indices show modest gains while Treasury yields remain elevated above the 5.2% threshold. Persistent inflation concerns and looming Federal Reserve rate hike risks continue to dominate macroeconomic sentiment.",
+    "summary": "Global equity markets show mixed performance amid persistent inflation concerns and looming Federal Reserve rate hike speculation. Meanwhile, elevated 10-year Treasury yields and tightening monetary headwinds continue to pressure risk assets.",
     "black_swan_warnings": [
-      "10Y UST yield 5.244% — tightening shock",
-      "US CPI print upcoming — inflation surprise risk"
+      "10Y UST yield 5.24% -- structural tightening shock",
+      "FOMC rate hike expectations and persistent inflation"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
-      "US CPI surprise",
-      "Fed rate hike expectations",
-      "Treasury yield surge",
-      "Wall Street earnings kickoff",
-      "Middle East geopolitical tension"
+      "FOMC rate hike speculation",
+      "US CPI inflation release",
+      "US 10Y Treasury yield surge",
+      "Wall Street earnings season kickoff",
+      "WTI crude oil price strength"
     ]
   }
 }
