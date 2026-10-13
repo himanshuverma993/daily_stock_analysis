@@ -1,21 +1,21 @@
 {
-  "market_sentiment": "neutral",
-  "macro_score": -0.15,
-  "timestamp_utc": "2026-10-12T17:48:26Z",
+  "market_sentiment": "bearish",
+  "macro_score": -0.42,
+  "timestamp_utc": "2026-10-13T01:59:50Z",
   "hermes_risk_feed": {
-    "summary": "Global equity markets show mixed performance amid persistent inflation concerns and looming Federal Reserve rate hike speculation. Meanwhile, elevated 10-year Treasury yields and tightening monetary headwinds continue to pressure risk assets.",
+    "summary": "Global markets face tightening headwinds as 10-year Treasury yields exceed five percent alongside hawkish Federal Reserve rate hike warnings. Rising crude oil prices and sticky inflation expectations are increasing pressure on equities and risk assets.",
     "black_swan_warnings": [
-      "10Y UST yield 5.24% -- structural tightening shock",
-      "FOMC rate hike expectations and persistent inflation"
+      "US 10Y Treasury yield above 5.2% — severe tightening shock",
+      "WTI Crude Oil approaching $93 — energy cost pressure"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
-      "FOMC rate hike speculation",
-      "US CPI inflation release",
+      "Federal Reserve rate hike",
       "US 10Y Treasury yield surge",
-      "Wall Street earnings season kickoff",
-      "WTI crude oil price strength"
+      "Sticky US inflation pressures",
+      "Crude oil price shock",
+      "US consumer resilience"
     ]
   }
 }
