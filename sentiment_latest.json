@@ -1,21 +1,21 @@
 {
   "market_sentiment": "bearish",
-  "macro_score": -0.42,
-  "timestamp_utc": "2026-10-13T01:59:50Z",
+  "macro_score": -0.58,
+  "timestamp_utc": "2026-10-13T11:42:25Z",
   "hermes_risk_feed": {
-    "summary": "Global markets face tightening headwinds as 10-year Treasury yields exceed five percent alongside hawkish Federal Reserve rate hike warnings. Rising crude oil prices and sticky inflation expectations are increasing pressure on equities and risk assets.",
+    "summary": "Hawkish Federal Reserve commentary and persistent inflation concerns continue to weigh on broad risk sentiment. Meanwhile, the US 10-year Treasury yield remaining elevated at 5.24% presents a severe structural tightening headwind for global markets.",
     "black_swan_warnings": [
-      "US 10Y Treasury yield above 5.2% — severe tightening shock",
-      "WTI Crude Oil approaching $93 — energy cost pressure"
+      "10Y UST yield 5.24% — severe tightening shock",
+      "Upcoming US CPI inflation report under aggressive Fed rate hike threat"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
-      "Federal Reserve rate hike",
-      "US 10Y Treasury yield surge",
-      "Sticky US inflation pressures",
-      "Crude oil price shock",
-      "US consumer resilience"
+      "FOMC rate decision",
+      "US CPI inflation",
+      "US 10Y UST yield spike",
+      "Fed hawkish policy",
+      "Global monetary tightening"
     ]
   }
 }
