@@ -1,20 +1,20 @@
 {
   "market_sentiment": "bearish",
-  "macro_score": -0.65,
-  "timestamp_utc": "2026-10-14T13:39:13Z",
+  "macro_score": -0.72,
+  "timestamp_utc": "2026-10-14T20:11:04Z",
   "hermes_risk_feed": {
-    "summary": "Sticky inflation and resilient economic data are reinforcing expectations of additional Federal Reserve rate hikes. Meanwhile, surging 10-year Treasury yields above 5.3% present an ongoing tightening shock for risk assets.",
+    "summary": "Surging US inflation data to 3.7 percent has sharply elevated market expectations for aggressive Federal Reserve rate hikes. Meanwhile, elevated 10Y Treasury yields above 5 percent continue to exert severe tightening pressure on risk assets.",
     "black_swan_warnings": [
-      "US 10Y Treasury Yield 5.312% — tightening shock",
-      "US CPI Jumps 3.7% — persistent inflation pressure"
+      "10Y UST yield 5.19% — tightening shock",
+      "US September CPI jump to 3.7% triggering Fed rate hike panic"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
       "US CPI surprise",
-      "Fed rate hike expectations",
-      "10Y Treasury yield surge",
-      "Trumpflation narrative"
+      "Fed rate hike odds",
+      "US 10Y Treasury yield surge",
+      "Trumpflation expectations"
     ]
   }
 }
