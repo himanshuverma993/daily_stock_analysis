@@ -1,21 +1,21 @@
 {
   "market_sentiment": "bearish",
-  "macro_score": -0.62,
-  "timestamp_utc": "2026-10-13T23:43:47Z",
+  "macro_score": -0.55,
+  "timestamp_utc": "2026-10-14T04:45:34Z",
   "hermes_risk_feed": {
-    "summary": "Sticky inflation pressures and aggressive Federal Reserve rhetoric pointing toward further rate hikes continue to weigh heavily on risk appetite. Meanwhile, elevated Treasury yields above five percent present a persistent macroeconomic headwind for global equities.",
+    "summary": "Elevated Treasury yields and persistent Federal Reserve rate hike warnings continue to apply sustained pressure on broader equities. Fixed-income headwinds remain significant as the 10-year yield hovers well above critical tightening thresholds.",
     "black_swan_warnings": [
-      "US 10Y Treasury yield at 5.21% — severe tightening shock",
-      "Hawkish Fed signaling potential rate hikes amid persistent inflation"
+      "10Y UST yield 5.22% — extreme tightening shock",
+      "Sticky inflation pressures triggering late-year Fed rate hike warnings"
     ]
   },
   "teacher_brain_catalysts": {
     "key_drivers": [
-      "sticky US inflation",
-      "Federal Reserve rate hike expectations",
-      "elevated 10Y Treasury yield",
-      "October FOMC meeting",
-      "oil price appreciation"
+      "US 10Y Treasury yield surge",
+      "Sticky inflation persistence",
+      "Federal Reserve rate hike warnings",
+      "October FOMC meeting positioning",
+      "Elevated crude oil prices"
     ]
   }
 }
